@@ -1,3 +1,3 @@
-﻿index,target,actionA[],actionAValue[],condition,conditionValue,actionB[],actionBValue[]
-빙결1,Enemy,Freeze,1,none,0,none,0
-공격력 강화1,Self,ATK,1,none,0,none,0
+﻿id,target,actionA[],actionAValue[],condition,conditionValue,actionB[],actionBValue[]
+Freeze1,Enemy,Freeze,1,none,0,none,0
+ReinforceATK1,Self,ReinforceATK,1,none,0,none,0
