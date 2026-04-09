@@ -9,7 +9,7 @@ namespace GameData.SO.Scripts
     [CreateAssetMenu(fileName = "CardDataBase", menuName = "Card/CardDataBase")]
     public class CardDataBase : ScriptableObject
     {
-        public List<CardBase> allCards;
+        public List<CardBase> allCards = new();
         private Dictionary<string, CardBase> _cardDataDict;
 
         public void Init()

@@ -8,10 +8,8 @@ namespace GameSystem.Enums
     }
     public enum CardType
     {
-        Curse,
         Character,
-        Bless,
-        Summon
+        Normal
     }
     public enum CharacterType
     {
@@ -50,10 +48,17 @@ namespace GameSystem.Enums
     public enum ActionType
     {
         Damage,
-        Shield
+        Shield,
+        None
     }
     public enum KeywordType
     {
         
+    }
+
+    public enum ActionTarget
+    {
+        Enemy,
+        Self
     }
 }

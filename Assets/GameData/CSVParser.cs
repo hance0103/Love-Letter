@@ -1,3 +1,5 @@
+using System;
+
 namespace GameData
 {
     public static class CsvParser
@@ -10,15 +12,20 @@ namespace GameData
         }
         public static long[] ParseLongArray(string field)
         {
-            if (string.IsNullOrEmpty(field) || field == "-1") return new long[0];
+            if (string.IsNullOrEmpty(field) || field == "-1") return Array.Empty<long>();
     
-            string[] elements = field.Split('|');
-            long[] result = new long[elements.Length];
-            for (int i = 0; i < elements.Length; i++)
+            var elements = field.Split('|');
+            var result = new long[elements.Length];
+            for (var i = 0; i < elements.Length; i++)
             {
                 long.TryParse(elements[i], out result[i]);
             }
             return result;
+        }
+
+        public static string[] ParseArray(string field)
+        {
+            return string.IsNullOrEmpty(field) ? Array.Empty<string>() : field.Split('|');
         }
     }
 }

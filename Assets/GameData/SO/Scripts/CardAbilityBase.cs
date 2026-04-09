@@ -9,6 +9,7 @@ namespace GameData.SO.Scripts
     public class CardAbilityBase : ScriptableObject
     {
         public string abilityID;
+        public ActionTarget actionTarget;
         public List<AbilityActionSet> actionListA;
         public ConditionSet condition;
         public List<AbilityActionSet> actionListB;

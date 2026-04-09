@@ -11,17 +11,15 @@ namespace GamePlay.Card
         public string cardID;
         public CardTier cardTier;
         public CardType cardType ;
+        public List<KeywordType> keywords = new List<KeywordType>();
         public int cardNum;
-        public List<KeywordType> keywords;
-        public int cost;
+        public int HP;
+        public int ATK;
+        public int actionCount;
         public List<string> cardAbilityIDs;
         public List<string> nextPromotionIDs;
         public string nameString;
         public string descString;
         public string imgPath;
-
-
     }
-
-
 }
