@@ -8,7 +8,7 @@ namespace GamePlay.Card
     [CreateAssetMenu(fileName = "Card", menuName = "Card/New Card")]
     public class CardBase : ScriptableObject
     {
-        public string cardIndex;
+        public string cardID;
         public CardTier cardTier;
         public CardType cardType ;
         public int cardNum;
@@ -22,5 +22,6 @@ namespace GamePlay.Card
 
 
     }
+
 
 }

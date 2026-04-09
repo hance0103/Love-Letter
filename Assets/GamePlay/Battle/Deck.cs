@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GamePlay.Card;
+using GamePlay.Battle.Card;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -18,17 +18,17 @@ namespace GamePlay.Battle
     public class Deck
     {
         // 셔플될때 들어가는 전체 카드
-        [SerializeField] private List<string> allCards = new List<string>();
-        public List<string> AllCards => allCards;
+        [SerializeField] private List<CardInstance> allCards = new List<CardInstance>();
+        public List<CardInstance> AllCards => allCards;
         // 뽑을 카드 더미
-        [SerializeField] private List<string> draw = new List<string>();
-        public List<string> Draw => draw;
+        [SerializeField] private List<CardInstance> draw = new List<CardInstance>();
+        public List<CardInstance> Draw => draw;
         // 핸드
-        [SerializeField] private List<string> hand = new List<string>();
-        public List<string> Hand => hand;
+        [SerializeField] private List<CardInstance> hand = new List<CardInstance>();
+        public List<CardInstance> Hand => hand;
         // 사용된 카드 더미
-        [SerializeField] private List<string> used = new List<string>();
-        public List<string> Used => used;
+        [SerializeField] private List<CardInstance> used = new List<CardInstance>();
+        public List<CardInstance> Used => used;
 
         public void InitDeck()
         {
@@ -40,7 +40,7 @@ namespace GamePlay.Battle
             used.Clear();
             
             // allCards 복사
-            draw = new List<string>(allCards);
+            draw = new List<CardInstance>(allCards);
 
             // Fisher-Yates Shuffle
             for (var i = draw.Count - 1; i > 0; i--)
@@ -61,7 +61,7 @@ namespace GamePlay.Battle
             hand.Add(card);
         }
         
-        public bool DiscardOne(string card)
+        public bool DiscardOne(CardInstance card)
         {
             if (!hand.Remove(card))
                 return false;
@@ -72,7 +72,7 @@ namespace GamePlay.Battle
         
         
         // 실제 버리는 로직
-        public void DiscardCards(List<string> cards)
+        public void DiscardCards(List<CardInstance> cards)
         {
             foreach (var card in cards.Where(card => hand.Remove(card)))
             {
@@ -80,7 +80,7 @@ namespace GamePlay.Battle
             }
         }
         
-        public void AddCard(string card, AddCardPosition position)
+        public void AddCard(CardInstance card, AddCardPosition position)
         {
             switch (position)
             {

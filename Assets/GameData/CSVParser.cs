@@ -1,9 +1,6 @@
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-
-namespace Data
+namespace GameData
 {
-    public class CSVParser
+    public static class CsvParser
     {
         public static string[] ParseCSV(string csvText)
         {

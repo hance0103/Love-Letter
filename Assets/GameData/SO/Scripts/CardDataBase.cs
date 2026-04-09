@@ -18,7 +18,7 @@ namespace GameData.SO.Scripts
 
             foreach (var card in allCards)
             {
-                _cardDataDict[card.cardIndex] = card;
+                _cardDataDict[card.cardID] = card;
             }
         }
 

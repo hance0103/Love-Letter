@@ -49,7 +49,8 @@ namespace GameSystem.Enums
 
     public enum ActionType
     {
-        Damage
+        Damage,
+        Shield
     }
     public enum KeywordType
     {

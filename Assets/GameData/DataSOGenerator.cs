@@ -1,7 +1,8 @@
 using System;
 using Cysharp.Threading.Tasks;
-using Data;
 using GameData.SO.Scripts;
+using GamePlay.Card;
+using GameSystem.Enums;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -23,19 +24,19 @@ namespace GameData
             {
                 // SO 에셋 생성
                 await CreateCardData();
-        
+
                 // SO 에셋 저장
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
+                
+                        
+                Debug.Log("CSV 파싱 완료");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                throw;
             }
 
-        
-            Debug.Log("CSV 파싱 완료");
         }
     
     
@@ -53,7 +54,7 @@ namespace GameData
                 return;
             }
             var csvData = handle.Result.text;
-            var dataSet = CSVParser.ParseCSV(csvData);
+            var dataSet = CsvParser.ParseCSV(csvData);
             
             var dataBase = AssetDatabase.LoadAssetAtPath<CardDataBase>(dataBaseAddress);
             if (dataBase == null)
@@ -61,8 +62,32 @@ namespace GameData
                 dataBase = ScriptableObject.CreateInstance<CardDataBase>();
                 AssetDatabase.CreateAsset(dataBase, dataBaseAddress);
             }
-            
-            
+
+            for (var i = 1; i < dataSet.Length; i++)
+            {
+                try
+                {
+                    var dataRow = dataSet[i].Split(',');
+                    var data = ScriptableObject.CreateInstance<CardBase>();
+                    
+                    data.cardID = dataRow[0];
+                    if (Enum.TryParse<CardTier>(dataRow[1], true, out var tier))
+                    {
+                        data.cardTier = tier;
+                    }
+                    else
+                    {
+                        
+                    }
+
+
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                    throw;
+                }
+            }
             
             
             
