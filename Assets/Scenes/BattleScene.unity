@@ -292,55 +292,119 @@ MonoBehaviour:
   playerDeck:
     allCards:
     - data: {fileID: 0}
-      hp: 0
+      currentCardNum: 0
+      currentHp: 0
+      currentAttackPower: 0
+      currentShield: 0
+      currentActionCount: 0
     - data: {fileID: 0}
-      hp: 0
+      currentCardNum: 0
+      currentHp: 0
+      currentAttackPower: 0
+      currentShield: 0
+      currentActionCount: 0
     - data: {fileID: 0}
-      hp: 0
+      currentCardNum: 0
+      currentHp: 0
+      currentAttackPower: 0
+      currentShield: 0
+      currentActionCount: 0
     - data: {fileID: 0}
-      hp: 0
+      currentCardNum: 0
+      currentHp: 0
+      currentAttackPower: 0
+      currentShield: 0
+      currentActionCount: 0
     draw: []
     hand: []
     used: []
   enemyDeck:
     allCards:
     - data: {fileID: 0}
-      hp: 0
+      currentCardNum: 0
+      currentHp: 0
+      currentAttackPower: 0
+      currentShield: 0
+      currentActionCount: 0
     - data: {fileID: 0}
-      hp: 0
+      currentCardNum: 0
+      currentHp: 0
+      currentAttackPower: 0
+      currentShield: 0
+      currentActionCount: 0
     - data: {fileID: 0}
-      hp: 0
+      currentCardNum: 0
+      currentHp: 0
+      currentAttackPower: 0
+      currentShield: 0
+      currentActionCount: 0
     - data: {fileID: 0}
-      hp: 0
+      currentCardNum: 0
+      currentHp: 0
+      currentAttackPower: 0
+      currentShield: 0
+      currentActionCount: 0
     draw: []
     hand: []
     used: []
   playerField:
     card1:
       data: {fileID: 0}
-      hp: 0
+      currentCardNum: 0
+      currentHp: 0
+      currentAttackPower: 0
+      currentShield: 0
+      currentActionCount: 0
     card2:
       data: {fileID: 0}
-      hp: 0
+      currentCardNum: 0
+      currentHp: 0
+      currentAttackPower: 0
+      currentShield: 0
+      currentActionCount: 0
     card3:
       data: {fileID: 0}
-      hp: 0
+      currentCardNum: 0
+      currentHp: 0
+      currentAttackPower: 0
+      currentShield: 0
+      currentActionCount: 0
     card4:
       data: {fileID: 0}
-      hp: 0
+      currentCardNum: 0
+      currentHp: 0
+      currentAttackPower: 0
+      currentShield: 0
+      currentActionCount: 0
   enemyField:
     card1:
       data: {fileID: 0}
-      hp: 0
+      currentCardNum: 0
+      currentHp: 0
+      currentAttackPower: 0
+      currentShield: 0
+      currentActionCount: 0
     card2:
       data: {fileID: 0}
-      hp: 0
+      currentCardNum: 0
+      currentHp: 0
+      currentAttackPower: 0
+      currentShield: 0
+      currentActionCount: 0
     card3:
       data: {fileID: 0}
-      hp: 0
+      currentCardNum: 0
+      currentHp: 0
+      currentAttackPower: 0
+      currentShield: 0
+      currentActionCount: 0
     card4:
       data: {fileID: 0}
-      hp: 0
+      currentCardNum: 0
+      currentHp: 0
+      currentAttackPower: 0
+      currentShield: 0
+      currentActionCount: 0
   enemyWaitList: []
 --- !u!4 &410426186
 Transform:
@@ -386,9 +450,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1252241946}
-  - {fileID: 1679914380}
-  - {fileID: 1928601260}
-  - {fileID: 2049323474}
   m_Father: {fileID: 196652457}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -919,7 +980,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FieldSlot
   cardInstance:
     data: {fileID: 0}
-    hp: 0
+    currentCardNum: 0
+    currentHp: 0
+    currentAttackPower: 0
+    currentShield: 0
+    currentActionCount: 0
   isCardIn: 0
 --- !u!1 &1325270952
 GameObject:
@@ -1014,7 +1079,11 @@ MonoBehaviour:
   cardName: {fileID: 0}
   cardInstance:
     data: {fileID: 11400000, guid: f55b2e5c136411e41a3cb6ef38cf5ae9, type: 2}
-    hp: 0
+    currentCardNum: 0
+    currentHp: 0
+    currentAttackPower: 0
+    currentShield: 0
+    currentActionCount: 0
   currentSlot: {fileID: 0}
   hoverScale: 1.5
   hoverDuration: 0.2
@@ -1144,190 +1213,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1679914379
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1679914380}
-  - component: {fileID: 1679914383}
-  - component: {fileID: 1679914382}
-  - component: {fileID: 1679914381}
-  m_Layer: 5
-  m_Name: PlayerSlot (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1679914380
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1679914379}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 628212132}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -291, y: 0}
-  m_SizeDelta: {x: 150, y: 150}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1679914381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1679914379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 400f51e367f359e428a663ec62d9eb69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FieldSlot
-  cardInstance:
-    data: {fileID: 0}
-    hp: 0
-  isCardIn: 0
---- !u!114 &1679914382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1679914379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1679914383
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1679914379}
-  m_CullTransparentMesh: 1
---- !u!1 &1928601259
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1928601260}
-  - component: {fileID: 1928601263}
-  - component: {fileID: 1928601262}
-  - component: {fileID: 1928601261}
-  m_Layer: 5
-  m_Name: PlayerSlot (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1928601260
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1928601259}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 628212132}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -591, y: -25}
-  m_SizeDelta: {x: 150, y: 150}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1928601261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1928601259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 400f51e367f359e428a663ec62d9eb69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FieldSlot
-  cardInstance:
-    data: {fileID: 0}
-    hp: 0
-  isCardIn: 0
---- !u!114 &1928601262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1928601259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1928601263
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1928601259}
-  m_CullTransparentMesh: 1
 --- !u!1 &2033320308
 GameObject:
   m_ObjectHideFlags: 0
@@ -1465,98 +1350,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!1 &2049323473
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2049323474}
-  - component: {fileID: 2049323477}
-  - component: {fileID: 2049323476}
-  - component: {fileID: 2049323475}
-  m_Layer: 5
-  m_Name: PlayerSlot (3)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &2049323474
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2049323473}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 628212132}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 268, y: 9}
-  m_SizeDelta: {x: 150, y: 150}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2049323475
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2049323473}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 400f51e367f359e428a663ec62d9eb69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FieldSlot
-  cardInstance:
-    data: {fileID: 0}
-    hp: 0
-  isCardIn: 0
---- !u!114 &2049323476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2049323473}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &2049323477
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2049323473}
-  m_CullTransparentMesh: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
