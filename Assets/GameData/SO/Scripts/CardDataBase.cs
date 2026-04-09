@@ -10,8 +10,9 @@ namespace GameData.SO.Scripts
     public class CardDataBase : ScriptableObject
     {
         public List<CardBase> allCards = new();
+        public List<CardAbilityBase> allAbilities = new();
         private Dictionary<string, CardBase> _cardDataDict;
-
+        private Dictionary<string, CardAbilityBase> _abilityDataDict;
         public void Init()
         {
             _cardDataDict = new Dictionary<string, CardBase>();
@@ -19,6 +20,11 @@ namespace GameData.SO.Scripts
             foreach (var card in allCards)
             {
                 _cardDataDict[card.cardID] = card;
+            }
+
+            foreach (var ability in allAbilities)
+            {
+                _abilityDataDict[ability.abilityID] = ability;
             }
         }
 

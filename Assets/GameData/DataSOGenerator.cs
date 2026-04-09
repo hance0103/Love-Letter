@@ -19,6 +19,7 @@ namespace GameData
         private static string _cardAbilityData;
         
         private const string CardDataAddress = "CardData";
+        private const string CardAbilityDataAddress = "CardAbilityData";
         private const string DataBaseAddress = "Assets/GameData/SO/CardDataBase.asset";
     
         #if UNITY_EDITOR
@@ -28,8 +29,10 @@ namespace GameData
             try
             {
                 // SO 에셋 생성
-                await CreateCardData();
+                await CreateData();
 
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
 
                 
                         
@@ -43,21 +46,9 @@ namespace GameData
         }
     
     
-        private static async UniTask CreateCardData()
+        private static async UniTask CreateData()
         {
-            // csv파일 로드
-            var handle = Addressables.LoadAssetAsync<TextAsset>(CardDataAddress);
-            await handle;
-            if (handle.Status != AsyncOperationStatus.Succeeded)
-            {
-                Debug.Log($"{CardDataAddress} 로드 실패");
-                return;
-            }
-            
-            var csvData = handle.Result.text;
-            var dataSet = CsvParser.ParseCSV(csvData);
-            
-            
+            // 데이터베이스 SO 생성
             var dataBase = ScriptableObject.CreateInstance<CardDataBase>();
             if (AssetDatabase.LoadAssetAtPath<CardDataBase>(DataBaseAddress) != null)
             {
@@ -65,11 +56,26 @@ namespace GameData
             }
             AssetDatabase.CreateAsset(dataBase, DataBaseAddress);
             
-            for (var i = 1; i < dataSet.Length; i++)
+            
+            // 카드 데이터 csv파일 로드
+            var cardDataHandle = Addressables.LoadAssetAsync<TextAsset>(CardDataAddress);
+            await cardDataHandle;
+            if (cardDataHandle.Status != AsyncOperationStatus.Succeeded)
+            {
+                Debug.Log($"{CardDataAddress} 로드 실패");
+                return;
+            }
+            Addressables.Release(cardDataHandle);
+            
+            var csvCardData = cardDataHandle.Result.text;
+            var cardDataSet = CsvParser.ParseCSV(csvCardData);
+            
+            
+            for (var i = 1; i < cardDataSet.Length; i++)
             {
                 try
                 {
-                    var dataRow = dataSet[i].Split(',');
+                    var dataRow = cardDataSet[i].Split(',');
                     var data = ScriptableObject.CreateInstance<CardBase>();
                     
                     // 1. ID
@@ -161,11 +167,102 @@ namespace GameData
                 }
             }
             
+            // 카드 능력 데이터 csv파일 로드
+            var cardAbilityDataHandle =  Addressables.LoadAssetAsync<TextAsset>(CardAbilityDataAddress);
+            await cardAbilityDataHandle;
+            if (cardAbilityDataHandle.Status != AsyncOperationStatus.Succeeded)
+            {
+                Debug.Log($"{CardAbilityDataAddress} 로드 실패");
+                return;
+            }
+            Addressables.Release(cardAbilityDataHandle);
+            var csvAbilityData = cardAbilityDataHandle.Result.text;
+            var abilityDataSet = CsvParser.ParseCSV(csvAbilityData);
+
+            for (var i = 1; i < abilityDataSet.Length; i++)
+            {
+                try
+                {
+                    var dataRow = abilityDataSet[i].Split(',');
+                    var data = ScriptableObject.CreateInstance<CardAbilityBase>();
+                    
+                    // 1. ID
+                    data.abilityID = dataRow[0];
+                    // 2. ActionTarget
+                    if (Enum.TryParse<ActionTarget>(dataRow[1], true, out var actionTarget))
+                    {
+                        data.actionTarget = actionTarget;
+                    }
+                    else
+                    {
+                        Debug.Log("Data Generator : 카드 등급 설정 오류");
+                        data.actionTarget = 0;
+                    }
+                    // 3. ActionList_A
+                    var actionArrayA = CsvParser.ParseArray(dataRow[2]);
+                    var actionValueArrayA = CsvParser.ParseArray(dataRow[3]);
+                    
+                    for (var j = 0; j < actionArrayA.Length; j++)
+                    {
+                        if (Enum.TryParse<ActionType>(actionArrayA[j], true, out var actionType))
+                        {
+                            var actionSet = new AbilityActionSet(actionType, int.Parse(actionValueArrayA[j]));
+                            data.actionListA.Add(actionSet);
+                        }
+                        else
+                        {
+                            Debug.Log(actionArrayA[j]);
+                            var actionSet = new AbilityActionSet();
+                            data.actionListA.Add(actionSet);
+                        }
+
+                    }
+                    // 4. ConditionSet
+                    if (Enum.TryParse<ConditionType>(dataRow[4], true, out var conditionType))
+                    {
+                        data.condition = new ConditionSet(conditionType,  int.Parse(dataRow[5]));
+                    }
+                    else
+                    {
+                        data.condition = new ConditionSet();
+                    }
+                    // 5. ActionList_B
+                    var actionArrayB = CsvParser.ParseArray(dataRow[6]);
+                    var actionValueArrayB = CsvParser.ParseArray(dataRow[7]);
+                    
+                    for (var j = 0; j < actionArrayB.Length; j++)
+                    {
+                        if (!Enum.TryParse<ActionType>(actionArrayB[j], true, out var actionType))
+                        {
+                            var actionSet = new AbilityActionSet(actionType, int.Parse(actionValueArrayB[j]));
+                            data.actionListB.Add(actionSet);
+                        }
+                        else
+                        {
+                            var actionSet = new AbilityActionSet();
+                            data.actionListB.Add(actionSet);
+                        }
+
+                    }
+                    
+                    var cardAbilitySOPath = $"Assets/GameData/SO/CardData/CardAbilityData/{dataRow[0]}.asset";
+                    if (AssetDatabase.LoadAssetAtPath<CardAbilityBase>(cardAbilitySOPath) != null)
+                    {
+                        AssetDatabase.DeleteAsset(cardAbilitySOPath);
+                    }
+                    AssetDatabase.CreateAsset(data, cardAbilitySOPath);
+                    EditorUtility.SetDirty(data);
+                    
+                    dataBase.allAbilities.Add(data);
+                    
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
             EditorUtility.SetDirty(dataBase);
-            // SO 에셋 저장
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-            Addressables.Release(handle);
         }
     
     #endif

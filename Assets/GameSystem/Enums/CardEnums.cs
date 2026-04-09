@@ -49,6 +49,10 @@ namespace GameSystem.Enums
     {
         Damage,
         Shield,
+        Freeze,
+        ReinforceATK,
+        
+        
         None
     }
     public enum KeywordType

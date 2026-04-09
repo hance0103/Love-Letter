@@ -10,14 +10,24 @@ namespace GameData.SO.Scripts
     {
         public string abilityID;
         public ActionTarget actionTarget;
-        public List<AbilityActionSet> actionListA;
+        public List<AbilityActionSet> actionListA = new();
         public ConditionSet condition;
-        public List<AbilityActionSet> actionListB;
+        public List<AbilityActionSet> actionListB = new();
     }
 
     [Serializable]
     public class AbilityActionSet
     {
+        public AbilityActionSet()
+        {
+            actionType = ActionType.None;
+            actionValue = 0;
+        }
+        public AbilityActionSet(ActionType type, int value)
+        {
+            actionType = type;
+            actionValue = value;
+        }
         public ActionType actionType;
         public int actionValue;
     }
@@ -25,6 +35,16 @@ namespace GameData.SO.Scripts
     [Serializable]
     public class ConditionSet
     {
+        public ConditionSet()
+        {
+            conditionType = ConditionType.None;
+            conditionValue = 0;
+        }
+        public ConditionSet(ConditionType type, int value)
+        {
+            conditionType = type;
+            conditionValue = value;
+        }
         public ConditionType conditionType;
         public int conditionValue;
     }
