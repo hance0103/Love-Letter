@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using GamePlay.Battle.Card;
 using GamePlay.Battle.Field;
 using GamePlay.Card;
+using GamePlay.Party;
 using GamePlay.Turn;
 using GameSystem.Enums;
+using GameSystem.Managers;
 using UnityEngine;
 
 namespace GamePlay.Battle
@@ -57,24 +59,15 @@ namespace GamePlay.Battle
 
         private void BattleInit()
         {
+            playerDeck.InitDeck(GameManager.Inst.Party.CreateDeck()); 
             OnBattleStart();
         }
         
         private void OnBattleStart()
         {
-            //_currentCost = currentMaxCost;
-            // 셔플 연출
-            playerDeck.ShuffleDeck();
-            enemyDeck.ShuffleDeck();
             
             // // 드로우 연출
-            // playerDeck.DrawOne();
-            // enemyDeck.DrawOne();
-            
-            // //턴 설정
-            // TurnManager.SetTurnOwner(TurnOwner.Player);
-            //
-            // OnTurnStart(TurnManager.currentTurnOwner);
+            playerDeck.DrawSixCards();
         }
         
         private void OnBattleEnd()
@@ -82,70 +75,5 @@ namespace GamePlay.Battle
             
         }
         
-        // private void OnTurnStart(TurnOwner turnOwner)
-        // {
-        //     switch (turnOwner)
-        //     {
-        //         case TurnOwner.Player:
-        //         {
-        //             // _currentCost = currentMaxCost;
-        //             playerDeck.DrawOne();
-        //             
-        //         }
-        //             break;
-        //         case TurnOwner.Enemy:
-        //         {
-        //             enemyDeck.DrawOne();
-        //         }
-        //             break;
-        //         default:
-        //             throw new ArgumentOutOfRangeException(nameof(turnOwner), turnOwner, null);
-        //     }
-        //
-        // }
-
-        // private void PlayEnemyTurn()
-        // {
-        //     TurnManager.SetTurnOwner(TurnOwner.Enemy);
-        //     var enemyUsingCardID = enemyDeck.Hand[0];
-        //     
-        //     
-        //     CardUseManager.UseCard(enemyUsingCardID, TurnOwner.Enemy);
-        //     enemyDeck.DiscardOne(enemyUsingCardID);
-        //     
-        //     OnTurnEnd();
-        // }
-        //
-        // // 플레이어의 턴 종료버튼
-        // public void EndTurn()
-        // {
-        //     OnTurnEnd();
-        //     PlayEnemyTurn();
-        // }
-        // private void OnTurnEnd()
-        // {
-        //     switch (TurnManager.currentTurnOwner)
-        //     {
-        //         case TurnOwner.Player:
-        //         {
-        //             // 플레이어 핸드 버릴 카드 선택 => 팝업 UI
-        //             
-        //             // 일단 첫번째 카드 버리도록
-        //             playerDeck.DiscardOne(playerDeck.Hand[0]);
-        //             
-        //             
-        //             TurnManager.SetTurnOwner(TurnOwner.Enemy);
-        //             OnTurnStart(TurnOwner.Enemy);
-        //         } break;
-        //         case TurnOwner.Enemy:
-        //         {
-        //             TurnManager.SetTurnOwner(TurnOwner.Player);
-        //             OnTurnStart(TurnOwner.Player);
-        //         }
-        //             break;
-        //         default:
-        //             throw new ArgumentOutOfRangeException();
-        //     }
-        // }
     }
 }

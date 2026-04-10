@@ -9,18 +9,18 @@ namespace GamePlay.Party
     {
         public PartyPrincess(CardBase data) : base(data)
         {
-            Data = data;
-            AccList = new List<string>();
+            base.data = data;
+            accList = new List<string>();
         }
 
         public override void AddAcc(string acc)
         {
-            AccList.Add(acc);
+            accList.Add(acc);
         }
 
         public override void RemoveAcc(string acc)
         {
-            if (AccList.Contains(acc)) AccList.Remove(acc);
+            if (accList.Contains(acc)) accList.Remove(acc);
         }
     }
 }

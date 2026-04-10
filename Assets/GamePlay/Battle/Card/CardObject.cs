@@ -19,7 +19,14 @@ namespace GamePlay.Battle.Card
         
         // UI적으로 보이는 카드 정보
         [SerializeField] private Image cardImage;
+        
         [SerializeField] private TMP_Text cardName;
+        [SerializeField] private TMP_Text currentHp;
+        [SerializeField] private TMP_Text currentATK;
+        [SerializeField] private TMP_Text currentShield;
+        [SerializeField] private TMP_Text currentActionCount;
+        
+        
         [SerializeField] private CardInstance cardInstance;
 
 
@@ -52,11 +59,19 @@ namespace GamePlay.Battle.Card
             _isReturning = false;
         }
 
-        public void Init(CardInstance data)
+        public void Init(CardInstance instance)
         {
-            // 카드 오브젝트 세팅
+            //cardImage.sprite = instance.cardImage;
+            cardName.text = instance.data.nameString;
+            currentHp.text = instance.currentHp.ToString();
+            currentATK.text = instance.currentAttackPower.ToString();
+            currentActionCount.text = instance.currentActionCount.ToString();
+            
+            
+            cardInstance = instance;
         }
-        
+
+
         
         // 마우스 올렸을때 확대
         public void OnPointerEnter(PointerEventData eventData)

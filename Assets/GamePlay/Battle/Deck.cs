@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using GamePlay.Battle.Card;
+using GameSystem.Managers;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -17,6 +19,7 @@ namespace GamePlay.Battle
     [Serializable]
     public class Deck
     {
+        private const string CardPrefabAddress = "CardObject";
         // 셔플될때 들어가는 전체 카드
         [SerializeField] private List<CardInstance> allCards = new List<CardInstance>();
         public List<CardInstance> AllCards => allCards;
@@ -30,17 +33,24 @@ namespace GamePlay.Battle
         [SerializeField] private List<CardInstance> used = new List<CardInstance>();
         public List<CardInstance> Used => used;
 
-        public void InitDeck()
+        public void InitDeck(List<CardInstance> cards)
         {
-            // 파티에서 덱 복사해서 allCards에 넣어주기
+            allCards = cards;
+            draw = allCards;
+            ShuffleDeck();
         }
         public void ShuffleDeck()
         {
+            var shufflePool = new List<CardInstance>();
+            
+            shufflePool.AddRange(draw);
+            shufflePool.AddRange(used);
+            
             draw.Clear();
             used.Clear();
             
             // allCards 복사
-            draw = new List<CardInstance>(allCards);
+            draw = new List<CardInstance>(shufflePool);
 
             // Fisher-Yates Shuffle
             for (var i = draw.Count - 1; i > 0; i--)
@@ -51,14 +61,31 @@ namespace GamePlay.Battle
             }
         }
 
-        public void DrawOne()
+        public void DrawSixCards()
+        {
+            for (var i = 0; i < 6; i++)
+            {
+                _ = DrawOne();
+            }
+        }
+        
+        public async UniTaskVoid DrawOne()
         {
             // 덱이 비어있으면 셔플
             if (draw.Count == 0) ShuffleDeck();
+
+            if (draw.Count == 0)
+            {
+                Debug.Log("뽑을 카드가 없다");
+                return;
+            }
             
             var card = draw[0];
             draw.RemoveAt(0);
             hand.Add(card);
+
+            var cardObject = await GameManager.Inst.Resource.InstantiateAsync(CardPrefabAddress, CardUseManager.Instance.HandLayer);
+            cardObject.GetComponent<CardObject>().Init(card);
         }
         
         public bool DiscardOne(CardInstance card)
@@ -77,6 +104,30 @@ namespace GamePlay.Battle
             foreach (var card in cards.Where(card => hand.Remove(card)))
             {
                 used.Add(card);
+            }
+        }
+
+
+        public void DisCardHand()
+        {
+            foreach (var card in hand.Where(card => hand.Remove(card)))
+            {
+                used.Add(card);
+            }
+            ReleaseHandObjects();
+        }
+
+        private void ReleaseHandObjects()
+        {
+            // 핸드 Transform 캐싱
+            var handLayer = CardUseManager.Instance.HandLayer;
+            // 자식 오브젝트 리스트 생성
+            var targets = new List<GameObject>(handLayer.childCount);
+            targets.AddRange(from Transform child in handLayer select child.gameObject);
+            // 리스트에 있는 자식 오브젝트들 Release
+            foreach (var target in targets)
+            {
+                GameManager.Inst.Resource.ReleaseInstance(target);
             }
         }
         
@@ -104,5 +155,7 @@ namespace GamePlay.Battle
             }
             allCards.Add(card);
         }
+
+
     }
 }

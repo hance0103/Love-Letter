@@ -1,5 +1,6 @@
 using System;
 using GamePlay.Card;
+using UnityEngine;
 
 namespace GamePlay.Battle.Card
 {
@@ -8,7 +9,8 @@ namespace GamePlay.Battle.Card
     public class CardInstance
     {
         public CardBase data;
-        
+
+        public Sprite cardImage;
         public int currentCardNum;
         public int currentHp;
         public int currentAttackPower;
@@ -24,6 +26,10 @@ namespace GamePlay.Battle.Card
         public void ChangeCardInstance(CardInstanceValueType valueType)
         {
         
+        }
+        private void GetCardSprite()
+        {
+            // 데이터 이미지 경로에서 cardImage에 넣어주기
         }
     }
 
