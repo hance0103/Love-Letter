@@ -21,10 +21,13 @@ namespace GamePlay.Battle.Card
         [SerializeField] private Image cardImage;
         
         [SerializeField] private TMP_Text cardName;
+        [SerializeField] private TMP_Text cardNum;
         [SerializeField] private TMP_Text currentHp;
         [SerializeField] private TMP_Text currentATK;
         [SerializeField] private TMP_Text currentShield;
         [SerializeField] private TMP_Text currentActionCount;
+        
+        [SerializeField] private TMP_Text cardDesc;
         
         
         [SerializeField] private CardInstance cardInstance;
@@ -62,11 +65,39 @@ namespace GamePlay.Battle.Card
         public void Init(CardInstance instance)
         {
             //cardImage.sprite = instance.cardImage;
+            cardNum.text = instance.data.cardNum.ToString();
             cardName.text = instance.data.nameString;
-            currentHp.text = instance.currentHp.ToString();
-            currentATK.text = instance.currentAttackPower.ToString();
-            currentActionCount.text = instance.currentActionCount.ToString();
             
+            // 체력 설정
+            if (instance.currentHp < 0)
+            {
+                currentHp.transform.parent.gameObject.SetActive(false);
+            }
+            else
+            {
+                currentHp.text = instance.currentHp.ToString();
+            }
+            
+            // 공격력 설정
+            if (instance.currentATK < 0)
+            {
+                currentATK.transform.parent.gameObject.SetActive(false);
+            }
+            else
+            {
+                currentATK.text = instance.currentATK.ToString();
+            }
+            
+            // 행동 카운트 설정
+            if (instance.currentActionCount < 0)
+            {
+                currentActionCount.transform.parent.gameObject.SetActive(false);
+            }
+            else
+            {
+                currentActionCount.text = instance.currentActionCount.ToString();
+            }
+            cardDesc.text = instance.cardDesc;
             
             cardInstance = instance;
         }

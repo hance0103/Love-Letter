@@ -10,20 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d95c0f0ca22fb641a9fe1714d03a1c0, type: 3}
-  m_Name: 1_DragonKnight
+  m_Name: 7_Rogue
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Card.CardBase
-  cardID: 1_DragonKnight
-  cardTier: 1
+  cardID: 7_Rogue
+  cardTier: 0
   cardType: 0
   keywords: 
-  cardNum: 1
-  HP: 1
-  ATK: 1
+  cardNum: 7
+  HP: 3
+  ATK: 3
   actionCount: 3
   cardAbilityIDs:
   - backEnemyAttackATK
+  - backEnemyIncreaseActionCount1
+  - selfDecreaseActionCount1
   nextPromotionIDs:
-  - promoted
-  nameString: DRAGON_KNIGHT
-  descString: DESC_DRAGON_KNIGHT
-  imgPath: "\uC774\uBBF8\uC9C0.\uD328\uC2A4"
+  - None
+  nameString: ROGUE
+  descString: DESC_ROGUE
+  imgPath: 2_merchant.png

@@ -195,7 +195,7 @@ namespace GameData
                     }
                     else
                     {
-                        Debug.Log("Data Generator : 카드 등급 설정 오류");
+                        Debug.Log($"Data Generator : 카드 {dataRow[0]} 타겟 설정 오류 : {dataRow[1]} 존재하지 않음");
                         data.actionTarget = 0;
                     }
                     // 3. ActionList_A
@@ -211,7 +211,6 @@ namespace GameData
                         }
                         else
                         {
-                            Debug.Log(actionArrayA[j]);
                             var actionSet = new AbilityActionSet();
                             data.actionListA.Add(actionSet);
                         }

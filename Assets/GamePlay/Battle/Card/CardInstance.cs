@@ -13,14 +13,21 @@ namespace GamePlay.Battle.Card
         public Sprite cardImage;
         public int currentCardNum;
         public int currentHp;
-        public int currentAttackPower;
+        public int currentATK;
         public int currentShield;
         public int currentActionCount;
+        public string cardDesc;
         
         public CardInstance(CardBase data)
         {
             this.data = data;
-            // 다른 변수들 설정
+            
+            // 이미지 설정
+            currentCardNum = data.cardNum;
+            currentHp = data.HP;
+            currentATK = data.ATK;
+            currentActionCount = data.actionCount;
+            cardDesc = data.descString;
         }
             
         public void ChangeCardInstance(CardInstanceValueType valueType)

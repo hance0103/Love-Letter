@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa6874d49d40f6849826b85fde9e4c8d, type: 3}
-  m_Name: "\uACF5\uACA9\uB825 \uAC15\uD6541"
+  m_Name: frontSingleAllyHealATK
   m_EditorClassIdentifier: Assembly-CSharp::GameData.SO.Scripts.CardAbilityBase
-  abilityID: "\uACF5\uACA9\uB825 \uAC15\uD6541"
-  actionTarget: 1
+  abilityID: frontSingleAllyHealATK
+  actionTarget: 8
   actionListA:
   - actionType: 4
     actionValue: 0
   condition:
     conditionType: 0
-    conditionValue: 0
+    conditionValue: -1
   actionListB:
   - actionType: 4
     actionValue: 0
