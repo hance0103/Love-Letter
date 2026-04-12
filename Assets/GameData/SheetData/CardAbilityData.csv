@@ -18,3 +18,5 @@ targetDecreaseATK2,Target,DecreaseATK,2,None,-1,None,-1
 targetIncreaseShield2,Target,IncreaseShield,2,None,-1,None,-1
 targetIncreaseATK2,Target,IncreaseATK,2,None,-1,None,-1
 backEnemyAttackATK,BackEnemy,Damage,-1,None,-1,None,-1
+frontEnemyBurnATK,FrontEnemy,Burn,-1,None,-1,None,-1
+selfIncreaseATK2,Self,IncreaseATK,2,None,-1,None,-1
