@@ -664,8 +664,13 @@ MonoBehaviour:
     currentActionCount: 0
     cardDesc: 
   currentSlot: {fileID: 0}
-  hoverScale: 1.5
+  hoverScale: 1.15
   hoverDuration: 0.2
+  selectedScale: 1.15
+  selectedScaleDuration: 0.08
+  moveDuration: 0.2
+  snapToSlotDuration: 0.22
+  snapToSlotEase: 9
 --- !u!225 &1125336581156922163
 CanvasGroup:
   m_ObjectHideFlags: 0

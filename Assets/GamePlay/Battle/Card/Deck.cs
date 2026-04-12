@@ -12,159 +12,169 @@ namespace GamePlay.Battle.Card
         Hand,
         Used
     }
-    
+
     [Serializable]
     public class Deck
     {
-        // 이번 전투에서 사용될 전체 카드 리스트
-        [SerializeField] private List<CardInstance> allCards = new List<CardInstance>();
-        public List<CardInstance> AllCards => allCards;
-        // 뽑을 카드 더미
-        [SerializeField] private List<CardInstance> draw = new List<CardInstance>();
-        public List<CardInstance> Draw => draw;
-        // 사용된 카드 더미
-        [SerializeField] private List<CardInstance> used = new List<CardInstance>();
-        public List<CardInstance> Used => used;
-        
+        [SerializeField] private List<CardInstance> allCards = new();
+        public IReadOnlyList<CardInstance> AllCards => allCards;
 
-        
-        /// <summary>
-        /// 덱 초기화
-        /// </summary>
-        /// <param name="cards"></param>
+        [SerializeField] private List<CardInstance> draw = new();
+        public IReadOnlyList<CardInstance> Draw => draw;
+
+        [SerializeField] private List<CardInstance> used = new();
+        public IReadOnlyList<CardInstance> Used => used;
+
         public void InitDeck(List<CardInstance> cards)
         {
-            allCards = cards;
-            draw = allCards;
-            ShuffleDeck();
+            if (cards == null)
+            {
+                allCards = new List<CardInstance>();
+                draw = new List<CardInstance>();
+                used = new List<CardInstance>();
+                return;
+            }
+
+            allCards = new List<CardInstance>(cards);
+            draw = new List<CardInstance>(cards);
+            used = new List<CardInstance>();
+
+            ShuffleDrawOnly();
         }
-        
-        /// <summary>
-        /// 덱 셔플
-        /// </summary>
+
         public void ShuffleDeck()
         {
-            var shufflePool = new List<CardInstance>();
-            
+            var shufflePool = new List<CardInstance>(draw.Count + used.Count);
             shufflePool.AddRange(draw);
             shufflePool.AddRange(used);
-            
+
             draw.Clear();
             used.Clear();
-            
-            // allCards 복사
-            draw = new List<CardInstance>(shufflePool);
 
-            // Fisher-Yates Shuffle
-            for (var i = draw.Count - 1; i > 0; i--)
+            draw = shufflePool;
+            ShuffleList(draw);
+        }
+
+        public void ShuffleDrawOnly()
+        {
+            ShuffleList(draw);
+        }
+
+        private void ShuffleList(List<CardInstance> list)
+        {
+            if (list == null || list.Count <= 1) return;
+
+            for (var i = list.Count - 1; i > 0; i--)
             {
                 var randomIndex = Random.Range(0, i + 1);
-
-                (draw[i], draw[randomIndex]) = (draw[randomIndex], draw[i]);
+                (list[i], list[randomIndex]) = (list[randomIndex], list[i]);
             }
         }
-        
-        
-        /// <summary>
-        /// index 만큼 카드 드로우
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public List<CardInstance> DrawCards(int index)
+
+        public List<CardInstance> DrawCards(int count)
         {
             var drawnCards = new List<CardInstance>();
-            for (var i = 0; i < index; i++)
+
+            if (count <= 0) return drawnCards;
+
+            for (var i = 0; i < count; i++)
             {
-                drawnCards.Add(DrawOne());
+                var card = DrawOne();
+                if (card == null) break;
+                drawnCards.Add(card);
             }
+
             return drawnCards;
         }
-        
-        /// <summary>
-        /// 카드 한장 드로우
-        /// </summary>
+
         public CardInstance DrawOne()
         {
-            // 덱이 비어있으면 셔플
-            if (draw.Count == 0) ShuffleDeck();
+            if (draw.Count == 0)
+            {
+                ShuffleDeck();
+            }
 
             if (draw.Count == 0)
             {
                 Debug.Log("뽑을 카드가 없다");
                 return null;
             }
-            
+
             var card = draw[0];
             draw.RemoveAt(0);
             return card;
         }
-        
-        /// <summary>
-        /// 카드 버리기
-        /// </summary>
-        /// <param name="card"></param>
-        /// <returns></returns>
+
         public void DiscardOne(CardInstance card)
         {
+            if (card == null) return;
             used.Add(card);
         }
-        
-        
-        /// <summary>
-        /// 카드 여러장 버리기
-        /// </summary>
-        /// <param name="cards"></param>
+
         public void DiscardCards(List<CardInstance> cards)
         {
+            if (cards == null) return;
+
             foreach (var card in cards)
             {
+                if (card == null) continue;
                 used.Add(card);
             }
         }
-        
-        /// <summary>
-        /// 특정 위치에 카드 추가
-        /// </summary>
-        /// <param name="card"></param>
-        /// <param name="position"></param>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
+
         public void AddCard(CardInstance card, AddCardPosition position)
         {
+            if (card == null) return;
+
+            allCards.Add(card);
+
             switch (position)
             {
                 case AddCardPosition.Draw:
-                {
                     draw.Add(card);
-                }
+                    break;
+                case AddCardPosition.Hand:
                     break;
                 case AddCardPosition.Used:
-                {
                     used.Add(card);
-                }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(position), position, null);
             }
-            allCards.Add(card);
         }
 
-
+        public bool Contains(CardInstance card)
+        {
+            return allCards.Contains(card);
+        }
     }
+
     [Serializable]
     public class Hand
     {
-        // 핸드
-        [SerializeField]
-        private ObservableList<CardInstance> cards = new ObservableList<CardInstance>();
+        [SerializeField] private ObservableList<CardInstance> cards = new();
+        public ObservableList<CardInstance> Cards => cards;
+
         public void Add(CardInstance cardInstance)
         {
+            if (cardInstance == null) return;
             cards.Add(cardInstance);
         }
 
         public void Remove(CardInstance cardInstance)
         {
+            if (cardInstance == null) return;
             cards.Remove(cardInstance);
         }
-        
+
+        public bool Contains(CardInstance cardInstance)
+        {
+            return cards.Contains(cardInstance);
+        }
+
+        public void Clear()
+        {
+            cards.Clear();
+        }
     }
 }

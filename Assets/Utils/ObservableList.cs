@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 
 namespace Utils
@@ -26,6 +27,16 @@ namespace Utils
         {
             if (list.Remove(item))
                 OnChanged?.Invoke();
+        }
+
+        public void Clear()
+        {
+            list.Clear();
+            OnChanged?.Invoke();
+        }
+        public bool Contains(T item)
+        {
+            return list.Contains(item);
         }
         public IReadOnlyList<T> Items => list;
     }

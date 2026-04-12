@@ -1,4 +1,3 @@
-using System;
 using GamePlay.Battle.Card;
 using GameSystem.Enums;
 using UnityEngine;
@@ -7,56 +6,51 @@ namespace GamePlay.Battle.Field
 {
     public class FieldSlot : MonoBehaviour, IFieldSlot
     {
-        [SerializeField]
-        private CardInstance cardInstance;
+        [SerializeField] private int slotIndex;
+        [SerializeField] private CardInstance cardInstance;
+        [SerializeField] private CardOwner slotOwner;
+        [SerializeField] private bool isCardIn;
 
-        private bool _isCardIn;
-        public CardOwner slotOwner;
-        
+        public int SlotIndex => slotIndex;
+        public CardOwner SlotOwner => slotOwner;
+        public CardInstance CardInstance => cardInstance;
+        public bool IsOccupied => isCardIn;
+
         private void Awake()
         {
-            _isCardIn = false;
+            isCardIn = false;
         }
 
         public bool IsEmptySlot()
         {
-            return !_isCardIn;
+            return !isCardIn;
         }
-        
-        // 이 일반카드가 사용 가능한 카드인지
-        public bool CanUseThisNormalCard(CardInstance cardInstance)
+
+        public bool CanUseThisNormalCard(CardInstance card)
         {
-            return _isCardIn;
+            if (card == null) return false;
+            return isCardIn;
         }
-        
-        // 사용 여부와 관계 없이 해당 슬롯에 캐릭터 카드를 올릴수 있는지만 판단
+
         public bool CanDrop(CardInstance card)
         {
+            if (card == null) return false;
             if (slotOwner != CardOwner.Player) return false;
-            
-            if (_isCardIn)
-            {
-                // 이미 카드가 올려진 슬롯에 올리는 경우
-                // 일단은 false 리턴
-            }
-            else
-            {
-                // 비어있는 슬롯
-                return true;
-            }
-            return false;
+            if (isCardIn) return false;
+
+            return true;
         }
 
         public void OnDrop(CardInstance card)
         {
             cardInstance = card;
-            _isCardIn = true;
+            isCardIn = card != null;
         }
 
         public void ClearSlot()
         {
             cardInstance = null;
-            _isCardIn = false;
+            isCardIn = false;
         }
 
         public Transform GetTransform()
