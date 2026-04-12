@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using GamePlay.Battle.Field;
-using GamePlay.Card;
+using GameSystem.Enums;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,10 +11,8 @@ using UnityEngine.UI;
 namespace GamePlay.Battle.Card
 {
     public class CardObject : MonoBehaviour,
-        IPointerEnterHandler, IPointerExitHandler,
         IPointerDownHandler, IDragHandler, IPointerUpHandler
     {
-        
         // UI적으로 보이는 카드 정보
         [SerializeField] private Image cardImage;
         
@@ -28,12 +24,7 @@ namespace GamePlay.Battle.Card
         [SerializeField] private TMP_Text currentActionCount;
         
         [SerializeField] private TMP_Text cardDesc;
-        
-        
         [SerializeField] private CardInstance cardInstance;
-
-
-        
         [SerializeField] private FieldSlot currentSlot;
         
         [Header("카드 오브젝트 설정값")]
@@ -45,8 +36,7 @@ namespace GamePlay.Battle.Card
         private Vector3 _originalWorldPos;
         private Canvas _canvas;
         private CanvasGroup _canvasGroup;
-
-        private bool _isDragging;
+        
         private bool _isReturning;
         private Tween _scaleTween;
         private Tween _moveTween;
@@ -58,15 +48,23 @@ namespace GamePlay.Battle.Card
             _canvasGroup = GetComponent<CanvasGroup>();
             
             _originalScale = transform.localScale;
-            _isDragging = false;
             _isReturning = false;
         }
 
         public void Init(CardInstance instance)
         {
-            //cardImage.sprite = instance.cardImage;
-            cardNum.text = instance.data.cardNum.ToString();
             cardName.text = instance.data.nameString;
+            //cardImage.sprite = instance.cardImage;
+            
+            if (instance.data.cardNum < 0)
+            {
+                cardNum.transform.parent.gameObject.SetActive(false);
+            }
+            else
+            {
+                cardNum.text = instance.data.cardNum.ToString();
+            }
+            
             
             // 체력 설정
             if (instance.currentHp < 0)
@@ -101,18 +99,18 @@ namespace GamePlay.Battle.Card
             
             cardInstance = instance;
         }
-
-
-        
-        // 마우스 올렸을때 확대
-        public void OnPointerEnter(PointerEventData eventData)
+    
+        // 카드 확대
+        public void ForceEnter()
         {
             _scaleTween?.Kill();
+            transform.SetAsLastSibling();
             _scaleTween = transform.DOScale(_originalScale * hoverScale, hoverDuration)
                 .SetEase(Ease.OutBack);
         }
-
-        public void OnPointerExit(PointerEventData eventData)
+        
+        //카드 축소
+        public void ForceExit()
         {
             _scaleTween?.Kill();
             _scaleTween = transform.DOScale(_originalScale, hoverDuration)
@@ -122,61 +120,149 @@ namespace GamePlay.Battle.Card
         // 카드 드래그
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (_isDragging || _isReturning) return;
+            if (CardUseManager.Instance.isDragging || _isReturning) return;
             
-            _isDragging = true;
-            _moveTween?.Kill();
+            switch (cardInstance.data.cardType)
+            {
+                case CardType.Character:
+                {
+                    CardUseManager.Instance.isDragging = true;
+                    _moveTween?.Kill();
             
-            _canvasGroup.blocksRaycasts = false;
-            _originalWorldPos = _rectTransform.position;
-            transform.SetParent(CardUseManager.Instance.DragLayer, true);
+                    _canvasGroup.blocksRaycasts = false;
+                    _originalWorldPos = _rectTransform.position;
+                    CardUseManager.Instance.SelectCard(cardInstance);
+                    transform.SetParent(CardUseManager.Instance.DragLayer, true);
+                    break;
+                }
+                case CardType.Normal:
+                {
+                    // 타겟 지정 화살표 생성
+                    break;
+                }
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            
+
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            _rectTransform.anchoredPosition += eventData.delta / _canvas.scaleFactor;
+            switch (cardInstance.data.cardType)
+            {
+                case CardType.Character:
+                    _rectTransform.anchoredPosition += eventData.delta / _canvas.scaleFactor;
+                    break;
+                case CardType.Normal:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
         }
 
         public async void OnPointerUp(PointerEventData eventData)
         {
-            try
+            switch (cardInstance.data.cardType)
             {
-                
-                _canvasGroup.blocksRaycasts = true;
-                _isReturning = true;
-                _isDragging = false;
+                case CardType.Character:
+                {
+                    try
+                    {
+                        _canvasGroup.blocksRaycasts = true;
+                        CardUseManager.Instance.isDragging = false;
 
-                var target = GetDropTarget(eventData);
+                        var target = CardUseManager.Instance.CurrentSelectedSlot;
+                        // 슬롯에 올리지 않았을 경우 바로 손으로 리턴시킨다.
+                        if (target == null)
+                        {
+                            await CardReturn();
+                            return;
+                        }
 
-                if (target == null || !target.CanDrop(cardInstance)) return;
-                
-                target.OnDrop(cardInstance);
+                        switch (cardInstance.data.cardType)
+                        {
+                            case CardType.Character:
+                            {
+                                // 놓을수 없는 슬롯일 경우 되돌아옴
+                                if (!target.CanDrop(cardInstance))
+                                {
+                                    await CardReturn();
+                                    return;
+                                }
+                                    
 
-                if (target.GetTransform() is not { } t) return;
-                
-                if (currentSlot != null)
-                    currentSlot.ClearSlot();
-                
-                transform.SetParent(t, true);
-                currentSlot = t.GetComponent<FieldSlot>();
+                                // 일단 카드를 놓았어
+                                target.OnDrop(cardInstance);
+                                // 예외처리
+                                if (target.GetTransform() is not { } t) return;
+
+                                // 슬롯 초기화 한번 해주고
+                                if (currentSlot != null)
+                                    currentSlot.ClearSlot();
+
+                                // 부모 오브젝트 바꿔주기
+                                transform.SetParent(t, true);
+                                // 현재 이 카드가 올라간 슬롯 변경
+                                currentSlot = t.GetComponent<FieldSlot>();
+                                // 슬롯 중앙으로 이동
+                                await CardReturn();
+                                break;
+                            }
+                            case CardType.Normal:
+                            {
+                                // 사용 가능한 슬롯에 올리지 않았으면 리턴
+                                if (!target.CanUseThisNormalCard(cardInstance))
+                                {
+                                    await CardReturn();
+                                    return;
+                                }
+
+                                // 카드 효과 처리
+                                await CardUse(cardInstance);
+                                _moveTween?.Kill();
+                                _scaleTween?.Kill();
+                                BattleManager.Instance.DiscardCard(cardInstance);
+                                break;
+                            }
+
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogException(e);
+                        await CardReturn();
+                    }
+                    finally
+                    {
+                        
+                        CardUseManager.Instance.SelectCard(null);
+                    } 
+                } break;
+                case CardType.Normal:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                await CardReturn();
-            }
-            finally
-            {
-                await CardReturn();
-                _isReturning = false;
-            }
-
+            
         }
 
+        private async UniTask CardUse(CardInstance cardInstance)
+        {
+            // 카드 효과 처리
+            var data = cardInstance.data;
+            Debug.Log($"{data.nameString} 카드 사용");
+        }
         private async UniTask CardReturn()
         {
             try
             {
+                _isReturning = true;
                 _moveTween?.Kill();
                 if (currentSlot == null)
                 {
@@ -197,14 +283,13 @@ namespace GamePlay.Battle.Card
             finally
             {
                 await _moveTween.AsyncWaitForCompletion();
+                _isReturning = false;
             }
         }
-        IFieldSlot GetDropTarget(PointerEventData eventData)
+        
+        private void OnDisable()
         {
-            var results = new List<RaycastResult>();
-            EventSystem.current.RaycastAll(eventData, results);
-
-            return results.Select(result => result.gameObject.GetComponent<IFieldSlot>()).FirstOrDefault(target => target != null);
+            CardUseManager.ClearHover(this);
         }
     }
     

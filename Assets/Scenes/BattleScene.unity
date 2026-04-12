@@ -292,79 +292,84 @@ MonoBehaviour:
   playerDeck:
     allCards: []
     draw: []
-    hand: []
     used: []
-  enemyDeck:
-    allCards: []
-    draw: []
-    hand: []
-    used: []
+  hand:
+    cards:
+      list: []
   playerField:
     card1:
       data: {fileID: 0}
       cardImage: {fileID: 0}
       currentCardNum: 0
       currentHp: 0
-      currentAttackPower: 0
+      currentATK: 0
       currentShield: 0
       currentActionCount: 0
+      cardDesc: 
     card2:
       data: {fileID: 0}
       cardImage: {fileID: 0}
       currentCardNum: 0
       currentHp: 0
-      currentAttackPower: 0
+      currentATK: 0
       currentShield: 0
       currentActionCount: 0
+      cardDesc: 
     card3:
       data: {fileID: 0}
       cardImage: {fileID: 0}
       currentCardNum: 0
       currentHp: 0
-      currentAttackPower: 0
+      currentATK: 0
       currentShield: 0
       currentActionCount: 0
+      cardDesc: 
     card4:
       data: {fileID: 0}
       cardImage: {fileID: 0}
       currentCardNum: 0
       currentHp: 0
-      currentAttackPower: 0
+      currentATK: 0
       currentShield: 0
       currentActionCount: 0
+      cardDesc: 
   enemyField:
     card1:
       data: {fileID: 0}
       cardImage: {fileID: 0}
       currentCardNum: 0
       currentHp: 0
-      currentAttackPower: 0
+      currentATK: 0
       currentShield: 0
       currentActionCount: 0
+      cardDesc: 
     card2:
       data: {fileID: 0}
       cardImage: {fileID: 0}
       currentCardNum: 0
       currentHp: 0
-      currentAttackPower: 0
+      currentATK: 0
       currentShield: 0
       currentActionCount: 0
+      cardDesc: 
     card3:
       data: {fileID: 0}
       cardImage: {fileID: 0}
       currentCardNum: 0
       currentHp: 0
-      currentAttackPower: 0
+      currentATK: 0
       currentShield: 0
       currentActionCount: 0
+      cardDesc: 
     card4:
       data: {fileID: 0}
       cardImage: {fileID: 0}
       currentCardNum: 0
       currentHp: 0
-      currentAttackPower: 0
+      currentATK: 0
       currentShield: 0
       currentActionCount: 0
+      cardDesc: 
   enemyWaitList: []
 --- !u!4 &410426186
 Transform:
@@ -453,7 +458,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -230, y: 119}
+  m_AnchoredPosition: {x: -214, y: 516}
   m_SizeDelta: {x: 373.2766, y: 115.1261}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &687929898
@@ -559,7 +564,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 820432034}
-  - component: {fileID: 820432036}
   m_Layer: 5
   m_Name: HandPanel
   m_TagString: Untagged
@@ -586,32 +590,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &820432036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 820432033}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 4
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
 --- !u!1 &820733218
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,6 +794,7 @@ RectTransform:
   m_Children:
   - {fileID: 820432034}
   - {fileID: 1521444185}
+  - {fileID: 2069859854}
   m_Father: {fileID: 340572273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
@@ -835,8 +814,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6eee2280f5fe3443b9dd3b70009c44e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Battle.Card.CardUseManager
+  state: 0
+  cardAction:
+    m_Name: Card
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: ba5b0eaf-c814-44bc-b49c-811b007b8068
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   dragLayer: {fileID: 1521444185}
   handLayer: {fileID: 820432034}
+  isDragging: 0
 --- !u!225 &1212622506
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -885,7 +875,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 150, y: 150}
+  m_SizeDelta: {x: 200, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1252241947
 MonoBehaviour:
@@ -942,10 +932,11 @@ MonoBehaviour:
     cardImage: {fileID: 0}
     currentCardNum: 0
     currentHp: 0
-    currentAttackPower: 0
+    currentATK: 0
     currentShield: 0
     currentActionCount: 0
-  isCardIn: 0
+    cardDesc: 
+  slotOwner: 0
 --- !u!1 &1521444184
 GameObject:
   m_ObjectHideFlags: 0
@@ -1015,17 +1006,17 @@ MonoBehaviour:
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
   m_XRTrackingOrigin: {fileID: 0}
-  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: 0b2764319c8139a449325e22a83ebbd5, type: 3}
+  m_PointAction: {fileID: 0}
+  m_MoveAction: {fileID: 0}
+  m_SubmitAction: {fileID: 0}
+  m_CancelAction: {fileID: 0}
+  m_LeftClickAction: {fileID: 4024052230368390827, guid: 0b2764319c8139a449325e22a83ebbd5, type: 3}
+  m_MiddleClickAction: {fileID: 0}
+  m_RightClickAction: {fileID: 8186170448565355897, guid: 0b2764319c8139a449325e22a83ebbd5, type: 3}
+  m_ScrollWheelAction: {fileID: 0}
+  m_TrackedDevicePositionAction: {fileID: 0}
+  m_TrackedDeviceOrientationAction: {fileID: 0}
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
@@ -1107,20 +1098,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Party.PartyManager
   partyMembers:
   - data: {fileID: 11400000, guid: c2921a21950c3484b8f02613fdfe473d, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: abfa2f17ba11e6948a0f23600e08f299, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: 14437619e2dc7274aad37e09384b89cd, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: 14437619e2dc7274aad37e09384b89cd, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: 14437619e2dc7274aad37e09384b89cd, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: c728c49fb089ceb4787a6312c178693d, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: c728c49fb089ceb4787a6312c178693d, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: c728c49fb089ceb4787a6312c178693d, type: 2}
     accList: []
 --- !u!114 &1935962552
 MonoBehaviour:
@@ -1271,6 +1248,81 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &2069859853
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2069859854}
+  - component: {fileID: 2069859856}
+  - component: {fileID: 2069859855}
+  m_Layer: 5
+  m_Name: CardUseCancel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2069859854
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069859853}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1212622504}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: -18.441818}
+  m_SizeDelta: {x: 1920, y: 109.6218}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2069859855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069859853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &2069859856
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069859853}
+  m_CullTransparentMesh: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

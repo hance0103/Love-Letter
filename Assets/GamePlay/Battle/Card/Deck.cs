@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Cysharp.Threading.Tasks;
-using GamePlay.Battle.Card;
-using GameSystem.Managers;
 using UnityEngine;
+using Utils;
 using Random = UnityEngine.Random;
 
-namespace GamePlay.Battle
+namespace GamePlay.Battle.Card
 {
     public enum AddCardPosition
     {
@@ -19,26 +16,32 @@ namespace GamePlay.Battle
     [Serializable]
     public class Deck
     {
-        private const string CardPrefabAddress = "CardObject";
-        // 셔플될때 들어가는 전체 카드
+        // 이번 전투에서 사용될 전체 카드 리스트
         [SerializeField] private List<CardInstance> allCards = new List<CardInstance>();
         public List<CardInstance> AllCards => allCards;
         // 뽑을 카드 더미
         [SerializeField] private List<CardInstance> draw = new List<CardInstance>();
         public List<CardInstance> Draw => draw;
-        // 핸드
-        [SerializeField] private List<CardInstance> hand = new List<CardInstance>();
-        public List<CardInstance> Hand => hand;
         // 사용된 카드 더미
         [SerializeField] private List<CardInstance> used = new List<CardInstance>();
         public List<CardInstance> Used => used;
+        
 
+        
+        /// <summary>
+        /// 덱 초기화
+        /// </summary>
+        /// <param name="cards"></param>
         public void InitDeck(List<CardInstance> cards)
         {
             allCards = cards;
             draw = allCards;
             ShuffleDeck();
         }
+        
+        /// <summary>
+        /// 덱 셔플
+        /// </summary>
         public void ShuffleDeck()
         {
             var shufflePool = new List<CardInstance>();
@@ -60,16 +63,27 @@ namespace GamePlay.Battle
                 (draw[i], draw[randomIndex]) = (draw[randomIndex], draw[i]);
             }
         }
-
-        public void DrawSixCards()
+        
+        
+        /// <summary>
+        /// index 만큼 카드 드로우
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public List<CardInstance> DrawCards(int index)
         {
-            for (var i = 0; i < 6; i++)
+            var drawnCards = new List<CardInstance>();
+            for (var i = 0; i < index; i++)
             {
-                _ = DrawOne();
+                drawnCards.Add(DrawOne());
             }
+            return drawnCards;
         }
         
-        public async UniTaskVoid DrawOne()
+        /// <summary>
+        /// 카드 한장 드로우
+        /// </summary>
+        public CardInstance DrawOne()
         {
             // 덱이 비어있으면 셔플
             if (draw.Count == 0) ShuffleDeck();
@@ -77,60 +91,43 @@ namespace GamePlay.Battle
             if (draw.Count == 0)
             {
                 Debug.Log("뽑을 카드가 없다");
-                return;
+                return null;
             }
             
             var card = draw[0];
             draw.RemoveAt(0);
-            hand.Add(card);
-
-            var cardObject = await GameManager.Inst.Resource.InstantiateAsync(CardPrefabAddress, CardUseManager.Instance.HandLayer);
-            cardObject.GetComponent<CardObject>().Init(card);
+            return card;
         }
         
-        public bool DiscardOne(CardInstance card)
+        /// <summary>
+        /// 카드 버리기
+        /// </summary>
+        /// <param name="card"></param>
+        /// <returns></returns>
+        public void DiscardOne(CardInstance card)
         {
-            if (!hand.Remove(card))
-                return false;
-
             used.Add(card);
-            return true;
         }
         
         
-        // 실제 버리는 로직
+        /// <summary>
+        /// 카드 여러장 버리기
+        /// </summary>
+        /// <param name="cards"></param>
         public void DiscardCards(List<CardInstance> cards)
         {
-            foreach (var card in cards.Where(card => hand.Remove(card)))
+            foreach (var card in cards)
             {
                 used.Add(card);
-            }
-        }
-
-
-        public void DisCardHand()
-        {
-            foreach (var card in hand.Where(card => hand.Remove(card)))
-            {
-                used.Add(card);
-            }
-            ReleaseHandObjects();
-        }
-
-        private void ReleaseHandObjects()
-        {
-            // 핸드 Transform 캐싱
-            var handLayer = CardUseManager.Instance.HandLayer;
-            // 자식 오브젝트 리스트 생성
-            var targets = new List<GameObject>(handLayer.childCount);
-            targets.AddRange(from Transform child in handLayer select child.gameObject);
-            // 리스트에 있는 자식 오브젝트들 Release
-            foreach (var target in targets)
-            {
-                GameManager.Inst.Resource.ReleaseInstance(target);
             }
         }
         
+        /// <summary>
+        /// 특정 위치에 카드 추가
+        /// </summary>
+        /// <param name="card"></param>
+        /// <param name="position"></param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public void AddCard(CardInstance card, AddCardPosition position)
         {
             switch (position)
@@ -138,11 +135,6 @@ namespace GamePlay.Battle
                 case AddCardPosition.Draw:
                 {
                     draw.Add(card);
-                }
-                    break;
-                case AddCardPosition.Hand:
-                {
-                    hand.Add(card);
                 }
                     break;
                 case AddCardPosition.Used:
@@ -157,5 +149,22 @@ namespace GamePlay.Battle
         }
 
 
+    }
+    [Serializable]
+    public class Hand
+    {
+        // 핸드
+        [SerializeField]
+        private ObservableList<CardInstance> cards = new ObservableList<CardInstance>();
+        public void Add(CardInstance cardInstance)
+        {
+            cards.Add(cardInstance);
+        }
+
+        public void Remove(CardInstance cardInstance)
+        {
+            cards.Remove(cardInstance);
+        }
+        
     }
 }

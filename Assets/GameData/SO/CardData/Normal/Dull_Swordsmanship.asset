@@ -17,7 +17,7 @@ MonoBehaviour:
   cardType: 1
   keywords: 
   cardNum: -1
-  HP: 0
+  HP: -1
   ATK: 2
   actionCount: -1
   cardAbilityIDs:

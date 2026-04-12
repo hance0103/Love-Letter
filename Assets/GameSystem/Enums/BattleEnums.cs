@@ -1,6 +1,6 @@
 namespace GameSystem.Enums
 {
-    public enum TurnOwner
+    public enum CardOwner
     {
         Player,
         Enemy,

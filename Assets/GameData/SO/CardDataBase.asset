@@ -31,6 +31,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c728c49fb089ceb4787a6312c178693d, type: 2}
   - {fileID: 11400000, guid: 14437619e2dc7274aad37e09384b89cd, type: 2}
   - {fileID: 11400000, guid: 3071e3893fbb40f4bb7a64d077432968, type: 2}
+  - {fileID: 11400000, guid: 5704308a776093648aac4320002878cc, type: 2}
   allAbilities:
   - {fileID: 11400000, guid: a3e0d9856b4a7e046a2a2c076e172270, type: 2}
   - {fileID: 11400000, guid: 02465a4e684b49147a9ab9fe2e58bdad, type: 2}
@@ -51,3 +52,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b9eadca9a0218834ca6582ae31ccc99e, type: 2}
   - {fileID: 11400000, guid: 282e4192ba8500e40a56100d8ba420e0, type: 2}
   - {fileID: 11400000, guid: 191c71f5be07d404990fee846ef36abb, type: 2}
+  - {fileID: 11400000, guid: e07d6388d0dbc3f479a947ee39463914, type: 2}
+  - {fileID: 11400000, guid: 85bb777a966e0584086d8c6c1891f381, type: 2}
