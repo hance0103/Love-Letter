@@ -9,17 +9,12 @@ namespace GamePlay.Battle.Field
         [SerializeField] private int slotIndex;
         [SerializeField] private CardInstance cardInstance;
         [SerializeField] private CardOwner slotOwner;
-        [SerializeField] private bool isCardIn;
+        [SerializeField] private bool isCardIn = false;
 
         public int SlotIndex => slotIndex;
         public CardOwner SlotOwner => slotOwner;
         public CardInstance CardInstance => cardInstance;
         public bool IsOccupied => isCardIn;
-
-        private void Awake()
-        {
-            isCardIn = false;
-        }
 
         public bool IsEmptySlot()
         {

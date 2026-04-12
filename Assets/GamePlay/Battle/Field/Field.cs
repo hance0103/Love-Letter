@@ -45,6 +45,7 @@ namespace GamePlay.Battle.Field
         public CardObject GetCardObject(CardInstance cardInstance)
         {
             if (cardInstance == null) return null;
+
             _cardDict.TryGetValue(cardInstance, out var cardObject);
             return cardObject;
         }

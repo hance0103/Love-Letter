@@ -144,7 +144,11 @@ namespace GamePlay.Battle.Card
 
             _isSelected = true;
             _isReturning = false;
-            _canvasGroup.blocksRaycasts = false;
+
+            if (_canvasGroup != null)
+            {
+                _canvasGroup.blocksRaycasts = false;
+            }
 
             if (_originalSiblingIndex < 0)
             {
@@ -158,9 +162,34 @@ namespace GamePlay.Battle.Card
                 .SetEase(Ease.OutQuad);
         }
 
+        public void BeginSelectionForTargeting()
+        {
+            _moveTween?.Kill();
+            _scaleTween?.Kill();
+
+            _isSelected = true;
+            _isReturning = false;
+
+            if (_canvasGroup != null)
+            {
+                _canvasGroup.blocksRaycasts = false;
+            }
+
+            if (_originalSiblingIndex < 0)
+            {
+                _originalSiblingIndex = transform.GetSiblingIndex();
+            }
+
+            transform.SetAsLastSibling();
+
+            _scaleTween = transform.DOScale(_baseScale * selectedScale, selectedScaleDuration)
+                .SetEase(Ease.OutQuad);
+        }
+
         public void EndSelection()
         {
             _isSelected = false;
+
             if (_canvasGroup != null)
             {
                 _canvasGroup.blocksRaycasts = true;
@@ -181,6 +210,11 @@ namespace GamePlay.Battle.Card
         public void ClearCurrentSlot()
         {
             currentSlot = null;
+        }
+
+        public Vector3 GetArrowStartPosition()
+        {
+            return _rectTransform.position;
         }
 
         public async UniTask MoveToWorldPositionAsync(Vector3 worldPos, float duration = -1f)
@@ -306,7 +340,8 @@ namespace GamePlay.Battle.Card
 
             try
             {
-                Debug.Log($"{cardInstance.data.nameString} 카드 사용");
+                
+                Debug.Log($"{cardInstance.data.nameString} 카드에게 사용");
                 await UniTask.CompletedTask;
             }
             catch (Exception e)
