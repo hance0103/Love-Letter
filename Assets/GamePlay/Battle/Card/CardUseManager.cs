@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using GamePlay.Battle;
+using GamePlay.Battle.Card.CardHandler;
 using GamePlay.Battle.Field;
 using GameSystem.Enums;
 using UnityEngine;
@@ -37,18 +37,11 @@ namespace GamePlay.Battle.Card
         [SerializeField] private CardObject selectedCard;
         [SerializeField] private FieldSlot selectedSlot;
 
-        public Transform DragLayer => dragLayer;
-        public Transform HandLayer => handLayer;
-        public Transform FieldCardLayer => fieldCardLayer;
-        public CardUseState State => state;
-        public CardObject CurrentHover => currentHover;
-        public CardObject SelectedCard => selectedCard;
-        public FieldSlot SelectedSlot => selectedSlot;
+        private readonly List<RaycastResult> _raycastResults = new();
+        private readonly Dictionary<CardType, ICardUseHandler> _handlers = new();
 
         private InputAction _leftClick;
         private InputAction _rightClick;
-
-        private readonly List<RaycastResult> _raycastResults = new();
 
         private RectTransform _selectedRectTransform;
         private CardType _selectedCardType;
@@ -62,6 +55,27 @@ namespace GamePlay.Battle.Card
         private bool _isPointerHeld;
         private bool _hasReleasedSinceSelection;
         private int _selectionVersion;
+
+        public Transform DragLayer => dragLayer;
+        public Transform HandLayer => handLayer;
+        public Transform FieldCardLayer => fieldCardLayer;
+        public CardTargetArrow TargetArrow => targetArrow;
+
+        public CardUseState State => state;
+        public CardObject CurrentHover => currentHover;
+        public CardObject SelectedCard => selectedCard;
+        public FieldSlot SelectedSlot => selectedSlot;
+
+        public Vector3 MouseScreenPos => _mouseScreenPos;
+        public Vector3 SelectionStartWorldPos => _selectionStartWorldPos;
+        public Vector3 DragVelocity { get => _dragVelocity; set => _dragVelocity = value; }
+        public Vector3 DragOffset { get => _dragOffset; set => _dragOffset = value; }
+        public float DragFollowSmoothTime => dragFollowSmoothTime;
+
+        public bool IsBusy { get => _isBusy; set => _isBusy = value; }
+        public bool IsPointerHeld { get => _isPointerHeld; set => _isPointerHeld = value; }
+        public bool HasReleasedSinceSelection { get => _hasReleasedSinceSelection; set => _hasReleasedSinceSelection = value; }
+        public int SelectionVersion => _selectionVersion;
 
         private void Awake()
         {
@@ -93,6 +107,9 @@ namespace GamePlay.Battle.Card
             {
                 Debug.LogException(e);
             }
+
+            _handlers[CardType.Character] = new CharacterCardUseHandler();
+            _handlers[CardType.Normal] = new NormalCardUseHandler();
         }
 
         private void OnEnable()
@@ -138,15 +155,9 @@ namespace GamePlay.Battle.Card
                 case CardUseState.Selected:
                     UpdateSelectedSlot();
 
-                    switch (_selectedCardType)
+                    if (selectedCard != null && _handlers.TryGetValue(_selectedCardType, out var handler))
                     {
-                        case CardType.Character:
-                            UpdateSelectedCharacterCardFollow();
-                            break;
-
-                        case CardType.Normal:
-                            UpdateNormalCardTargetArrow();
-                            break;
+                        handler.UpdateSelection(this, selectedCard);
                     }
                     break;
 
@@ -155,7 +166,7 @@ namespace GamePlay.Battle.Card
             }
         }
 
-        private void RefreshPointerSnapshot()
+        public void RefreshPointerSnapshot()
         {
             if (Mouse.current == null) return;
             if (EventSystem.current == null) return;
@@ -201,49 +212,7 @@ namespace GamePlay.Battle.Card
             }
         }
 
-        private void UpdateSelectedCharacterCardFollow()
-        {
-            if (state != CardUseState.Selected) return;
-            if (selectedCard == null) return;
-            if (_selectedRectTransform == null) return;
-
-            try
-            {
-                var targetPos = _mouseScreenPos + _dragOffset;
-
-                _selectedRectTransform.position = Vector3.SmoothDamp(
-                    _selectedRectTransform.position,
-                    targetPos,
-                    ref _dragVelocity,
-                    dragFollowSmoothTime
-                );
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-        }
-
-        private void UpdateNormalCardTargetArrow()
-        {
-            if (state != CardUseState.Selected) return;
-            if (selectedCard == null) return;
-            if (targetArrow == null) return;
-
-            try
-            {
-                targetArrow.UpdateArrow(
-                    selectedCard.GetArrowStartPosition(),
-                    _mouseScreenPos
-                );
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-        }
-
-        private CardObject FindTopCard()
+        public CardObject FindTopCard()
         {
             foreach (var hit in _raycastResults)
             {
@@ -259,7 +228,7 @@ namespace GamePlay.Battle.Card
             return null;
         }
 
-        private FieldSlot FindTopSlot()
+        public FieldSlot FindTopSlot()
         {
             foreach (var hit in _raycastResults)
             {
@@ -273,19 +242,6 @@ namespace GamePlay.Battle.Card
             }
 
             return null;
-        }
-
-        private bool CanResolveCurrentSelection()
-        {
-            if (selectedCard == null) return false;
-            if (selectedSlot == null) return false;
-
-            return _selectedCardType switch
-            {
-                CardType.Character => selectedSlot.CanDrop(selectedCard.CardInstance),
-                CardType.Normal => selectedSlot.CanUseThisNormalCard(selectedCard.CardInstance),
-                _ => false
-            };
         }
 
         private async void OnLeftClickDown(InputAction.CallbackContext context)
@@ -317,8 +273,11 @@ namespace GamePlay.Battle.Card
                         _isBusy = true;
                         await BeginSelectionAsync(currentHover);
 
+                        // 일반카드는 첫 클릭 직후 화살표를 한 번 더 강제로 갱신
                         if (selectedCard != null && _selectedCardType == CardType.Normal && targetArrow != null)
                         {
+                            Canvas.ForceUpdateCanvases();
+
                             var startPos = selectedCard.GetArrowStartPosition();
                             targetArrow.Show(startPos, _mouseScreenPos);
                             targetArrow.UpdateArrow(startPos, _mouseScreenPos);
@@ -413,6 +372,14 @@ namespace GamePlay.Battle.Card
             }
         }
 
+        private bool CanResolveCurrentSelection()
+        {
+            if (selectedCard == null) return false;
+            if (!_handlers.TryGetValue(_selectedCardType, out var handler)) return false;
+
+            return handler.CanResolve(this, selectedCard, selectedSlot);
+        }
+
         private async UniTask BeginSelectionAsync(CardObject card)
         {
             if (card == null)
@@ -437,46 +404,13 @@ namespace GamePlay.Battle.Card
 
                 state = CardUseState.Selected;
 
-                switch (_selectedCardType)
+                if (_handlers.TryGetValue(_selectedCardType, out var handler))
                 {
-                    case CardType.Character:
-                    {
-                        _dragVelocity = Vector3.zero;
-                        _dragOffset = Vector3.zero;
-                        _hasReleasedSinceSelection = false;
-
-                        selectedCard.BeginSelection(dragLayer);
-                        selectedCard.RectTransform.position = _mouseScreenPos;
-
-                        if (targetArrow != null)
-                        {
-                            targetArrow.Hide();
-                        }
-
-                        break;
-                    }
-
-                    case CardType.Normal:
-                    {
-                        _dragVelocity = Vector3.zero;
-                        _dragOffset = Vector3.zero;
-                        _hasReleasedSinceSelection = true;
-
-                        selectedCard.BeginSelectionForTargeting();
-                        selectedSlot = FindTopSlot();
-
-                        if (targetArrow != null)
-                        {
-                            var startPos = selectedCard.GetArrowStartPosition();
-                            targetArrow.Show(startPos, _mouseScreenPos);
-                            targetArrow.UpdateArrow(startPos, _mouseScreenPos);
-                        }
-
-                        break;
-                    }
-
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    handler.BeginSelection(this, selectedCard);
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException();
                 }
             }
             catch (Exception e)
@@ -503,18 +437,13 @@ namespace GamePlay.Battle.Card
             {
                 state = CardUseState.Resolving;
 
-                switch (_selectedCardType)
+                if (_handlers.TryGetValue(_selectedCardType, out var handler))
                 {
-                    case CardType.Character:
-                        await ResolveCharacterCardAsync(myVersion);
-                        break;
-
-                    case CardType.Normal:
-                        await ResolveNormalCardAsync(myVersion);
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    await handler.Resolve(this, selectedCard, selectedSlot, myVersion);
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException();
                 }
             }
             catch (Exception e)
@@ -531,129 +460,9 @@ namespace GamePlay.Battle.Card
             }
         }
 
-        private async UniTask ResolveCharacterCardAsync(int version)
-        {
-            var card = selectedCard;
-            var slot = selectedSlot;
-
-            if (card == null)
-            {
-                ForceReset();
-                return;
-            }
-
-            if (slot == null)
-            {
-                state = CardUseState.Selected;
-                _isBusy = false;
-                return;
-            }
-
-            if (!slot.CanDrop(card.CardInstance))
-            {
-                state = CardUseState.Selected;
-                _isBusy = false;
-                return;
-            }
-
-            try
-            {
-                var previousSlot = card.CurrentSlot;
-                if (previousSlot != null && previousSlot != slot)
-                {
-                    previousSlot.ClearSlot();
-
-                    if (BattleManager.Instance != null)
-                    {
-                        BattleManager.Instance.RemoveCharacterCardFromField(card, previousSlot.SlotOwner);
-                    }
-                }
-
-                if (BattleManager.Instance == null)
-                {
-                    await CancelSelectionAsync();
-                    return;
-                }
-
-                var success = BattleManager.Instance.PlaceCharacterCardToField(card, slot);
-                if (!success)
-                {
-                    await CancelSelectionAsync();
-                    return;
-                }
-
-                slot.OnDrop(card.CardInstance);
-                card.SetCurrentSlot(slot);
-
-                await card.ReturnToSlotAsync(slot, fieldCardLayer);
-
-                if (version != _selectionVersion) return;
-
-                if (card != null)
-                {
-                    card.EndSelection();
-                }
-
-                ResetSelectionState();
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                await CancelSelectionAsync();
-            }
-        }
-
-        private async UniTask ResolveNormalCardAsync(int version)
-        {
-            var card = selectedCard;
-            var slot = selectedSlot;
-
-            if (card == null)
-            {
-                ForceReset();
-                return;
-            }
-
-            if (slot == null)
-            {
-                state = CardUseState.Selected;
-                _isBusy = false;
-                return;
-            }
-
-            if (!slot.CanUseThisNormalCard(card.CardInstance))
-            {
-                state = CardUseState.Selected;
-                _isBusy = false;
-                return;
-            }
-
-            try
-            {
-                await card.PlayUseAsync();
-
-                if (version != _selectionVersion) return;
-
-                if (BattleManager.Instance != null)
-                {
-                    BattleManager.Instance.DiscardCard(card.CardInstance);
-                }
-
-                ResetSelectionState();
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                await CancelSelectionAsync();
-            }
-        }
-
         private async UniTask ReturnSelectedCardToOriginAsync()
         {
-            var card = selectedCard;
-            var startPos = _selectionStartWorldPos;
-
-            if (card == null)
+            if (selectedCard == null)
             {
                 ForceReset();
                 return;
@@ -661,37 +470,27 @@ namespace GamePlay.Battle.Card
 
             try
             {
-                if (card.CurrentSlot != null)
+                if (_handlers.TryGetValue(_selectedCardType, out var handler))
                 {
-                    await card.ReturnToSlotAsync(card.CurrentSlot, fieldCardLayer);
+                    await handler.ReturnToOrigin(this, selectedCard);
                 }
                 else
                 {
-                    await card.ReturnToHandAsync(handLayer, startPos);
+                    throw new ArgumentOutOfRangeException();
                 }
-
-                card.EndSelection();
-                ResetSelectionState();
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
                 ForceReset();
             }
-            finally
-            {
-                _isBusy = false;
-            }
         }
 
-        private async UniTask CancelSelectionAsync()
+        public async UniTask CancelSelectionAsync()
         {
             _selectionVersion++;
 
-            var card = selectedCard;
-            var startPos = _selectionStartWorldPos;
-
-            if (card == null)
+            if (selectedCard == null)
             {
                 ForceReset();
                 return;
@@ -699,30 +498,23 @@ namespace GamePlay.Battle.Card
 
             try
             {
-                if (card.CurrentSlot != null)
+                if (_handlers.TryGetValue(_selectedCardType, out var handler))
                 {
-                    await card.ReturnToSlotAsync(card.CurrentSlot, fieldCardLayer);
+                    await handler.ReturnToOrigin(this, selectedCard);
                 }
                 else
                 {
-                    await card.ReturnToHandAsync(handLayer, startPos);
+                    throw new ArgumentOutOfRangeException();
                 }
-
-                card.EndSelection();
-                ResetSelectionState();
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
                 ForceReset();
             }
-            finally
-            {
-                _isBusy = false;
-            }
         }
 
-        private void ResetSelectionState()
+        public void ResetSelectionState()
         {
             state = CardUseState.Idle;
 
@@ -737,13 +529,10 @@ namespace GamePlay.Battle.Card
             _dragOffset = Vector3.zero;
             _hasReleasedSinceSelection = false;
 
-            if (targetArrow != null)
-            {
-                targetArrow.Hide();
-            }
+            ClearArrow();
         }
 
-        private void ForceReset()
+        public void ForceReset()
         {
             _selectionVersion++;
 
@@ -762,6 +551,21 @@ namespace GamePlay.Battle.Card
             _hasReleasedSinceSelection = false;
             _isBusy = false;
 
+            ClearArrow();
+        }
+
+        public void SetState(CardUseState newState)
+        {
+            state = newState;
+        }
+
+        public void SetSelectedSlot(FieldSlot slot)
+        {
+            selectedSlot = slot;
+        }
+
+        public void ClearArrow()
+        {
             if (targetArrow != null)
             {
                 targetArrow.Hide();
@@ -789,6 +593,15 @@ namespace GamePlay.Battle.Card
             {
                 ForceReset();
             }
+        }
+        public Vector3 SmoothFollow(Vector3 current, Vector3 target)
+        {
+            return Vector3.SmoothDamp(
+                current,
+                target,
+                ref _dragVelocity,
+                dragFollowSmoothTime
+            );
         }
     }
 }
