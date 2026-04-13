@@ -73,13 +73,13 @@ namespace GamePlay.Battle.Card.CardHandler
                 {
                     previousSlot.ClearSlot();
 
-                    if (BattleManager.Instance != null)
+                    if (BattleManager.HasInstance)
                     {
                         BattleManager.Instance.RemoveCharacterCardFromField(card, previousSlot.SlotOwner);
                     }
                 }
 
-                if (BattleManager.Instance == null)
+                if (!BattleManager.HasInstance)
                 {
                     await manager.CancelSelectionAsync();
                     return;

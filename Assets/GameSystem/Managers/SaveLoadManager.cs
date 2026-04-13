@@ -2,20 +2,9 @@
 
 namespace GameSystem.Managers
 {
-    public class SaveLoadManager : MonoBehaviour
+    public class SaveLoadManager
     {
-        public static SaveLoadManager Instance;
-        private void Awake()
-        {
-            Instance = this;
-        }
-
-        public void SaveData()
-        {
-            
-        }
-
-        public void LoadData()
+        public void Init()
         {
             
         }

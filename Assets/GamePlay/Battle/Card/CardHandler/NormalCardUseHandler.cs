@@ -75,7 +75,7 @@ namespace GamePlay.Battle.Card.CardHandler
 
                 if (selectionVersion != manager.SelectionVersion) return;
 
-                if (BattleManager.Instance != null)
+                if (BattleManager.HasInstance)
                 {
                     BattleManager.Instance.DiscardCard(card.CardInstance);
                 }

@@ -9,7 +9,8 @@ namespace GameSystem.Managers
         #region Singleton
         private static GameManager _instance;
         public static GameManager Inst { get { Init(); return _instance; } }
-        static void Init()
+
+        private static void Init()
         {
             if (_instance != null) return;
             var go = GameObject.Find("@Managers");
@@ -24,21 +25,33 @@ namespace GameSystem.Managers
         
         #endregion
         #region Managers
-        public SaveLoadManager Save => SaveLoadManager.Instance;
-        private ResourceManager _resource;
-        public ResourceManager Resource => _resource;
-        private PartyManager _party;
-        public PartyManager Party => _party;
+        public ResourceManager Resource { get; private set; }
+        public PartyManager Party { get; private set; }
+        public SaveLoadManager Save { get; private set; }
+        public DataManager Data { get; private set; }
         #endregion
 
         private void Awake()
         {
             Init();
-            _resource = new ResourceManager();
-            _resource.InitAsync().Forget();
+            _ = InitManagers();
+            Debug.Log("GameManager Initialized");
+        }
+
+        private async UniTask InitManagers()
+        {
+            Party = gameObject.GetComponent<PartyManager>();
+            if (Party == null) gameObject.AddComponent<PartyManager>();
             
-            _party = gameObject.GetComponent<PartyManager>();
-            if (_party == null) gameObject.AddComponent<PartyManager>();
+            Resource = new ResourceManager();
+            await Resource.InitAsync();
+            
+            Save = new SaveLoadManager();
+            Save.Init();
+            
+            
+            Data = new DataManager();
+            await Data.InitAsync();
         }
     }
 }

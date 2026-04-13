@@ -6,6 +6,7 @@ using GameData.SO.Scripts;
 using GamePlay.Card;
 using GameSystem.Enums;
 using UnityEditor;
+using UnityEditor.AddressableAssets;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -20,7 +21,9 @@ namespace GameData
         
         private const string CardDataAddress = "CardData";
         private const string CardAbilityDataAddress = "CardAbilityData";
-        private const string DataBaseAddress = "Assets/GameData/SO/CardDataBase.asset";
+        
+        private const string DataBaseAssetPath = "Assets/GameData/SO/CardDataBase.asset";
+        private const string DataBaseAddressKey = "CardDataBase";
     
         #if UNITY_EDITOR
         [MenuItem("Data/Create Data SO")]
@@ -33,8 +36,6 @@ namespace GameData
 
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
-
-                
                         
                 Debug.Log("CSV 파싱 완료");
             }
@@ -50,12 +51,19 @@ namespace GameData
         {
             // 데이터베이스 SO 생성
             var dataBase = ScriptableObject.CreateInstance<CardDataBase>();
-            if (AssetDatabase.LoadAssetAtPath<CardDataBase>(DataBaseAddress) != null)
+            if (AssetDatabase.LoadAssetAtPath<CardDataBase>(DataBaseAssetPath) != null)
             {
-                AssetDatabase.DeleteAsset(DataBaseAddress);
+                AssetDatabase.DeleteAsset(DataBaseAssetPath);
             }
-            AssetDatabase.CreateAsset(dataBase, DataBaseAddress);
-            
+            AssetDatabase.CreateAsset(dataBase, DataBaseAssetPath);
+            EditorUtility.SetDirty(dataBase);
+
+            // 생성 직후 저장/갱신
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            // 바로 어드레서블 등록
+            RegisterToAddressables(DataBaseAssetPath, DataBaseAddressKey);
             
             // 카드 데이터 csv파일 로드
             var cardDataHandle = Addressables.LoadAssetAsync<TextAsset>(CardDataAddress);
@@ -65,9 +73,9 @@ namespace GameData
                 Debug.Log($"{CardDataAddress} 로드 실패");
                 return;
             }
-            Addressables.Release(cardDataHandle);
             
             var csvCardData = cardDataHandle.Result.text;
+            Addressables.Release(cardDataHandle);
             var cardDataSet = CsvParser.ParseCSV(csvCardData);
             
             
@@ -175,8 +183,8 @@ namespace GameData
                 Debug.Log($"{CardAbilityDataAddress} 로드 실패");
                 return;
             }
-            Addressables.Release(cardAbilityDataHandle);
             var csvAbilityData = cardAbilityDataHandle.Result.text;
+            Addressables.Release(cardAbilityDataHandle);
             var abilityDataSet = CsvParser.ParseCSV(csvAbilityData);
 
             for (var i = 1; i < abilityDataSet.Length; i++)
@@ -262,8 +270,46 @@ namespace GameData
                 }
             }
             EditorUtility.SetDirty(dataBase);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
-    
-    #endif
+        private static void RegisterToAddressables(string assetPath, string addressKey)
+        {
+            if (!AddressableAssetSettingsDefaultObject.SettingsExists)
+            {
+                Debug.LogError("Addressables Settings가 없습니다. 먼저 Addressables를 세팅해주세요.");
+                return;
+            }
+
+            var settings = AddressableAssetSettingsDefaultObject.Settings;
+            if (settings == null)
+            {
+                Debug.LogError("Addressables Settings를 가져오지 못했습니다.");
+                return;
+            }
+
+            var guid = AssetDatabase.AssetPathToGUID(assetPath);
+            if (string.IsNullOrEmpty(guid))
+            {
+                Debug.LogError($"GUID를 찾을 수 없습니다: {assetPath}");
+                return;
+            }
+
+            var group = settings.DefaultGroup;
+            if (group == null)
+            {
+                Debug.LogError("Default Addressables Group이 없습니다.");
+                return;
+            }
+
+            var entry = settings.CreateOrMoveEntry(guid, group, false, true);
+            entry.SetAddress(addressKey, true);
+
+            EditorUtility.SetDirty(settings);
+            AssetDatabase.SaveAssets();
+
+            Debug.Log($"Addressables 등록 완료: {assetPath} -> {addressKey}");
+        }
+        #endif
     }
 }

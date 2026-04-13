@@ -10,7 +10,7 @@ namespace GamePlay.Battle.Card
     {
         Draw,
         Hand,
-        Used
+        Used,
     }
 
     [Serializable]

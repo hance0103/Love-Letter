@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace GamePlay.Party
 {
+    // 일단은 MonoBehaviour 달아두긴 했는데 얘는 게임매니저 통해서만 접근할거임 나중에 코드 수정함
     public class PartyManager : MonoBehaviour
     {
         [SerializeField] private List<PartyMember> partyMembers = new List<PartyMember>();

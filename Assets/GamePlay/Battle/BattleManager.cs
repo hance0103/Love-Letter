@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GamePlay.Battle.Card;
 using GamePlay.Battle.Field;
+using GamePlay.Card;
 using GameSystem.Enums;
 using GameSystem.Managers;
 using UnityEngine;
@@ -11,8 +12,12 @@ namespace GamePlay.Battle
 {
     public class BattleManager : MonoBehaviour
     {
-        public static BattleManager Instance;
-
+        public static BattleManager Instance { get; private set; }
+        public static bool HasInstance => Instance != null;
+        
+        [SerializeField]
+        private CardPool cardPool;
+        
         [SerializeField] private Deck playerDeck = new();
         [SerializeField] private Hand hand = new();
 
@@ -31,7 +36,20 @@ namespace GamePlay.Battle
 
         private void Awake()
         {
+            if (Instance != null)
+            {
+                Debug.LogError("BattleManager 중복 생성됨");
+                Destroy(gameObject);
+                return;
+            }
+
             Instance = this;
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this)
+                Instance = null;
         }
 
         private void Start()
@@ -157,55 +175,25 @@ namespace GamePlay.Battle
                 return false;
             }
         }
-
-        private const string CardPrefabAddress = "CardObject";
-
         private async UniTask InstantiateCardObjectAsync(CardInstance cardInstance, AddCardPosition cardPosition = AddCardPosition.Hand)
         {
             try
             {
-                switch (cardPosition)
-                {
-                    case AddCardPosition.Draw:
-                        break;
-
-                    case AddCardPosition.Hand:
-                    {
-                        if (CardUseManager.Instance == null)
-                        {
-                            Debug.LogError("BattleManager.InstantiateCardObjectAsync: CardUseManager.Instance가 null입니다.");
-                            return;
-                        }
-
-                        var cardObject = await GameManager.Inst.Resource.InstantiateAsync(
-                            CardPrefabAddress,
-                            CardUseManager.Instance.HandLayer
-                        );
-
-                        if (cardObject == null)
-                        {
-                            Debug.LogError("BattleManager.InstantiateCardObjectAsync: 카드 프리팹 생성 실패");
-                            return;
-                        }
-
-                        var cardComponent = cardObject.GetComponent<CardObject>();
-                        if (cardComponent == null)
-                        {
-                            Debug.LogError("BattleManager.InstantiateCardObjectAsync: CardObject 컴포넌트가 없습니다.");
-                            return;
-                        }
-
-                        cardComponent.Init(cardInstance);
-                        _handDict[cardInstance] = cardObject;
-                        break;
-                    }
-
-                    case AddCardPosition.Used:
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(cardPosition), cardPosition, null);
-                }
+                 // 이거 오브젝트풀에서 받아오기
+                 var cardObject =  await cardPool.Get(cardInstance);
+                 if (CardUseManager.Instance == null) return;
+                 var parent = CardUseManager.Instance.GetCardPositionTransform(cardPosition);
+                 
+                 if (parent != null)
+                 {
+                     cardObject.transform.SetParent(parent);
+                     cardObject.transform.localPosition = Vector3.zero;
+                 }
+                 else
+                 {
+                     // 핸드에 생성하지 않는 경우
+                     // 뽑을카드 | 버린카드 | 상대 덱
+                 }
             }
             catch (Exception e)
             {
@@ -221,9 +209,9 @@ namespace GamePlay.Battle
 
                 if (cardObject != null)
                 {
-                    GameManager.Inst.Resource.ReleaseInstance(cardObject);
+                    var card = cardObject.GetComponent<CardObject>();
+                    cardPool.Release(card);
                 }
-
                 _handDict.Remove(cardInstance);
             }
             catch (Exception e)

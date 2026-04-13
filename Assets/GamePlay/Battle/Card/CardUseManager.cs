@@ -20,7 +20,8 @@ namespace GamePlay.Battle.Card
     public class CardUseManager : MonoBehaviour
     {
         public static CardUseManager Instance { get; private set; }
-
+        public static bool HasInstance => Instance != null;
+        
         [Header("References")]
         [SerializeField] private PlayerInput playerInput;
         [SerializeField] private Transform dragLayer;
@@ -139,7 +140,11 @@ namespace GamePlay.Battle.Card
                 _rightClick.performed -= OnRightClick;
             }
         }
-
+        private void OnDestroy()
+        {
+            if (Instance == this)
+                Instance = null;
+        }
         private void Update()
         {
             if (_isBusy) return;
@@ -602,6 +607,20 @@ namespace GamePlay.Battle.Card
                 ref _dragVelocity,
                 dragFollowSmoothTime
             );
+        }
+
+        public Transform GetCardPositionTransform(AddCardPosition cardPosition)
+        {
+            switch (cardPosition)
+            {
+                case AddCardPosition.Hand: return handLayer;
+                case AddCardPosition.Draw:
+                case AddCardPosition.Used:
+                default:
+                {
+                    return null;
+                }
+            }
         }
     }
 }

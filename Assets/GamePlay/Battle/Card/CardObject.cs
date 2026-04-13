@@ -85,6 +85,10 @@ namespace GamePlay.Battle.Card
             SetOptionalText(currentActionCount, instance.currentActionCount);
         }
 
+        public void ResetObject()
+        {
+            
+        }
         private void SetOptionalText(TMP_Text target, int value)
         {
             if (target == null) return;
