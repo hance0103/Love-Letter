@@ -15,19 +15,24 @@ namespace GamePlay.Battle
         public static BattleManager Instance { get; private set; }
         public static bool HasInstance => Instance != null;
         
-        [SerializeField]
-        private CardPool cardPool;
+        [Header("Battle Scene Objects")]
+        [SerializeField] private CardPool cardPool;
+
+        private HandSortingManager _handSort;
         
+        [Header("Cards")]
         [SerializeField] private Deck playerDeck = new();
         [SerializeField] private Hand hand = new();
-
-        private readonly Dictionary<CardInstance, GameObject> _handDict = new();
-
+        [SerializeField] private List<CardInstance> enemyWaitList = new();
+        
+        public Hand Hand => hand;
+        
+        private Dictionary<CardInstance, GameObject> _handDict = new();
+        
+        [Header("Field")]
         [SerializeField] private FieldInstance playerField = new();
         [SerializeField] private FieldInstance enemyField = new();
-
-        [SerializeField] private List<CardInstance> enemyWaitList = new();
-
+        
         [SerializeField] private int playerFieldSlotCount = 4;
         [SerializeField] private int enemyFieldSlotCount = 4;
 
@@ -44,6 +49,8 @@ namespace GamePlay.Battle
             }
 
             Instance = this;
+            _handSort = GetComponent<HandSortingManager>();
+            _handSort.Init();
         }
 
         private void OnDestroy()
@@ -91,7 +98,8 @@ namespace GamePlay.Battle
                 if (card == null) return;
 
                 hand.Add(card);
-                await InstantiateCardObjectAsync(card);
+                var go = await InstantiateCardObjectAsync(card);
+                _handDict[card] = go;
             }
             catch (Exception e)
             {
@@ -102,12 +110,11 @@ namespace GamePlay.Battle
         public void DiscardCard(CardInstance cardInstance)
         {
             if (cardInstance == null) return;
-
             try
             {
+                ReleaseHandObject(cardInstance);
                 hand.Remove(cardInstance);
                 playerDeck.DiscardOne(cardInstance);
-                ReleaseHandObject(cardInstance);
             }
             catch (Exception e)
             {
@@ -175,13 +182,13 @@ namespace GamePlay.Battle
                 return false;
             }
         }
-        private async UniTask InstantiateCardObjectAsync(CardInstance cardInstance, AddCardPosition cardPosition = AddCardPosition.Hand)
+        private async UniTask<GameObject> InstantiateCardObjectAsync(CardInstance cardInstance, AddCardPosition cardPosition = AddCardPosition.Hand)
         {
             try
             {
                  // 이거 오브젝트풀에서 받아오기
                  var cardObject =  await cardPool.Get(cardInstance);
-                 if (CardUseManager.Instance == null) return;
+                 if (CardUseManager.Instance == null) return null;
                  var parent = CardUseManager.Instance.GetCardPositionTransform(cardPosition);
                  
                  if (parent != null)
@@ -194,10 +201,12 @@ namespace GamePlay.Battle
                      // 핸드에 생성하지 않는 경우
                      // 뽑을카드 | 버린카드 | 상대 덱
                  }
+                 return cardObject.gameObject;
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
+                return null;
             }
         }
 
@@ -206,7 +215,7 @@ namespace GamePlay.Battle
             try
             {
                 if (!_handDict.TryGetValue(cardInstance, out var cardObject)) return;
-
+                
                 if (cardObject != null)
                 {
                     var card = cardObject.GetComponent<CardObject>();

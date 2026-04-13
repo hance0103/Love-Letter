@@ -44,7 +44,7 @@ namespace GamePlay.Battle.Card
         private InputAction _leftClick;
         private InputAction _rightClick;
 
-        private RectTransform _selectedRectTransform;
+        //private RectTransform _selectedRectTransform;
         private CardType _selectedCardType;
 
         private Vector3 _mouseScreenPos;
@@ -403,7 +403,7 @@ namespace GamePlay.Battle.Card
 
                 selectedCard = card;
                 selectedSlot = null;
-                _selectedRectTransform = card.RectTransform;
+                //_selectedRectTransform = card.RectTransform;
                 _selectedCardType = card.CardInstance.data.cardType;
                 _selectionStartWorldPos = card.RectTransform.position;
 
@@ -437,7 +437,6 @@ namespace GamePlay.Battle.Card
         private async UniTask ResolveSelectionAsync()
         {
             var myVersion = _selectionVersion;
-
             try
             {
                 state = CardUseState.Resolving;
@@ -525,7 +524,7 @@ namespace GamePlay.Battle.Card
 
             selectedCard = null;
             selectedSlot = null;
-            _selectedRectTransform = null;
+            //_selectedRectTransform = null;
             _selectedCardType = default;
             _selectionStartWorldPos = Vector3.zero;
 
@@ -546,7 +545,7 @@ namespace GamePlay.Battle.Card
             currentHover = null;
             selectedCard = null;
             selectedSlot = null;
-            _selectedRectTransform = null;
+            //_selectedRectTransform = null;
             _selectedCardType = default;
             _selectionStartWorldPos = Vector3.zero;
 

@@ -344,8 +344,6 @@ namespace GamePlay.Battle.Card
 
             try
             {
-                
-                Debug.Log($"{cardInstance.data.nameString} 카드에게 사용");
                 await UniTask.CompletedTask;
             }
             catch (Exception e)
