@@ -385,20 +385,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Battle.BattleManager
   cardPool: {fileID: 707341333}
-  playerDeck:
+  handSortingManager: {fileID: 410426187}
+  handCardRoot: {fileID: 0}
+  playerSlots: []
+  enemySlots: []
+  deck:
     allCards: []
     draw: []
     used: []
   hand:
     cards:
       list: []
-  enemyWaitList: []
-  playerField:
-    cards: []
-  enemyField:
-    cards: []
-  playerFieldSlotCount: 4
-  enemyFieldSlotCount: 4
+  drawAmount: 6
+  maxHand: 10
 --- !u!4 &410426186
 Transform:
   m_ObjectHideFlags: 0
@@ -426,6 +425,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bde09e993007c94f9c54d845b13ec4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Battle.Card.HandSortingManager
+  handRoot: {fileID: 820432034}
+  cardSpacing: 160
+  maxAngle: 18
+  curveHeight: 60
+  baseY: 0
+  sortDuration: 0.2
 --- !u!1 &450291902
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,16 +482,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FieldSlot
   slotIndex: 3
+  slotOwner: 0
   cardInstance:
     data: {fileID: 0}
-    cardImage: {fileID: 0}
     currentCardNum: 0
     currentHp: 0
     currentATK: 0
     currentShield: 0
     currentActionCount: 0
     cardDesc: 
-  slotOwner: 0
   isCardIn: 0
 --- !u!114 &450291905
 MonoBehaviour:
@@ -773,6 +777,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1846bda70389c2458954efece99ebab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Card.CardPool
+  cardPrefab: {fileID: 7619528722712727565, guid: beef487f04bc12243bde28974d09cb93, type: 3}
 --- !u!1 &799929153
 GameObject:
   m_ObjectHideFlags: 0
@@ -1216,16 +1221,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FieldSlot
   slotIndex: 1
+  slotOwner: 0
   cardInstance:
     data: {fileID: 0}
-    cardImage: {fileID: 0}
     currentCardNum: 0
     currentHp: 0
     currentATK: 0
     currentShield: 0
     currentActionCount: 0
     cardDesc: 
-  slotOwner: 0
   isCardIn: 0
 --- !u!114 &1163740195
 MonoBehaviour:
@@ -1320,16 +1324,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6eee2280f5fe3443b9dd3b70009c44e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Battle.Card.CardUseManager
-  playerInput: {fileID: 1212622507}
-  dragLayer: {fileID: 1521444185}
+  uiRaycaster: {fileID: 340572270}
+  eventSystem: {fileID: 1564626354}
   handLayer: {fileID: 820432034}
+  dragLayer: {fileID: 1521444185}
   fieldCardLayer: {fileID: 865423790}
   targetArrow: {fileID: 374820121}
-  dragFollowSmoothTime: 0.04
-  state: 0
-  currentHover: {fileID: 0}
-  selectedCard: {fileID: 0}
-  selectedSlot: {fileID: 0}
 --- !u!225 &1212622506
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1354,8 +1354,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
-  m_Actions: {fileID: -944628639613478452, guid: 0b2764319c8139a449325e22a83ebbd5, type: 3}
-  m_NotificationBehavior: 2
+  m_Actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_NotificationBehavior: 0
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -1469,16 +1469,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FieldSlot
   slotIndex: 0
+  slotOwner: 0
   cardInstance:
     data: {fileID: 0}
-    cardImage: {fileID: 0}
     currentCardNum: 0
     currentHp: 0
     currentATK: 0
     currentShield: 0
     currentActionCount: 0
     cardDesc: 
-  slotOwner: 0
   isCardIn: 0
 --- !u!1 &1521444184
 GameObject:
@@ -1549,17 +1548,17 @@ MonoBehaviour:
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
   m_XRTrackingOrigin: {fileID: 0}
-  m_ActionsAsset: {fileID: -944628639613478452, guid: 0b2764319c8139a449325e22a83ebbd5, type: 3}
-  m_PointAction: {fileID: 0}
-  m_MoveAction: {fileID: 0}
-  m_SubmitAction: {fileID: 0}
-  m_CancelAction: {fileID: 0}
-  m_LeftClickAction: {fileID: 4024052230368390827, guid: 0b2764319c8139a449325e22a83ebbd5, type: 3}
-  m_MiddleClickAction: {fileID: 0}
-  m_RightClickAction: {fileID: 8186170448565355897, guid: 0b2764319c8139a449325e22a83ebbd5, type: 3}
-  m_ScrollWheelAction: {fileID: 0}
-  m_TrackedDevicePositionAction: {fileID: 0}
-  m_TrackedDeviceOrientationAction: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_PointAction: {fileID: -1654692200621890270, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_MoveAction: {fileID: -8784545083839296357, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_SubmitAction: {fileID: 392368643174621059, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_CancelAction: {fileID: 7727032971491509709, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_LeftClickAction: {fileID: 3001919216989983466, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_MiddleClickAction: {fileID: -2185481485913320682, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_RightClickAction: {fileID: -4090225696740746782, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
@@ -1642,7 +1641,19 @@ MonoBehaviour:
   partyMembers:
   - data: {fileID: 11400000, guid: c2921a21950c3484b8f02613fdfe473d, type: 2}
     accList: []
+  - data: {fileID: 11400000, guid: abfa2f17ba11e6948a0f23600e08f299, type: 2}
+    accList: []
   - data: {fileID: 11400000, guid: 14437619e2dc7274aad37e09384b89cd, type: 2}
+    accList: []
+  - data: {fileID: 11400000, guid: 14437619e2dc7274aad37e09384b89cd, type: 2}
+    accList: []
+  - data: {fileID: 11400000, guid: 14437619e2dc7274aad37e09384b89cd, type: 2}
+    accList: []
+  - data: {fileID: 11400000, guid: c728c49fb089ceb4787a6312c178693d, type: 2}
+    accList: []
+  - data: {fileID: 11400000, guid: c728c49fb089ceb4787a6312c178693d, type: 2}
+    accList: []
+  - data: {fileID: 11400000, guid: c728c49fb089ceb4787a6312c178693d, type: 2}
     accList: []
 --- !u!114 &1935962552
 MonoBehaviour:
@@ -1707,16 +1718,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FieldSlot
   slotIndex: 2
+  slotOwner: 0
   cardInstance:
     data: {fileID: 0}
-    cardImage: {fileID: 0}
     currentCardNum: 0
     currentHp: 0
     currentATK: 0
     currentShield: 0
     currentActionCount: 0
     cardDesc: 
-  slotOwner: 0
   isCardIn: 0
 --- !u!114 &1955757514
 MonoBehaviour:

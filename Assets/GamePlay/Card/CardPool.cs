@@ -1,19 +1,20 @@
-using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using GamePlay.Battle.Card;
-using GameSystem.Managers;
 using UnityEngine;
 
-namespace GamePlay.Card
+namespace GamePlay.Battle.Card
 {
     public class CardPool : MonoBehaviour
     {
-        private Queue<CardObject> _pool = new();
-        private HashSet<CardObject> _active = new();
+        private readonly Queue<CardObject> _pool = new();
+        private readonly HashSet<CardObject> _active = new();
+
+        [SerializeField] private CardObject cardPrefab;
 
         public async UniTask<CardObject> Get(CardInstance data)
         {
+            await UniTask.Yield();
+
             CardObject obj;
 
             if (_pool.Count > 0)
@@ -23,8 +24,9 @@ namespace GamePlay.Card
             }
             else
             {
-                obj = await CardObjectFactory.CreateAsync(transform);
+                obj = Instantiate(cardPrefab, transform);
             }
+
             obj.Init(data);
             _active.Add(obj);
             return obj;
@@ -32,25 +34,14 @@ namespace GamePlay.Card
 
         public void Release(CardObject obj)
         {
+            if (obj == null) return;
+
             obj.ResetObject();
             obj.gameObject.SetActive(false);
-            obj.transform.SetParent(transform);
-            
+            obj.transform.SetParent(transform, false);
+
             _active.Remove(obj);
             _pool.Enqueue(obj);
-        }
-
-        private void OnDestroy()
-        {
-            foreach (var obj in _active)
-            {
-                GameManager.Inst.Resource.ReleaseInstance(obj.gameObject);
-            }
-
-            foreach (var obj in _pool)
-            {
-                GameManager.Inst.Resource.ReleaseInstance(obj.gameObject);
-            }
         }
     }
 }

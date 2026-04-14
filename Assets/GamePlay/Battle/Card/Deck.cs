@@ -10,7 +10,7 @@ namespace GamePlay.Battle.Card
     {
         Draw,
         Hand,
-        Used,
+        Used
     }
 
     [Serializable]
@@ -64,27 +64,11 @@ namespace GamePlay.Battle.Card
         {
             if (list == null || list.Count <= 1) return;
 
-            for (var i = list.Count - 1; i > 0; i--)
+            for (int i = list.Count - 1; i > 0; i--)
             {
-                var randomIndex = Random.Range(0, i + 1);
+                int randomIndex = Random.Range(0, i + 1);
                 (list[i], list[randomIndex]) = (list[randomIndex], list[i]);
             }
-        }
-
-        public List<CardInstance> DrawCards(int count)
-        {
-            var drawnCards = new List<CardInstance>();
-
-            if (count <= 0) return drawnCards;
-
-            for (var i = 0; i < count; i++)
-            {
-                var card = DrawOne();
-                if (card == null) break;
-                drawnCards.Add(card);
-            }
-
-            return drawnCards;
         }
 
         public CardInstance DrawOne()
@@ -100,9 +84,24 @@ namespace GamePlay.Battle.Card
                 return null;
             }
 
-            var card = draw[0];
+            CardInstance card = draw[0];
             draw.RemoveAt(0);
             return card;
+        }
+
+        public List<CardInstance> DrawCards(int count)
+        {
+            var result = new List<CardInstance>();
+            if (count <= 0) return result;
+
+            for (int i = 0; i < count; i++)
+            {
+                var card = DrawOne();
+                if (card == null) break;
+                result.Add(card);
+            }
+
+            return result;
         }
 
         public void DiscardOne(CardInstance card)
@@ -138,8 +137,6 @@ namespace GamePlay.Battle.Card
                 case AddCardPosition.Used:
                     used.Add(card);
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(position), position, null);
             }
         }
 
@@ -155,21 +152,21 @@ namespace GamePlay.Battle.Card
         [SerializeField] private ObservableList<CardInstance> cards = new();
         public ObservableList<CardInstance> Cards => cards;
 
-        public void Add(CardInstance cardInstance)
+        public void Add(CardInstance card)
         {
-            if (cardInstance == null) return;
-            cards.Add(cardInstance);
+            if (card == null) return;
+            cards.Add(card);
         }
 
-        public void Remove(CardInstance cardInstance)
+        public bool Remove(CardInstance card)
         {
-            if (cardInstance == null) return;
-            cards.Remove(cardInstance);
+            if (card == null) return false;
+            return cards.Remove(card);
         }
 
-        public bool Contains(CardInstance cardInstance)
+        public bool Contains(CardInstance card)
         {
-            return cards.Contains(cardInstance);
+            return cards.Contains(card);
         }
 
         public void Clear()

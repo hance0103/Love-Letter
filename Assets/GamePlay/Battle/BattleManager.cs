@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GamePlay.Battle.Card;
 using GamePlay.Battle.Field;
-using GamePlay.Card;
 using GameSystem.Enums;
 using GameSystem.Managers;
 using UnityEngine;
@@ -14,218 +12,295 @@ namespace GamePlay.Battle
     {
         public static BattleManager Instance { get; private set; }
         public static bool HasInstance => Instance != null;
-        
-        [Header("Battle Scene Objects")]
+
+        [Header("References")]
         [SerializeField] private CardPool cardPool;
+        [SerializeField] private HandSortingManager handSortingManager;
 
-        private HandSortingManager _handSort;
-        
-        [Header("Cards")]
-        [SerializeField] private Deck playerDeck = new();
+        [Header("UI Parents")]
+        [SerializeField] private RectTransform handCardRoot;
+
+        [Header("Slots")]
+        [SerializeField] private List<FieldSlot> playerSlots = new();
+        [SerializeField] private List<FieldSlot> enemySlots = new();
+
+        [Header("Runtime")]
+        [SerializeField] private Deck deck = new();
         [SerializeField] private Hand hand = new();
-        [SerializeField] private List<CardInstance> enemyWaitList = new();
-        
-        public Hand Hand => hand;
-        
-        private Dictionary<CardInstance, GameObject> _handDict = new();
-        
-        [Header("Field")]
-        [SerializeField] private FieldInstance playerField = new();
-        [SerializeField] private FieldInstance enemyField = new();
-        
-        [SerializeField] private int playerFieldSlotCount = 4;
-        [SerializeField] private int enemyFieldSlotCount = 4;
 
-        private int _currentMaxCost;
-        private int _currentCost;
+        [Header("Battle Setting")]
+        [SerializeField] private int drawAmount = 6;
+        [SerializeField] private int maxHand = 10;
+
+        private readonly Dictionary<CardOwner, FieldInstance> _fieldInstanceDict = new();
+        private readonly Dictionary<CardInstance, CardObject> _handCardObjects = new();
+
+        public HandSortingManager HandSortingManager => handSortingManager;
+        public Deck Deck => deck;
+        public Hand Hand => hand;
 
         private void Awake()
         {
-            if (Instance != null)
+            if (Instance != null && Instance != this)
             {
-                Debug.LogError("BattleManager 중복 생성됨");
                 Destroy(gameObject);
                 return;
             }
 
             Instance = this;
-            _handSort = GetComponent<HandSortingManager>();
-            _handSort.Init();
+        }
+
+        private async void Start()
+        {
+            Init(GameManager.Inst.Party.CreateDeck());
+            await DrawCardsAsync(drawAmount);
         }
 
         private void OnDestroy()
         {
             if (Instance == this)
+            {
                 Instance = null;
-        }
-
-        private void Start()
-        {
-            BattleInit();
-        }
-
-        private void BattleInit()
-        {
-            try
-            {
-                var deckSource = GameManager.Inst.Party.CreateDeck();
-                playerDeck.InitDeck(deckSource);
-
-                playerField.Init(playerFieldSlotCount);
-                enemyField.Init(enemyFieldSlotCount);
-
-                OnBattleStart();
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
             }
         }
 
-        private void OnBattleStart()
+        private void Init(List<CardInstance> startDeck)
         {
-            for (var i = 0; i < 6; i++)
+            deck.InitDeck(startDeck);
+            hand.Clear();
+
+            _fieldInstanceDict.Clear();
+
+            var playerField = new FieldInstance();
+            playerField.Init(playerSlots.Count);
+            _fieldInstanceDict.Add(CardOwner.Player, playerField);
+
+            var enemyField = new FieldInstance();
+            enemyField.Init(enemySlots.Count);
+            _fieldInstanceDict.Add(CardOwner.Enemy, enemyField);
+
+            foreach (var slot in playerSlots)
             {
-                _ = DrawOne();
+                if (slot != null)
+                {
+                    slot.ClearSlot();
+                }
+            }
+
+            foreach (var slot in enemySlots)
+            {
+                if (slot != null)
+                {
+                    slot.ClearSlot();
+                }
+            }
+
+            foreach (var pair in _handCardObjects)
+            {
+                if (pair.Value != null && cardPool != null)
+                {
+                    cardPool.Release(pair.Value);
+                }
+            }
+
+            _handCardObjects.Clear();
+
+            if (handSortingManager != null)
+            {
+                handSortingManager.Init();
             }
         }
 
-        public async UniTask DrawOne()
+        public async UniTask DrawCardsAsync(int count)
         {
-            try
+            int canDrawCount = Mathf.Min(count, maxHand - hand.Cards.Count);
+            if (canDrawCount <= 0) return;
+
+            var cards = deck.DrawCards(canDrawCount);
+
+            foreach (var card in cards)
             {
-                var card = playerDeck.DrawOne();
-                if (card == null) return;
+                if (card == null) continue;
 
                 hand.Add(card);
-                var go = await InstantiateCardObjectAsync(card);
-                _handDict[card] = go;
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-        }
 
-        public void DiscardCard(CardInstance cardInstance)
-        {
-            if (cardInstance == null) return;
-            try
-            {
-                ReleaseHandObject(cardInstance);
-                hand.Remove(cardInstance);
-                playerDeck.DiscardOne(cardInstance);
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-        }
+                var cardObject = await cardPool.Get(card);
+                if (cardObject == null) continue;
 
-        public bool PlaceCharacterCardToField(CardObject card, FieldSlot slot)
-        {
-            if (card == null || slot == null) return false;
-            if (card.CardInstance == null) return false;
-
-            try
-            {
-                FieldInstance targetField = null;
-
-                switch (slot.SlotOwner)
+                if (handCardRoot != null)
                 {
-                    case CardOwner.Player:
-                        targetField = playerField;
-                        break;
-                    case CardOwner.Enemy:
-                        targetField = enemyField;
-                        break;
-                    default:
-                        return false;
+                    cardObject.transform.SetParent(handCardRoot, false);
                 }
 
-                if (targetField == null) return false;
+                cardObject.SetCurrentSlot(null);
+                _handCardObjects[card] = cardObject;
+            }
 
-                var slotIndex = slot.SlotIndex;
-                if (!targetField.AddCardToField(card, slotIndex))
+            RequestHandLayoutRefresh();
+        }
+
+        public async UniTask DrawOneAsync()
+        {
+            if (hand.Cards.Count >= maxHand) return;
+
+            var card = deck.DrawOne();
+            if (card == null) return;
+
+            hand.Add(card);
+
+            var cardObject = await cardPool.Get(card);
+            if (cardObject == null) return;
+
+            if (handCardRoot != null)
+            {
+                cardObject.transform.SetParent(handCardRoot, false);
+            }
+
+            cardObject.SetCurrentSlot(null);
+            _handCardObjects[card] = cardObject;
+
+            RequestHandLayoutRefresh();
+        }
+
+        public bool TryGetHandCardObject(CardInstance cardInstance, out CardObject cardObject)
+        {
+            return _handCardObjects.TryGetValue(cardInstance, out cardObject);
+        }
+
+        public bool PlaceCharacterCardToField(CardObject cardObject, FieldSlot slot)
+        {
+            if (cardObject == null || slot == null) return false;
+            if (!slot.CanDrop(cardObject.CardInstance)) return false;
+
+            if (!_fieldInstanceDict.TryGetValue(slot.SlotOwner, out var fieldInstance))
+            {
+                return false;
+            }
+
+            bool added = fieldInstance.AddCardToField(cardObject, slot.SlotIndex);
+            if (!added) return false;
+
+            slot.OnDrop(cardObject.CardInstance);
+            cardObject.SetCurrentSlot(slot);
+
+            if (hand.Contains(cardObject.CardInstance))
+            {
+                hand.Remove(cardObject.CardInstance);
+            }
+
+            RequestHandLayoutRefresh();
+            return true;
+        }
+
+        public bool MoveCharacterCardToFieldSlot(CardObject cardObject, FieldSlot fromSlot, FieldSlot toSlot)
+        {
+            if (cardObject == null || fromSlot == null || toSlot == null) return false;
+            if (fromSlot == toSlot) return true;
+            if (!toSlot.CanDrop(cardObject.CardInstance)) return false;
+
+            if (!_fieldInstanceDict.TryGetValue(fromSlot.SlotOwner, out var fromField))
+            {
+                return false;
+            }
+
+            if (!_fieldInstanceDict.TryGetValue(toSlot.SlotOwner, out var toField))
+            {
+                return false;
+            }
+
+            bool removed = fromField.RemoveCardFromField(cardObject);
+            if (!removed) return false;
+
+            fromSlot.ClearSlot();
+
+            bool added = toField.AddCardToField(cardObject, toSlot.SlotIndex);
+            if (!added)
+            {
+                fromField.AddCardToField(cardObject, fromSlot.SlotIndex);
+                fromSlot.OnDrop(cardObject.CardInstance);
+                return false;
+            }
+
+            toSlot.OnDrop(cardObject.CardInstance);
+            cardObject.SetCurrentSlot(toSlot);
+            return true;
+        }
+
+        public bool RemoveCharacterCardFromField(CardObject cardObject, CardOwner owner)
+        {
+            if (cardObject == null) return false;
+
+            if (!_fieldInstanceDict.TryGetValue(owner, out var fieldInstance))
+            {
+                return false;
+            }
+
+            var removed = fieldInstance.RemoveCardFromField(cardObject);
+            if (!removed) return false;
+
+            if (cardObject.CurrentSlot != null)
+            {
+                cardObject.CurrentSlot.ClearSlot();
+            }
+
+            cardObject.ClearCurrentSlot();
+            return true;
+        }
+
+        public void UseNormalCard(CardObject cardObject, FieldSlot targetSlot)
+        {
+            if (cardObject == null || cardObject.CardInstance == null || targetSlot == null) return;
+
+            DiscardCard(cardObject.CardInstance);
+        }
+
+        public void DiscardCard(CardInstance card)
+        {
+            if (card == null) return;
+
+            if (hand.Contains(card))
+            {
+                hand.Remove(card);
+            }
+
+            deck.DiscardOne(card);
+
+            if (_handCardObjects.Remove(card, out var cardObject))
+            {
+                if (cardPool != null)
                 {
-                    return false;
+                    cardPool.Release(cardObject);
                 }
-
-                hand.Remove(card.CardInstance);
-                _handDict.Remove(card.CardInstance);
-
-                return true;
             }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                return false;
-            }
+
+            RequestHandLayoutRefresh();
         }
 
-        public bool RemoveCharacterCardFromField(CardObject card, CardOwner owner)
+        public CardObject GetFieldCardObject(CardOwner owner, int slotIndex)
         {
-            if (card == null) return false;
-
-            try
+            if (!_fieldInstanceDict.TryGetValue(owner, out var fieldInstance))
             {
-                return owner switch
-                {
-                    CardOwner.Player => playerField.RemoveCardFromField(card),
-                    CardOwner.Enemy => enemyField.RemoveCardFromField(card),
-                    _ => false
-                };
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                return false;
-            }
-        }
-        private async UniTask<GameObject> InstantiateCardObjectAsync(CardInstance cardInstance, AddCardPosition cardPosition = AddCardPosition.Hand)
-        {
-            try
-            {
-                 // 이거 오브젝트풀에서 받아오기
-                 var cardObject =  await cardPool.Get(cardInstance);
-                 if (CardUseManager.Instance == null) return null;
-                 var parent = CardUseManager.Instance.GetCardPositionTransform(cardPosition);
-                 
-                 if (parent != null)
-                 {
-                     cardObject.transform.SetParent(parent);
-                     cardObject.transform.localPosition = Vector3.zero;
-                 }
-                 else
-                 {
-                     // 핸드에 생성하지 않는 경우
-                     // 뽑을카드 | 버린카드 | 상대 덱
-                 }
-                 return cardObject.gameObject;
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
                 return null;
             }
+
+            var card = fieldInstance.GetCard(slotIndex);
+            if (card == null) return null;
+
+            return fieldInstance.GetCardObject(card);
         }
 
-        private void ReleaseHandObject(CardInstance cardInstance)
+        public FieldSlot GetFieldSlot(CardOwner owner, int slotIndex)
         {
-            try
+            var slots = owner == CardOwner.Player ? playerSlots : enemySlots;
+            if (slotIndex < 0 || slotIndex >= slots.Count) return null;
+            return slots[slotIndex];
+        }
+
+        public void RequestHandLayoutRefresh()
+        {
+            if (handSortingManager != null)
             {
-                if (!_handDict.TryGetValue(cardInstance, out var cardObject)) return;
-                
-                if (cardObject != null)
-                {
-                    var card = cardObject.GetComponent<CardObject>();
-                    cardPool.Release(card);
-                }
-                _handDict.Remove(cardInstance);
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
+                handSortingManager.RequestRefresh();
             }
         }
     }

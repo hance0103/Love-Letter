@@ -12,88 +12,103 @@ namespace GamePlay.Battle.Card.CardHandler
 
         public void BeginSelection(CardUseManager manager, CardObject card)
         {
-            manager.ClearArrow();
+            if (manager == null || card == null) return;
 
+            manager.ClearArrow();
             manager.DragVelocity = Vector3.zero;
             manager.DragOffset = Vector3.zero;
             manager.HasReleasedSinceSelection = false;
-
+            
             card.BeginSelection(manager.DragLayer);
-            card.RectTransform.position = manager.MouseScreenPos;
+
+            var mouseLocalPos = manager.ScreenToLocalPointInLayer(manager.DragLayer, manager.MouseScreenPos);
+            card.SetAnchoredPosition(mouseLocalPos);
+            card.RectTransform.rotation = Quaternion.identity;
+            if (BattleManager.HasInstance)
+            {
+                BattleManager.Instance.RequestHandLayoutRefresh();
+            }
         }
 
         public void UpdateSelection(CardUseManager manager, CardObject card)
         {
+            if (manager == null || card == null) return;
             if (manager.State != CardUseState.Selected) return;
-            if (card == null) return;
-            if (card.RectTransform == null) return;
 
-            var targetPos = manager.MouseScreenPos + manager.DragOffset;
-
-            card.RectTransform.position = manager.SmoothFollow(
-                card.RectTransform.position,
-                targetPos
-            );
+            card.RectTransform.localRotation = Quaternion.identity;
+            
+            var targetLocalPos = manager.ScreenToLocalPointInLayer(manager.DragLayer, manager.MouseScreenPos);
+            card.SetAnchoredPositionSmooth(targetLocalPos, 20f);
         }
 
         public bool CanResolve(CardUseManager manager, CardObject card, FieldSlot slot)
         {
-            if (card == null) return false;
+            if (card == null || card.CardInstance == null) return false;
             if (slot == null) return false;
+
+            var currentSlot = card.CurrentSlot;
+
+            if (currentSlot == null)
+            {
+                return slot.CanDrop(card.CardInstance);
+            }
+
+            if (slot == currentSlot)
+            {
+                return true;
+            }
 
             return slot.CanDrop(card.CardInstance);
         }
 
         public async UniTask Resolve(CardUseManager manager, CardObject card, FieldSlot slot, int selectionVersion)
         {
-            if (card == null)
+            if (manager == null || card == null)
             {
-                manager.ForceReset();
+                manager?.ForceReset();
                 return;
             }
+
+            var currentSlot = card.CurrentSlot;
 
             if (slot == null)
             {
-                manager.SetState(CardUseState.Selected);
-                manager.IsBusy = false;
+                await ReturnToOrigin(manager, card);
                 return;
             }
 
-            if (!slot.CanDrop(card.CardInstance))
+            if (!CanResolve(manager, card, slot))
             {
-                manager.SetState(CardUseState.Selected);
-                manager.IsBusy = false;
+                await ReturnToOrigin(manager, card);
                 return;
             }
 
             try
             {
-                var previousSlot = card.CurrentSlot;
-                if (previousSlot != null && previousSlot != slot)
-                {
-                    previousSlot.ClearSlot();
-
-                    if (BattleManager.HasInstance)
-                    {
-                        BattleManager.Instance.RemoveCharacterCardFromField(card, previousSlot.SlotOwner);
-                    }
-                }
-
                 if (!BattleManager.HasInstance)
                 {
                     await manager.CancelSelectionAsync();
                     return;
                 }
 
-                var success = BattleManager.Instance.PlaceCharacterCardToField(card, slot);
-                if (!success)
+                if (currentSlot == null)
                 {
-                    await manager.CancelSelectionAsync();
-                    return;
+                    var success = BattleManager.Instance.PlaceCharacterCardToField(card, slot);
+                    if (!success)
+                    {
+                        await ReturnToOrigin(manager, card);
+                        return;
+                    }
                 }
-
-                slot.OnDrop(card.CardInstance);
-                card.SetCurrentSlot(slot);
+                else if (currentSlot != slot)
+                {
+                    var success = BattleManager.Instance.MoveCharacterCardToFieldSlot(card, currentSlot, slot);
+                    if (!success)
+                    {
+                        await ReturnToOrigin(manager, card);
+                        return;
+                    }
+                }
 
                 await card.ReturnToSlotAsync(slot, manager.FieldCardLayer);
 
@@ -107,13 +122,17 @@ namespace GamePlay.Battle.Card.CardHandler
                 Debug.LogException(e);
                 await manager.CancelSelectionAsync();
             }
+            finally
+            {
+                manager.IsBusy = false;
+            }
         }
 
         public async UniTask ReturnToOrigin(CardUseManager manager, CardObject card)
         {
-            if (card == null)
+            if (manager == null || card == null)
             {
-                manager.ForceReset();
+                manager?.ForceReset();
                 return;
             }
 
@@ -125,7 +144,7 @@ namespace GamePlay.Battle.Card.CardHandler
                 }
                 else
                 {
-                    await card.ReturnToHandAsync(manager.HandLayer, manager.SelectionStartWorldPos);
+                    await card.ReturnToHandLayoutAsync();
                 }
 
                 card.EndSelection();
@@ -144,7 +163,6 @@ namespace GamePlay.Battle.Card.CardHandler
 
         public void EndSelection(CardUseManager manager, CardObject card)
         {
-            manager.ClearArrow();
         }
     }
 }

@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace GamePlay.Battle.Field
 {
-    public class FieldSlot : MonoBehaviour, IFieldSlot
+    public class FieldSlot : MonoBehaviour
     {
         [SerializeField] private int slotIndex;
-        [SerializeField] private CardInstance cardInstance;
         [SerializeField] private CardOwner slotOwner;
-        [SerializeField] private bool isCardIn = false;
+        [SerializeField] private CardInstance cardInstance;
+        [SerializeField] private bool isCardIn;
 
         public int SlotIndex => slotIndex;
         public CardOwner SlotOwner => slotOwner;
@@ -48,9 +48,6 @@ namespace GamePlay.Battle.Field
             isCardIn = false;
         }
 
-        public Transform GetTransform()
-        {
-            return transform;
-        }
+        public RectTransform RectTransform => transform as RectTransform;
     }
 }

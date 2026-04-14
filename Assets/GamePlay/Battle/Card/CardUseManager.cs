@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GamePlay.Battle.Card.CardHandler;
@@ -7,76 +6,74 @@ using GameSystem.Enums;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace GamePlay.Battle.Card
 {
     public enum CardUseState
     {
-        Idle,
+        None,
         Selected,
-        Resolving
+        Using
     }
-
     public class CardUseManager : MonoBehaviour
     {
-        public static CardUseManager Instance { get; private set; }
-        public static bool HasInstance => Instance != null;
+        [Header("UI")]
+        [SerializeField] private GraphicRaycaster uiRaycaster;
+        [SerializeField] private EventSystem eventSystem;
+        [SerializeField] private RectTransform handLayer;
+        [SerializeField] private RectTransform dragLayer;
+        [SerializeField] private RectTransform fieldCardLayer;
         
-        [Header("References")]
-        [SerializeField] private PlayerInput playerInput;
-        [SerializeField] private Transform dragLayer;
-        [SerializeField] private Transform handLayer;
-        [SerializeField] private Transform fieldCardLayer;
+
+        [Header("Arrow")]
         [SerializeField] private CardTargetArrow targetArrow;
 
-        [Header("Follow")]
-        [SerializeField] private float dragFollowSmoothTime = 0.04f;
-
-        [Header("Runtime")]
-        [SerializeField] private CardUseState state = CardUseState.Idle;
-        [SerializeField] private CardObject currentHover;
-        [SerializeField] private CardObject selectedCard;
-        [SerializeField] private FieldSlot selectedSlot;
-
         private readonly List<RaycastResult> _raycastResults = new();
-        private readonly Dictionary<CardType, ICardUseHandler> _handlers = new();
+        private PointerEventData _pointerEventData;
 
-        private InputAction _leftClick;
-        private InputAction _rightClick;
+        private readonly CharacterCardUseHandler _characterHandler = new CharacterCardUseHandler();
+        private readonly NormalCardUseHandler _normalHandler = new NormalCardUseHandler();
+        
+        private bool _prevLeftPressed;
+        private bool _prevRightPressed;
 
-        //private RectTransform _selectedRectTransform;
-        private CardType _selectedCardType;
+        public static CardUseManager Instance { get; private set; }
+        public static bool HasInstance => Instance != null;
 
-        private Vector3 _mouseScreenPos;
-        private Vector3 _selectionStartWorldPos;
-        private Vector3 _dragVelocity;
-        private Vector3 _dragOffset;
+        public CardUseState State { get; private set; } = CardUseState.None;
 
-        private bool _isBusy;
-        private bool _isPointerHeld;
-        private bool _hasReleasedSinceSelection;
-        private int _selectionVersion;
+        public CardObject HoveredCard { get; private set; }
+        public CardObject SelectedCard { get; private set; }
+        public FieldSlot SelectedSlot { get; private set; }
 
-        public Transform DragLayer => dragLayer;
-        public Transform HandLayer => handLayer;
-        public Transform FieldCardLayer => fieldCardLayer;
+        public Vector2 MouseScreenPos { get; private set; }
+        public bool IsPointerHeld { get; private set; }
+        public bool HasReleasedSinceSelection { get; set; }
+        public bool IsBusy { get; set; }
+
+        public Vector3 DragVelocity { get; set; }
+        public Vector3 DragOffset { get; set; }
+
+        public int SelectionVersion { get; private set; }
+
+        public RectTransform HandLayer => handLayer;
+        public RectTransform DragLayer => dragLayer;
+        public RectTransform FieldCardLayer => fieldCardLayer;
         public CardTargetArrow TargetArrow => targetArrow;
 
-        public CardUseState State => state;
-        public CardObject CurrentHover => currentHover;
-        public CardObject SelectedCard => selectedCard;
-        public FieldSlot SelectedSlot => selectedSlot;
+        public Vector2 HandCenterAnchoredPosition
+        {
+            get
+            {
+                if (BattleManager.HasInstance && BattleManager.Instance.HandSortingManager != null)
+                {
+                    return BattleManager.Instance.HandSortingManager.HandCenterAnchoredPosition;
+                }
 
-        public Vector3 MouseScreenPos => _mouseScreenPos;
-        public Vector3 SelectionStartWorldPos => _selectionStartWorldPos;
-        public Vector3 DragVelocity { get => _dragVelocity; set => _dragVelocity = value; }
-        public Vector3 DragOffset { get => _dragOffset; set => _dragOffset = value; }
-        public float DragFollowSmoothTime => dragFollowSmoothTime;
-
-        public bool IsBusy { get => _isBusy; set => _isBusy = value; }
-        public bool IsPointerHeld { get => _isPointerHeld; set => _isPointerHeld = value; }
-        public bool HasReleasedSinceSelection { get => _hasReleasedSinceSelection; set => _hasReleasedSinceSelection = value; }
-        public int SelectionVersion => _selectionVersion;
+                return Vector2.zero;
+            }
+        }
 
         private void Awake()
         {
@@ -88,142 +85,220 @@ namespace GamePlay.Battle.Card
 
             Instance = this;
 
-            if (playerInput == null)
+            if (eventSystem != null)
             {
-                playerInput = GetComponent<PlayerInput>();
-            }
-
-            if (playerInput == null)
-            {
-                Debug.LogError("CardUseManager: PlayerInput이 없습니다.");
-                return;
-            }
-
-            try
-            {
-                _leftClick = playerInput.actions["LeftClick"];
-                _rightClick = playerInput.actions["RightClick"];
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-
-            _handlers[CardType.Character] = new CharacterCardUseHandler();
-            _handlers[CardType.Normal] = new NormalCardUseHandler();
-        }
-
-        private void OnEnable()
-        {
-            if (_leftClick != null)
-            {
-                _leftClick.started += OnLeftClickDown;
-                _leftClick.canceled += OnLeftClickUp;
-            }
-
-            if (_rightClick != null)
-            {
-                _rightClick.performed += OnRightClick;
+                _pointerEventData = new PointerEventData(eventSystem);
             }
         }
 
-        private void OnDisable()
-        {
-            if (_leftClick != null)
-            {
-                _leftClick.started -= OnLeftClickDown;
-                _leftClick.canceled -= OnLeftClickUp;
-            }
-
-            if (_rightClick != null)
-            {
-                _rightClick.performed -= OnRightClick;
-            }
-        }
         private void OnDestroy()
         {
             if (Instance == this)
-                Instance = null;
-        }
-        private void Update()
-        {
-            if (_isBusy) return;
-
-            RefreshPointerSnapshot();
-
-            switch (state)
             {
-                case CardUseState.Idle:
-                    UpdateHover();
-                    break;
-
-                case CardUseState.Selected:
-                    UpdateSelectedSlot();
-
-                    if (selectedCard != null && _handlers.TryGetValue(_selectedCardType, out var handler))
-                    {
-                        handler.UpdateSelection(this, selectedCard);
-                    }
-                    break;
-
-                case CardUseState.Resolving:
-                    break;
+                Instance = null;
             }
         }
 
-        public void RefreshPointerSnapshot()
+        private void Update()
         {
             if (Mouse.current == null) return;
-            if (EventSystem.current == null) return;
+            if (uiRaycaster == null || eventSystem == null) return;
 
-            _mouseScreenPos = Mouse.current.position.ReadValue();
+            UpdatePointerState();
+            RaycastUI();
 
-            var eventData = new PointerEventData(EventSystem.current)
+            if (SelectedCard == null)
             {
-                position = _mouseScreenPos
-            };
+                UpdateHover();
+            }
+            else
+            {
+                UpdateSelectedCard();
+            }
 
+            HandleInput();
+        }
+
+        private void UpdatePointerState()
+        {
+            if (Mouse.current == null) return;
+            MouseScreenPos = Mouse.current.position.ReadValue();
+        }
+
+        private void RaycastUI()
+        {
             _raycastResults.Clear();
-            EventSystem.current.RaycastAll(eventData, _raycastResults);
+
+            _pointerEventData.position = MouseScreenPos;
+            uiRaycaster.Raycast(_pointerEventData, _raycastResults);
         }
 
         private void UpdateHover()
         {
-            try
+            var nextHovered = FindTopCard();
+
+            if (HoveredCard == nextHovered) return;
+
+            if (HoveredCard != null)
             {
-                var topCard = FindTopCard();
-
-                if (currentHover == topCard) return;
-
-                currentHover?.ForceExit();
-                currentHover = topCard;
-                currentHover?.ForceEnter();
+                HoveredCard.ForceExit();
             }
-            catch (Exception e)
+
+            HoveredCard = nextHovered;
+
+            if (HoveredCard != null)
             {
-                Debug.LogException(e);
+                HoveredCard.ForceEnter();
             }
         }
 
-        private void UpdateSelectedSlot()
+        private void UpdateSelectedCard()
         {
-            try
+            if (SelectedCard == null || SelectedCard.CardInstance == null) return;
+
+            var handler = GetHandler(SelectedCard.CardInstance.CardType);
+            handler?.UpdateSelection(this, SelectedCard);
+        }
+
+        private void HandleInput()
+        {
+            bool leftPressed = Mouse.current.leftButton.isPressed;
+            bool rightPressed = Mouse.current.rightButton.isPressed;
+
+            bool leftDown = leftPressed && !_prevLeftPressed;
+            bool leftUp = !leftPressed && _prevLeftPressed;
+            bool rightDown = rightPressed && !_prevRightPressed;
+
+            if (leftDown)
             {
-                selectedSlot = FindTopSlot();
+                OnLeftDown();
             }
-            catch (Exception e)
+
+            if (leftUp)
             {
-                Debug.LogException(e);
+                OnLeftUp();
             }
+
+            if (rightDown)
+            {
+                OnRightDown();
+            }
+
+            _prevLeftPressed = leftPressed;
+            _prevRightPressed = rightPressed;
+        }
+
+        private void OnLeftDown()
+        {
+            // 선택 중인 경우
+            if (State == CardUseState.Selected)
+            {
+                IsPointerHeld = false;
+                HasReleasedSinceSelection = true;
+                if (IsBusy) return;
+                ResolveSelectionAsync().Forget();
+            }
+            
+            IsPointerHeld = true;
+            HasReleasedSinceSelection = false;
+
+            if (IsBusy) return;
+
+            if (SelectedCard == null)
+            {
+                var clickedCard = FindTopCard();
+                if (clickedCard == null) return;
+
+                SelectCard(clickedCard);
+            }
+        }
+
+        private void OnLeftUp()
+        {
+            // 선택중이 아니라면
+            if (State != CardUseState.Selected) return;
+            
+            var slot = FindTopSlot();
+            if (slot == null) return;
+            
+            IsPointerHeld = false;
+            HasReleasedSinceSelection = true;
+
+            if (IsBusy) return;
+            if (SelectedCard == null) return;
+
+            ResolveSelectionAsync().Forget();
+        }
+
+        private void OnRightDown()
+        {
+            if (IsBusy) return;
+            if (SelectedCard == null) return;
+
+            CancelSelectionAsync().Forget();
+        }
+
+        private void SelectCard(CardObject card)
+        {
+            if (card == null || card.CardInstance == null) return;
+
+            HoveredCard = null;
+
+            SelectedCard = card;
+            SelectedSlot = null;
+            SelectionVersion++;
+
+            SetState(CardUseState.Selected);
+            
+            var handler = GetHandler(card.CardInstance.CardType);
+            handler?.BeginSelection(this, card);
+            
+
+        }
+
+        private async UniTaskVoid ResolveSelectionAsync()
+        {
+            if (SelectedCard == null || SelectedCard.CardInstance == null) return;
+
+            IsBusy = true;
+
+            var card = SelectedCard;
+            var slot = FindTopSlot();
+            SetSelectedSlot(slot);
+
+            var handler = GetHandler(card.CardInstance.CardType);
+            if (handler == null)
+            {
+                ForceReset();
+                return;
+            }
+
+            await handler.Resolve(this, card, slot, SelectionVersion);
+        }
+
+        public async UniTask CancelSelectionAsync()
+        {
+            if (SelectedCard == null || SelectedCard.CardInstance == null) return;
+
+            IsBusy = true;
+
+            var card = SelectedCard;
+            var handler = GetHandler(card.CardInstance.CardType);
+
+            if (handler == null)
+            {
+                ForceReset();
+                return;
+            }
+
+            await handler.ReturnToOrigin(this, card);
         }
 
         public CardObject FindTopCard()
         {
-            foreach (var hit in _raycastResults)
+            foreach (var result in _raycastResults)
             {
-                if (hit.gameObject == null) continue;
-
-                var card = hit.gameObject.GetComponentInParent<CardObject>();
+                var card = result.gameObject.GetComponentInParent<CardObject>();
                 if (card != null)
                 {
                     return card;
@@ -235,11 +310,9 @@ namespace GamePlay.Battle.Card
 
         public FieldSlot FindTopSlot()
         {
-            foreach (var hit in _raycastResults)
+            foreach (var result in _raycastResults)
             {
-                if (hit.gameObject == null) continue;
-
-                var slot = hit.gameObject.GetComponentInParent<FieldSlot>();
+                var slot = result.gameObject.GetComponentInParent<FieldSlot>();
                 if (slot != null)
                 {
                     return slot;
@@ -249,376 +322,104 @@ namespace GamePlay.Battle.Card
             return null;
         }
 
-        private async void OnLeftClickDown(InputAction.CallbackContext context)
+        public void SetSelectedSlot(FieldSlot slot)
         {
-            if (_isBusy) return;
-
-            try
-            {
-                RefreshPointerSnapshot();
-
-                switch (state)
-                {
-                    case CardUseState.Idle:
-                    {
-                        if (currentHover == null)
-                        {
-                            currentHover = FindTopCard();
-                        }
-
-                        if (currentHover == null) return;
-
-                        if (dragLayer == null || handLayer == null)
-                        {
-                            Debug.LogError("CardUseManager: dragLayer 또는 handLayer가 비어 있습니다.");
-                            return;
-                        }
-
-                        _isPointerHeld = true;
-                        _isBusy = true;
-                        await BeginSelectionAsync(currentHover);
-
-                        // 일반카드는 첫 클릭 직후 화살표를 한 번 더 강제로 갱신
-                        if (selectedCard != null && _selectedCardType == CardType.Normal && targetArrow != null)
-                        {
-                            Canvas.ForceUpdateCanvases();
-
-                            var startPos = selectedCard.GetArrowStartPosition();
-                            targetArrow.Show(startPos, _mouseScreenPos);
-                            targetArrow.UpdateArrow(startPos, _mouseScreenPos);
-                        }
-
-                        break;
-                    }
-
-                    case CardUseState.Selected:
-                    {
-                        _isPointerHeld = true;
-                        selectedSlot = FindTopSlot();
-
-                        if (selectedCard == null)
-                        {
-                            ForceReset();
-                            return;
-                        }
-
-                        if (_hasReleasedSinceSelection)
-                        {
-                            _isBusy = true;
-
-                            if (CanResolveCurrentSelection())
-                            {
-                                await ResolveSelectionAsync();
-                            }
-                            else
-                            {
-                                await ReturnSelectedCardToOriginAsync();
-                            }
-                        }
-
-                        break;
-                    }
-
-                    case CardUseState.Resolving:
-                        break;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                ForceReset();
-            }
+            SelectedSlot = slot;
         }
 
-        private async void OnLeftClickUp(InputAction.CallbackContext context)
+        public void SetState(CardUseState state)
         {
-            _isPointerHeld = false;
-
-            if (_isBusy) return;
-            if (state != CardUseState.Selected) return;
-            if (selectedCard == null) return;
-
-            try
-            {
-                RefreshPointerSnapshot();
-                selectedSlot = FindTopSlot();
-
-                if (!_hasReleasedSinceSelection && CanResolveCurrentSelection())
-                {
-                    _isBusy = true;
-                    await ResolveSelectionAsync();
-                    return;
-                }
-
-                _hasReleasedSinceSelection = true;
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                await CancelSelectionAsync();
-            }
-        }
-
-        private async void OnRightClick(InputAction.CallbackContext context)
-        {
-            if (_isBusy) return;
-            if (state != CardUseState.Selected) return;
-
-            _isBusy = true;
-
-            try
-            {
-                await CancelSelectionAsync();
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                ForceReset();
-            }
-        }
-
-        private bool CanResolveCurrentSelection()
-        {
-            if (selectedCard == null) return false;
-            if (!_handlers.TryGetValue(_selectedCardType, out var handler)) return false;
-
-            return handler.CanResolve(this, selectedCard, selectedSlot);
-        }
-
-        private async UniTask BeginSelectionAsync(CardObject card)
-        {
-            if (card == null)
-            {
-                ForceReset();
-                return;
-            }
-
-            _selectionVersion++;
-            var myVersion = _selectionVersion;
-
-            try
-            {
-                currentHover?.ForceExit();
-                currentHover = null;
-
-                selectedCard = card;
-                selectedSlot = null;
-                //_selectedRectTransform = card.RectTransform;
-                _selectedCardType = card.CardInstance.data.cardType;
-                _selectionStartWorldPos = card.RectTransform.position;
-
-                state = CardUseState.Selected;
-
-                if (_handlers.TryGetValue(_selectedCardType, out var handler))
-                {
-                    handler.BeginSelection(this, selectedCard);
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                ForceReset();
-            }
-            finally
-            {
-                if (myVersion == _selectionVersion)
-                {
-                    _isBusy = false;
-                }
-            }
-
-            await UniTask.CompletedTask;
-        }
-
-        private async UniTask ResolveSelectionAsync()
-        {
-            var myVersion = _selectionVersion;
-            try
-            {
-                state = CardUseState.Resolving;
-
-                if (_handlers.TryGetValue(_selectedCardType, out var handler))
-                {
-                    await handler.Resolve(this, selectedCard, selectedSlot, myVersion);
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                await CancelSelectionAsync();
-            }
-            finally
-            {
-                if (myVersion == _selectionVersion)
-                {
-                    _isBusy = false;
-                }
-            }
-        }
-
-        private async UniTask ReturnSelectedCardToOriginAsync()
-        {
-            if (selectedCard == null)
-            {
-                ForceReset();
-                return;
-            }
-
-            try
-            {
-                if (_handlers.TryGetValue(_selectedCardType, out var handler))
-                {
-                    await handler.ReturnToOrigin(this, selectedCard);
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                ForceReset();
-            }
-        }
-
-        public async UniTask CancelSelectionAsync()
-        {
-            _selectionVersion++;
-
-            if (selectedCard == null)
-            {
-                ForceReset();
-                return;
-            }
-
-            try
-            {
-                if (_handlers.TryGetValue(_selectedCardType, out var handler))
-                {
-                    await handler.ReturnToOrigin(this, selectedCard);
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                ForceReset();
-            }
+            State = state;
         }
 
         public void ResetSelectionState()
         {
-            state = CardUseState.Idle;
+            if (SelectedCard != null && SelectedCard.CardInstance != null)
+            {
+                var handler = GetHandler(SelectedCard.CardInstance.CardType);
+                handler?.EndSelection(this, SelectedCard);
+            }
 
-            selectedCard = null;
-            selectedSlot = null;
-            //_selectedRectTransform = null;
-            _selectedCardType = default;
-            _selectionStartWorldPos = Vector3.zero;
+            SelectedCard = null;
+            SelectedSlot = null;
+            DragVelocity = Vector3.zero;
+            DragOffset = Vector3.zero;
+            HasReleasedSinceSelection = false;
+            IsPointerHeld = false;
+            IsBusy = false;
 
-            _isPointerHeld = false;
-            _dragVelocity = Vector3.zero;
-            _dragOffset = Vector3.zero;
-            _hasReleasedSinceSelection = false;
-
+            SetState(CardUseState.None);
             ClearArrow();
+
+            if (BattleManager.HasInstance)
+            {
+                BattleManager.Instance.RequestHandLayoutRefresh();
+            }
         }
 
         public void ForceReset()
         {
-            _selectionVersion++;
+            if (HoveredCard != null)
+            {
+                HoveredCard.ForceExit();
+                HoveredCard = null;
+            }
 
-            state = CardUseState.Idle;
+            SelectedCard = null;
+            SelectedSlot = null;
+            DragVelocity = Vector3.zero;
+            DragOffset = Vector3.zero;
+            HasReleasedSinceSelection = false;
+            IsPointerHeld = false;
+            IsBusy = false;
 
-            currentHover = null;
-            selectedCard = null;
-            selectedSlot = null;
-            //_selectedRectTransform = null;
-            _selectedCardType = default;
-            _selectionStartWorldPos = Vector3.zero;
-
-            _isPointerHeld = false;
-            _dragVelocity = Vector3.zero;
-            _dragOffset = Vector3.zero;
-            _hasReleasedSinceSelection = false;
-            _isBusy = false;
-
+            SetState(CardUseState.None);
             ClearArrow();
-        }
 
-        public void SetState(CardUseState newState)
-        {
-            state = newState;
-        }
-
-        public void SetSelectedSlot(FieldSlot slot)
-        {
-            selectedSlot = slot;
+            if (BattleManager.HasInstance)
+            {
+                BattleManager.Instance.RequestHandLayoutRefresh();
+            }
         }
 
         public void ClearArrow()
         {
-            if (targetArrow != null)
-            {
-                targetArrow.Hide();
-            }
+            targetArrow?.Hide();
         }
 
-        public void ClearHover(CardObject target)
+        public Vector2 ScreenToLocalPointInLayer(RectTransform targetLayer, Vector2 screenPos)
         {
-            if (target == null) return;
-            if (currentHover != target) return;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                targetLayer,
+                screenPos,
+                null,
+                out var localPoint
+            );
 
-            currentHover = null;
+            return localPoint;
         }
 
-        public void NotifyCardDisabled(CardObject target)
+        private ICardUseHandler GetHandler(CardType cardType)
         {
-            if (target == null) return;
-
-            if (currentHover == target)
+            return cardType switch
             {
-                currentHover = null;
+                CardType.Character => _characterHandler,
+                CardType.Normal => _normalHandler,
+                _ => null
+            };
+        }
+        public void NotifyCardDisabled(CardObject card)
+        {
+            if (card == null) return;
+
+            if (HoveredCard == card)
+            {
+                HoveredCard = null;
             }
 
-            if (selectedCard == target)
+            if (SelectedCard == card)
             {
                 ForceReset();
-            }
-        }
-        public Vector3 SmoothFollow(Vector3 current, Vector3 target)
-        {
-            return Vector3.SmoothDamp(
-                current,
-                target,
-                ref _dragVelocity,
-                dragFollowSmoothTime
-            );
-        }
-
-        public Transform GetCardPositionTransform(AddCardPosition cardPosition)
-        {
-            switch (cardPosition)
-            {
-                case AddCardPosition.Hand: return handLayer;
-                case AddCardPosition.Draw:
-                case AddCardPosition.Used:
-                default:
-                {
-                    return null;
-                }
             }
         }
     }

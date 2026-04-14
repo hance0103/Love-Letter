@@ -12,11 +12,15 @@ namespace GamePlay.Battle.Card.CardHandler
 
         public void BeginSelection(CardUseManager manager, CardObject card)
         {
+            if (manager == null || card == null) return;
+
             manager.DragVelocity = Vector3.zero;
             manager.DragOffset = Vector3.zero;
             manager.HasReleasedSinceSelection = false;
 
             card.BeginSelectionForTargeting();
+            
+            card.MoveToFocus();
             manager.SetSelectedSlot(manager.FindTopSlot());
 
             if (manager.TargetArrow != null)
@@ -25,23 +29,34 @@ namespace GamePlay.Battle.Card.CardHandler
                 manager.TargetArrow.Show(startPos, manager.MouseScreenPos);
                 manager.TargetArrow.UpdateArrow(startPos, manager.MouseScreenPos);
             }
+            card.RectTransform.rotation = Quaternion.identity;
+            if (BattleManager.HasInstance)
+            {
+                BattleManager.Instance.RequestHandLayoutRefresh();
+            }
         }
 
         public void UpdateSelection(CardUseManager manager, CardObject card)
         {
+            if (manager == null || card == null) return;
             if (manager.State != CardUseState.Selected) return;
-            if (card == null) return;
-            if (manager.TargetArrow == null) return;
 
-            manager.TargetArrow.UpdateArrow(
-                card.GetArrowStartPosition(),
-                manager.MouseScreenPos
-            );
+            
+            card.RectTransform.localRotation = Quaternion.identity;
+            manager.SetSelectedSlot(manager.FindTopSlot());
+
+            if (manager.TargetArrow != null)
+            {
+                manager.TargetArrow.UpdateArrow(
+                    card.GetArrowStartPosition(),
+                    manager.MouseScreenPos
+                );
+            }
         }
 
         public bool CanResolve(CardUseManager manager, CardObject card, FieldSlot slot)
         {
-            if (card == null) return false;
+            if (card == null || card.CardInstance == null) return false;
             if (slot == null) return false;
 
             return slot.CanUseThisNormalCard(card.CardInstance);
@@ -49,59 +64,60 @@ namespace GamePlay.Battle.Card.CardHandler
 
         public async UniTask Resolve(CardUseManager manager, CardObject card, FieldSlot slot, int selectionVersion)
         {
-            if (card == null)
+            if (manager == null || card == null)
             {
-                manager.ForceReset();
+                manager?.ForceReset();
                 return;
             }
 
-            if (slot == null)
+            if (slot == null || !slot.CanUseThisNormalCard(card.CardInstance))
             {
-                manager.SetState(CardUseState.Selected);
-                manager.IsBusy = false;
+                await ReturnToOrigin(manager, card);
                 return;
             }
-
-            if (!slot.CanUseThisNormalCard(card.CardInstance))
-            {
-                manager.SetState(CardUseState.Selected);
-                manager.IsBusy = false;
-                return;
-            }
-
+            manager?.ClearArrow();
             try
             {
                 await card.PlayUseAsync();
 
                 if (selectionVersion != manager.SelectionVersion) return;
 
+                manager.ResetSelectionState();
+
                 if (BattleManager.HasInstance)
                 {
-                    BattleManager.Instance.DiscardCard(card.CardInstance);
+                    BattleManager.Instance.UseNormalCard(card, slot);
                 }
-
-                manager.ResetSelectionState();
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
                 await manager.CancelSelectionAsync();
             }
+            finally
+            {
+                manager.IsBusy = false;
+            }
         }
 
         public async UniTask ReturnToOrigin(CardUseManager manager, CardObject card)
         {
-            if (card == null)
+            if (manager == null || card == null)
             {
-                manager.ForceReset();
+                manager?.ForceReset();
                 return;
             }
-
+            manager?.ClearArrow();
             try
             {
-                await card.ReturnToHandAsync(manager.HandLayer, manager.SelectionStartWorldPos);
+                await card.ReturnToHandLayoutAsync();
                 card.EndSelection();
                 manager.ResetSelectionState();
+
+                if (BattleManager.HasInstance)
+                {
+                    BattleManager.Instance.RequestHandLayoutRefresh();
+                }
             }
             catch (Exception e)
             {
@@ -113,10 +129,9 @@ namespace GamePlay.Battle.Card.CardHandler
                 manager.IsBusy = false;
             }
         }
-
         public void EndSelection(CardUseManager manager, CardObject card)
         {
-            manager.ClearArrow();
+
         }
     }
 }

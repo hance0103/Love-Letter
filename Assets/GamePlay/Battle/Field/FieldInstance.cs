@@ -10,19 +10,20 @@ namespace GamePlay.Battle.Field
     {
         [SerializeField] private List<CardInstance> cards = new();
 
-        private readonly Dictionary<CardInstance, CardObject> _cardDict = new();
+        private readonly Dictionary<CardInstance, CardObject> _cardObjectByInstance = new();
 
         public IReadOnlyList<CardInstance> Cards => cards;
 
         public void Init(int slotCount)
         {
             cards = new List<CardInstance>(slotCount);
-            for (var i = 0; i < slotCount; i++)
+
+            for (int i = 0; i < slotCount; i++)
             {
                 cards.Add(null);
             }
 
-            _cardDict.Clear();
+            _cardObjectByInstance.Clear();
         }
 
         public bool IsValidIndex(int index)
@@ -46,35 +47,35 @@ namespace GamePlay.Battle.Field
         {
             if (cardInstance == null) return null;
 
-            _cardDict.TryGetValue(cardInstance, out var cardObject);
+            _cardObjectByInstance.TryGetValue(cardInstance, out var cardObject);
             return cardObject;
         }
 
-        public bool AddCardToField(CardObject card, int index)
+        public bool AddCardToField(CardObject cardObject, int index)
         {
-            if (card == null) return false;
-            if (card.CardInstance == null) return false;
+            if (cardObject == null) return false;
+            if (cardObject.CardInstance == null) return false;
             if (!IsValidIndex(index)) return false;
             if (cards[index] != null) return false;
 
-            cards[index] = card.CardInstance;
-            _cardDict[card.CardInstance] = card;
+            cards[index] = cardObject.CardInstance;
+            _cardObjectByInstance[cardObject.CardInstance] = cardObject;
             return true;
         }
 
-        public bool RemoveCardFromField(CardObject card)
+        public bool RemoveCardFromField(CardObject cardObject)
         {
-            if (card == null) return false;
-            return RemoveCardFromField(card.CardInstance);
+            if (cardObject == null) return false;
+            return RemoveCardFromField(cardObject.CardInstance);
         }
 
         public bool RemoveCardFromField(CardInstance cardInstance)
         {
             if (cardInstance == null) return false;
 
-            var removed = false;
+            bool removed = false;
 
-            for (var i = 0; i < cards.Count; i++)
+            for (int i = 0; i < cards.Count; i++)
             {
                 if (cards[i] != cardInstance) continue;
 
@@ -83,15 +84,8 @@ namespace GamePlay.Battle.Field
                 break;
             }
 
-            _cardDict.Remove(cardInstance);
+            _cardObjectByInstance.Remove(cardInstance);
             return removed;
         }
-    }
-    public interface IFieldSlot
-    {
-        bool CanDrop(CardInstance card);
-        void OnDrop(CardInstance card);
-        void ClearSlot();
-        Transform GetTransform();
     }
 }

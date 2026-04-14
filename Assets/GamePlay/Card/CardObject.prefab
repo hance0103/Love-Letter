@@ -646,31 +646,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a3b7462323039e45a41a976de3f3bf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Battle.Card.CarInstance
-  cardImage: {fileID: 7419119715239722991}
-  cardName: {fileID: 4799111778826113248}
-  cardNum: {fileID: 2197795931071552375}
-  currentHp: {fileID: 5301738454417893771}
-  currentATK: {fileID: 8437961521937593790}
-  currentShield: {fileID: 0}
-  currentActionCount: {fileID: 4649346003045750979}
-  cardDesc: {fileID: 700297142779325967}
-  cardInstance:
-    data: {fileID: 11400000, guid: abfa2f17ba11e6948a0f23600e08f299, type: 2}
-    cardImage: {fileID: 0}
-    currentCardNum: 0
-    currentHp: 0
-    currentATK: 0
-    currentShield: 0
-    currentActionCount: 0
-    cardDesc: 
-  currentSlot: {fileID: 0}
-  hoverScale: 1.15
+  returnDuration: 0.2
+  returnEase: 9
+  hoverOffsetY: 30
+  hoverScaleMultiplier: 1.5
   hoverDuration: 0.2
-  selectedScale: 1.15
-  selectedScaleDuration: 0.08
-  moveDuration: 0.2
-  snapToSlotDuration: 0.22
-  snapToSlotEase: 9
+  useDuration: 0.2
 --- !u!225 &1125336581156922163
 CanvasGroup:
   m_ObjectHideFlags: 0
