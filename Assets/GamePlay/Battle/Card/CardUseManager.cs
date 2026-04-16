@@ -221,6 +221,8 @@ namespace GamePlay.Battle.Card
             var slot = FindTopSlot();
             if (slot == null) return;
             
+            Debug.Log(slot);
+            
             IsPointerHeld = false;
             HasReleasedSinceSelection = true;
 
@@ -241,7 +243,7 @@ namespace GamePlay.Battle.Card
         private void SelectCard(CardObject card)
         {
             if (card == null || card.CardInstance == null) return;
-
+            
             HoveredCard = null;
 
             SelectedCard = card;
@@ -253,7 +255,8 @@ namespace GamePlay.Battle.Card
             var handler = GetHandler(card.CardInstance.CardType);
             handler?.BeginSelection(this, card);
             
-
+            // Canvas.ForceUpdateCanvases();
+            // RaycastUI();
         }
 
         private async UniTaskVoid ResolveSelectionAsync()

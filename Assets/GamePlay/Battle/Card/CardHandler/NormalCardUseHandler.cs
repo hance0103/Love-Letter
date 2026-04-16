@@ -21,14 +21,7 @@ namespace GamePlay.Battle.Card.CardHandler
             card.BeginSelectionForTargeting();
             
             card.MoveToFocus();
-            manager.SetSelectedSlot(manager.FindTopSlot());
 
-            if (manager.TargetArrow != null)
-            {
-                var startPos = card.GetArrowStartPosition();
-                manager.TargetArrow.Show(startPos, manager.MouseScreenPos);
-                manager.TargetArrow.UpdateArrow(startPos, manager.MouseScreenPos);
-            }
             card.RectTransform.rotation = Quaternion.identity;
             if (BattleManager.HasInstance)
             {
@@ -44,13 +37,16 @@ namespace GamePlay.Battle.Card.CardHandler
             
             card.RectTransform.localRotation = Quaternion.identity;
             manager.SetSelectedSlot(manager.FindTopSlot());
-
+            
+            if (manager.State != CardUseState.Selected) return;
+            
             if (manager.TargetArrow != null)
             {
-                manager.TargetArrow.UpdateArrow(
-                    card.GetArrowStartPosition(),
-                    manager.MouseScreenPos
-                );
+                var startPos = card.GetArrowStartPosition();
+                if (!manager.TargetArrow.gameObject.activeSelf)
+                    manager.TargetArrow.Show(startPos, manager.MouseScreenPos);
+                else
+                    manager.TargetArrow.UpdateArrow(startPos, manager.MouseScreenPos);
             }
         }
 
@@ -69,13 +65,14 @@ namespace GamePlay.Battle.Card.CardHandler
                 manager?.ForceReset();
                 return;
             }
-
+            manager?.ClearArrow();
+            manager?.SetState(CardUseState.Using);
             if (slot == null || !slot.CanUseThisNormalCard(card.CardInstance))
             {
                 await ReturnToOrigin(manager, card);
                 return;
             }
-            manager?.ClearArrow();
+
             try
             {
                 await card.PlayUseAsync();
@@ -96,6 +93,7 @@ namespace GamePlay.Battle.Card.CardHandler
             }
             finally
             {
+                manager.SetState(CardUseState.None);
                 manager.IsBusy = false;
             }
         }

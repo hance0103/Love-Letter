@@ -488,6 +488,7 @@ MonoBehaviour:
     currentCardNum: 0
     currentHp: 0
     currentATK: 0
+    increasedAtk: 0
     currentShield: 0
     currentActionCount: 0
     cardDesc: 
@@ -1227,6 +1228,7 @@ MonoBehaviour:
     currentCardNum: 0
     currentHp: 0
     currentATK: 0
+    increasedAtk: 0
     currentShield: 0
     currentActionCount: 0
     cardDesc: 
@@ -1475,6 +1477,7 @@ MonoBehaviour:
     currentCardNum: 0
     currentHp: 0
     currentATK: 0
+    increasedAtk: 0
     currentShield: 0
     currentActionCount: 0
     cardDesc: 
@@ -1639,9 +1642,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Party.PartyManager
   partyMembers:
-  - data: {fileID: 11400000, guid: c2921a21950c3484b8f02613fdfe473d, type: 2}
-    accList: []
   - data: {fileID: 11400000, guid: abfa2f17ba11e6948a0f23600e08f299, type: 2}
+    accList: []
+  - data: {fileID: 11400000, guid: c2921a21950c3484b8f02613fdfe473d, type: 2}
     accList: []
   - data: {fileID: 11400000, guid: 14437619e2dc7274aad37e09384b89cd, type: 2}
     accList: []
@@ -1724,6 +1727,7 @@ MonoBehaviour:
     currentCardNum: 0
     currentHp: 0
     currentATK: 0
+    increasedAtk: 0
     currentShield: 0
     currentActionCount: 0
     cardDesc: 

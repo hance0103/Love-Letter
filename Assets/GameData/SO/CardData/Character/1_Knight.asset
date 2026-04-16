@@ -27,4 +27,4 @@ MonoBehaviour:
   - 1_DragonKnight
   nameString: KNIGHT
   descString: DESC_KNIGHT
-  imgPath: 1_knight.png
+  imgPath: 1_Knight

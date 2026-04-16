@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using GamePlay.Party;
 using UnityEngine;
@@ -31,11 +32,26 @@ namespace GameSystem.Managers
         public DataManager Data { get; private set; }
         #endregion
 
-        private void Awake()
+        public bool Initialized { get; private set; }
+
+        private async void Awake()
         {
-            Init();
-            _ = InitManagers();
-            Debug.Log("GameManager Initialized");
+            try
+            {
+                Initialized = false;
+                Init();
+                await InitManagers();
+
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+            finally
+            {
+                Initialized = true;
+                Debug.Log("GameManager Initialized");
+            }
         }
 
         private async UniTask InitManagers()

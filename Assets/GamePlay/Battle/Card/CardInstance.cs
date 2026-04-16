@@ -13,6 +13,7 @@ namespace GamePlay.Battle.Card
         [SerializeField] private int currentCardNum;
         [SerializeField] private int currentHp;
         [SerializeField] private int currentATK;
+        [SerializeField] private int increasedAtk;
         [SerializeField] private int currentShield;
         [SerializeField] private int currentActionCount;
         [SerializeField] private string cardDesc;
@@ -21,6 +22,7 @@ namespace GamePlay.Battle.Card
         public int CurrentCardNum => currentCardNum;
         public int CurrentHp => currentHp;
         public int CurrentATK => currentATK;
+        public int InCreasedAtk => increasedAtk;
         public int CurrentShield => currentShield;
         public int CurrentActionCount => currentActionCount;
         public string CardDesc => cardDesc;
@@ -35,6 +37,7 @@ namespace GamePlay.Battle.Card
             currentCardNum = data.cardNum;
             currentHp = data.HP;
             currentATK = data.ATK;
+            increasedAtk = -1;
             currentShield = 0;
             currentActionCount = data.actionCount;
             cardDesc = data.descString;

@@ -1,7 +1,11 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using GamePlay.Battle.Field;
+using GameSystem.Managers;
+using NUnit.Framework;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GamePlay.Battle.Card
 {
@@ -9,6 +13,17 @@ namespace GamePlay.Battle.Card
     {
         [SerializeField] private CardInstance cardInstance;
         public CardInstance CardInstance => cardInstance;
+        
+        [Header("UI")]
+        [SerializeField] private TMP_Text cardName;
+        [SerializeField] private TMP_Text cardDesc;
+        [SerializeField] private Image cardImage;
+        [SerializeField] private TMP_Text cardNum;
+        [SerializeField] private TMP_Text currentHp;
+        [SerializeField] private TMP_Text currentAtk;
+        [SerializeField] private TMP_Text increaseAtk;
+        [SerializeField] private TMP_Text currentShd;
+        [SerializeField] private TMP_Text currentAC;
         
         [Header("Move")]
         [SerializeField] private float returnDuration = 0.2f;
@@ -70,9 +85,15 @@ namespace GamePlay.Battle.Card
             }
         }
 
-        public void Init(CardInstance data)
+        public void Init(CardInstance instance)
         {
-            cardInstance = data;
+            if (instance == null)
+            {
+                Debug.LogWarning("CardInstance object is null.");
+                return;
+            }
+            
+            this.cardInstance = instance;
             _isHovered = false;
             _isSelected = false;
             _isReturning = false;
@@ -82,6 +103,34 @@ namespace GamePlay.Battle.Card
 
             transform.localScale = _baseScale;
             _canvasGroup.blocksRaycasts = true;
+            
+            
+            var cardSprite = GameManager.Inst.Data.GetSprite(instance.Data.cardID);
+            if (cardSprite != null) cardImage.sprite = cardSprite;
+            
+            SetOptionalText(cardNum, instance.Data.cardNum);
+            SetOptionalText(currentHp, instance.CurrentHp);
+            SetOptionalText(currentAtk, instance.CurrentATK);
+            SetOptionalText(increaseAtk, instance.InCreasedAtk);
+            SetOptionalText(currentShd, instance.CurrentShield);
+            SetOptionalText(currentAC, instance.CurrentActionCount);
+        }
+        private void SetOptionalText(TMP_Text target, int value)
+        {
+            if (target == null) return;
+
+            var root = target.transform.parent != null
+                ? target.transform.parent.gameObject
+                : target.gameObject;
+
+            if (value < 0)
+            {
+                root.SetActive(false);
+                return;
+            }
+
+            root.SetActive(true);
+            target.text = value.ToString();
         }
 
 

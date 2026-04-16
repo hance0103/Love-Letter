@@ -20,16 +20,14 @@ namespace GameSystem.Managers
             // 데이터베이스 가져와서 초기화 시키기
             _dataBase = await GameManager.Inst.Resource.LoadAssetAsync<CardDataBase>(CardDataBasePath);
             _dataBase.Init();
-
-            // 데이터베이스에서 Sprite만 따로 로드해서 스프라이트 딕셔너리 채우기
-            //await CreateSpriteDictionary();
+            await CreateSpriteDictionary();
         }
-        public CardBase GetCardBase(string id)
+        public CardBase GetCard(string id)
         {
             return _dataBase.GetCard(id);
         }
 
-        public CardAbilityBase GetCardAbility(string id)
+        public CardAbilityBase GetAbility(string id)
         {
             return _dataBase.GetAbility(id);
         }

@@ -52,6 +52,7 @@ namespace GamePlay.Battle
 
         private async void Start()
         {
+            await UniTask.WaitUntil(() => GameManager.Inst.Initialized);
             Init(GameManager.Inst.Party.CreateDeck());
             await DrawCardsAsync(drawAmount);
         }
