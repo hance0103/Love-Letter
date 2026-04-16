@@ -58,7 +58,7 @@ namespace GamePlay.Battle.Card.CardHandler
             return slot.CanUseThisNormalCard(card.CardInstance);
         }
 
-        public async UniTask Resolve(CardUseManager manager, CardObject card, FieldSlot slot, int selectionVersion)
+        public async UniTask Resolve(CardUseManager manager, CardObject card, FieldSlot targetSlot, int selectionVersion)
         {
             if (manager == null || card == null)
             {
@@ -67,7 +67,7 @@ namespace GamePlay.Battle.Card.CardHandler
             }
             manager?.ClearArrow();
             manager?.SetState(CardUseState.Using);
-            if (slot == null || !slot.CanUseThisNormalCard(card.CardInstance))
+            if (targetSlot == null || !targetSlot.CanUseThisNormalCard(card.CardInstance))
             {
                 await ReturnToOrigin(manager, card);
                 return;
@@ -83,7 +83,7 @@ namespace GamePlay.Battle.Card.CardHandler
 
                 if (BattleManager.HasInstance)
                 {
-                    BattleManager.Instance.UseNormalCard(card, slot);
+                    BattleManager.Instance.UseNormalCard(card, targetSlot);
                 }
             }
             catch (Exception e)

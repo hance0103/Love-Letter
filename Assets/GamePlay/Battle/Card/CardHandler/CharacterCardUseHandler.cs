@@ -61,7 +61,7 @@ namespace GamePlay.Battle.Card.CardHandler
             return slot.CanDrop(card.CardInstance);
         }
 
-        public async UniTask Resolve(CardUseManager manager, CardObject card, FieldSlot slot, int selectionVersion)
+        public async UniTask Resolve(CardUseManager manager, CardObject card, FieldSlot targetSlot, int selectionVersion)
         {
             if (manager == null || card == null)
             {
@@ -70,19 +70,17 @@ namespace GamePlay.Battle.Card.CardHandler
             }
 
             var currentSlot = card.CurrentSlot;
-
-            if (slot == null)
+            if (targetSlot == null)
             {
                 await ReturnToOrigin(manager, card);
                 return;
             }
 
-            if (!CanResolve(manager, card, slot))
+            if (!CanResolve(manager, card, targetSlot))
             {
                 await ReturnToOrigin(manager, card);
                 return;
             }
-
             try
             {
                 if (!BattleManager.HasInstance)
@@ -90,27 +88,30 @@ namespace GamePlay.Battle.Card.CardHandler
                     await manager.CancelSelectionAsync();
                     return;
                 }
-
+                
+                // 핸드에서 카드가 나갈 경우
                 if (currentSlot == null)
                 {
-                    var success = BattleManager.Instance.PlaceCharacterCardToField(card, slot);
+                    
+                    var success = BattleManager.Instance.PlaceCharacterCardToField(card, targetSlot);
                     if (!success)
                     {
                         await ReturnToOrigin(manager, card);
                         return;
                     }
                 }
-                else if (currentSlot != slot)
-                {
-                    var success = BattleManager.Instance.MoveCharacterCardToFieldSlot(card, currentSlot, slot);
+                else if (currentSlot != targetSlot)
+                {   
+                    // 슬롯에서 슬롯으로 움직이는 경우
+                    var success = BattleManager.Instance.MoveCharacterCardToFieldSlot(card, currentSlot, targetSlot);
                     if (!success)
                     {
                         await ReturnToOrigin(manager, card);
                         return;
                     }
                 }
-
-                await card.ReturnToSlotAsync(slot, manager.FieldCardLayer);
+                
+                await card.ReturnToSlotAsync(targetSlot, manager.FieldCardLayer);
 
                 if (selectionVersion != manager.SelectionVersion) return;
 

@@ -221,8 +221,6 @@ namespace GamePlay.Battle.Card
             var slot = FindTopSlot();
             if (slot == null) return;
             
-            Debug.Log(slot);
-            
             IsPointerHeld = false;
             HasReleasedSinceSelection = true;
 
@@ -270,12 +268,12 @@ namespace GamePlay.Battle.Card
             SetSelectedSlot(slot);
 
             var handler = GetHandler(card.CardInstance.CardType);
+            
             if (handler == null)
             {
                 ForceReset();
                 return;
             }
-
             await handler.Resolve(this, card, slot, SelectionVersion);
         }
 
@@ -321,7 +319,6 @@ namespace GamePlay.Battle.Card
                     return slot;
                 }
             }
-
             return null;
         }
 

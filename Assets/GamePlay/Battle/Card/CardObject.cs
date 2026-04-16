@@ -346,8 +346,7 @@ namespace GamePlay.Battle.Card
         {
             await ReturnToHandAsync();
         }
-
-        public async UniTask ReturnToSlotAsync(FieldSlot slot, RectTransform fieldCardLayer)
+        public async UniTask ReturnToSlotAsync(FieldSlot slot, RectTransform fieldCardLayer, Camera uiCamera = null)
         {
             if (slot == null || fieldCardLayer == null) return;
 
@@ -357,33 +356,23 @@ namespace GamePlay.Battle.Card
             {
                 KillTweens();
 
-                var currentWorldPos = _rectTransform.position;
-                var currentWorldRot = _rectTransform.rotation;
-
                 transform.SetParent(fieldCardLayer, true);
-                _rectTransform.position = currentWorldPos;
-                _rectTransform.rotation = currentWorldRot;
                 transform.SetAsLastSibling();
 
                 var slotRect = slot.RectTransform;
                 if (slotRect == null) return;
+                
+                var cardWorldCenter = _rectTransform.TransformPoint(_rectTransform.rect.center);
+                var slotWorldCenter = slotRect.TransformPoint(slotRect.rect.center);
+                
 
-                var screenPoint = RectTransformUtility.WorldToScreenPoint(null, slotRect.position);
-
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                    fieldCardLayer,
-                    screenPoint,
-                    null,
-                    out var targetAnchoredPos
-                );
-
-                _moveTween = _rectTransform.DOAnchorPos(targetAnchoredPos, returnDuration).SetEase(returnEase);
-                //_rotateTween = _rectTransform.DOLocalRotate(Vector3.zero, returnDuration).SetEase(returnEase);
-                _scaleTween = transform.DOScale(_baseScale, returnDuration).SetEase(returnEase);
+                
+                
+                _moveTween = _rectTransform.DOMove(slotWorldCenter, returnDuration).SetEase(returnEase);
+                _scaleTween = _rectTransform.DOScale(_baseScale, returnDuration).SetEase(returnEase);
 
                 await UniTask.WhenAll(
                     _moveTween.AsyncWaitForCompletion().AsUniTask(),
-                    //_rotateTween.AsyncWaitForCompletion().AsUniTask(),
                     _scaleTween.AsyncWaitForCompletion().AsUniTask()
                 );
 
@@ -395,6 +384,54 @@ namespace GamePlay.Battle.Card
                 _canvasGroup.blocksRaycasts = true;
             }
         }
+        // public async UniTask ReturnToSlotAsync(FieldSlot slot, RectTransform fieldCardLayer)
+        // {
+        //     if (slot == null || fieldCardLayer == null) return;
+        //
+        //     _isReturning = true;
+        //
+        //     try
+        //     {
+        //         KillTweens();
+        //
+        //         var currentWorldPos = _rectTransform.position;
+        //         var currentWorldRot = _rectTransform.rotation;
+        //
+        //         transform.SetParent(fieldCardLayer, true);
+        //         _rectTransform.position = currentWorldPos;
+        //         _rectTransform.rotation = currentWorldRot;
+        //         transform.SetAsLastSibling();
+        //
+        //         var slotRect = slot.RectTransform;
+        //         if (slotRect == null) return;
+        //
+        //         var screenPoint = RectTransformUtility.WorldToScreenPoint(null, slotRect.position);
+        //
+        //         RectTransformUtility.ScreenPointToLocalPointInRectangle(
+        //             fieldCardLayer,
+        //             screenPoint,
+        //             null,
+        //             out var targetAnchoredPos
+        //         );
+        //
+        //         _moveTween = _rectTransform.DOAnchorPos(targetAnchoredPos, returnDuration).SetEase(returnEase);
+        //         //_rotateTween = _rectTransform.DOLocalRotate(Vector3.zero, returnDuration).SetEase(returnEase);
+        //         _scaleTween = transform.DOScale(_baseScale, returnDuration).SetEase(returnEase);
+        //
+        //         await UniTask.WhenAll(
+        //             _moveTween.AsyncWaitForCompletion().AsUniTask(),
+        //             //_rotateTween.AsyncWaitForCompletion().AsUniTask(),
+        //             _scaleTween.AsyncWaitForCompletion().AsUniTask()
+        //         );
+        //
+        //         _currentSlot = slot;
+        //     }
+        //     finally
+        //     {
+        //         _isReturning = false;
+        //         _canvasGroup.blocksRaycasts = true;
+        //     }
+        // }
 
         public async UniTask PlayUseAsync()
         {

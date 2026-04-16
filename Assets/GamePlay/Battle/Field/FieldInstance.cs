@@ -57,7 +57,7 @@ namespace GamePlay.Battle.Field
             if (cardObject.CardInstance == null) return false;
             if (!IsValidIndex(index)) return false;
             if (cards[index] != null) return false;
-
+            Debug.Log("야호");
             cards[index] = cardObject.CardInstance;
             _cardObjectByInstance[cardObject.CardInstance] = cardObject;
             return true;

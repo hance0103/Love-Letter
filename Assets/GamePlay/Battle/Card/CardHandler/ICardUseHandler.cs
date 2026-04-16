@@ -11,7 +11,7 @@ namespace GamePlay.Battle.Card.CardHandler
         void BeginSelection(CardUseManager manager, CardObject card);
         void UpdateSelection(CardUseManager manager, CardObject card);
         bool CanResolve(CardUseManager manager, CardObject card, FieldSlot slot);
-        UniTask Resolve(CardUseManager manager, CardObject card, FieldSlot slot, int selectionVersion);
+        UniTask Resolve(CardUseManager manager, CardObject card, FieldSlot targetSlot, int selectionVersion);
         UniTask ReturnToOrigin(CardUseManager manager, CardObject card);
         void EndSelection(CardUseManager manager, CardObject card);
     }

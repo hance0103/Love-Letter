@@ -172,12 +172,10 @@ namespace GamePlay.Battle
         {
             if (cardObject == null || slot == null) return false;
             if (!slot.CanDrop(cardObject.CardInstance)) return false;
-
             if (!_fieldInstanceDict.TryGetValue(slot.SlotOwner, out var fieldInstance))
             {
                 return false;
             }
-
             bool added = fieldInstance.AddCardToField(cardObject, slot.SlotIndex);
             if (!added) return false;
 
