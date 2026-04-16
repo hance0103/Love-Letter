@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d95c0f0ca22fb641a9fe1714d03a1c0, type: 3}
-  m_Name: 4_Warrior
+  m_Name: warrior_4
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Card.CardBase
-  cardID: 4_Warrior
+  cardID: warrior_4
   cardTier: 0
   cardType: 0
   keywords: 
@@ -21,9 +21,9 @@ MonoBehaviour:
   ATK: 3
   actionCount: 5
   cardAbilityIDs:
-  - forntEnemyDualBonusDamage
+  - frontEnemyDualBonusDamage
   nextPromotionIDs:
-  - None
-  nameString: WARRIOR
-  descString: DESC_WARRIOR
-  imgPath: 2_Merchant
+  - none
+  nameString: nameWarrior_4
+  descString: descWarrior_4
+  imgPath: warrior_4

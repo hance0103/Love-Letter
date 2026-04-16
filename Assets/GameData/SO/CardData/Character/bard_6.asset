@@ -10,20 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d95c0f0ca22fb641a9fe1714d03a1c0, type: 3}
-  m_Name: Bestowal_Of_Title
+  m_Name: bard_6
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Card.CardBase
-  cardID: Bestowal_Of_Title
+  cardID: bard_6
   cardTier: 0
-  cardType: 1
+  cardType: 0
   keywords: 
-  cardNum: -1
-  HP: -1
-  ATK: -1
-  actionCount: -1
+  cardNum: 6
+  HP: 3
+  ATK: 3
+  actionCount: 3
   cardAbilityIDs:
-  - targetIncreaseNum1
+  - frontEnemyAttackATK
+  - allAllyActionCount-1
   nextPromotionIDs:
-  - None
-  nameString: Bestowal_Of_Title
-  descString: DESC_Bestowal_Of_Title
-  imgPath: 2_Merchant
+  - none
+  nameString: nameBard_6
+  descString: descBard_6
+  imgPath: bard_6

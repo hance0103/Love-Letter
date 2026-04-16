@@ -10,23 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d95c0f0ca22fb641a9fe1714d03a1c0, type: 3}
-  m_Name: 1_HedgeKnight
+  m_Name: bestowalOfTitle
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Card.CardBase
-  cardID: 1_HedgeKnight
-  cardTier: 1
-  cardType: 0
+  cardID: bestowalOfTitle
+  cardTier: 0
+  cardType: 1
   keywords: 
-  cardNum: 1
-  HP: 10
-  ATK: 2
-  actionCount: 3
+  cardNum: -1
+  HP: -1
+  ATK: -1
+  actionCount: -1
   cardAbilityIDs:
-  - frontEnemyAttackATK
-  - selfIncreaseATK2
-  - frontEnemyAttackATK
-  - selfIncreaseATK2
+  - targetIncreaseNum1
   nextPromotionIDs:
-  - promoted
-  nameString: HEDGE_KNIGHT
-  descString: DESC_DRAGON_KNIGHT
-  imgPath: 2_Merchant
+  - none
+  nameString: nameBestowaloftitle
+  descString: descBestowaloftitle
+  imgPath: bestowalOfTitle

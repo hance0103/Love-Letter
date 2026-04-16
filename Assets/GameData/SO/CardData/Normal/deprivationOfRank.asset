@@ -10,21 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d95c0f0ca22fb641a9fe1714d03a1c0, type: 3}
-  m_Name: 6_Bard
+  m_Name: deprivationOfRank
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Card.CardBase
-  cardID: 6_Bard
+  cardID: deprivationOfRank
   cardTier: 0
-  cardType: 0
+  cardType: 1
   keywords: 
-  cardNum: 6
-  HP: 3
-  ATK: 3
-  actionCount: 3
+  cardNum: -1
+  HP: -1
+  ATK: -1
+  actionCount: -1
   cardAbilityIDs:
-  - frontEnemyAttackATK
-  - allAllyActionCount-1
+  - targetDecreaseATK2
   nextPromotionIDs:
-  - None
-  nameString: BARD
-  descString: DESC_BARD
-  imgPath: 2_Merchant
+  - none
+  nameString: nameDeprivationofrank
+  descString: descDeprivationofrank
+  imgPath: deprivationOfRank

@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d95c0f0ca22fb641a9fe1714d03a1c0, type: 3}
-  m_Name: 8_Princess
+  m_Name: priest_3
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Card.CardBase
-  cardID: 8_Princess
+  cardID: priest_3
   cardTier: 0
   cardType: 0
   keywords: 
-  cardNum: 8
-  HP: 3
+  cardNum: 3
+  HP: 4
   ATK: 3
-  actionCount: 3
+  actionCount: 4
   cardAbilityIDs:
   - frontEnemyAttackATK
-  - canAllAcc
+  - frontSingleAllyHealATK
   nextPromotionIDs:
-  - None
-  nameString: PRINCESS
-  descString: DESC_PRINCESS
-  imgPath: 2_Merchant
+  - none
+  nameString: namePriest_3
+  descString: descPriest_3
+  imgPath: priest_3

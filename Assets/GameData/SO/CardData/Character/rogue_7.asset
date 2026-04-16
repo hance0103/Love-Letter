@@ -10,20 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d95c0f0ca22fb641a9fe1714d03a1c0, type: 3}
-  m_Name: Deprivation_Of_Rank
+  m_Name: rogue_7
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Card.CardBase
-  cardID: Deprivation_Of_Rank
+  cardID: rogue_7
   cardTier: 0
-  cardType: 1
+  cardType: 0
   keywords: 
-  cardNum: -1
-  HP: -1
-  ATK: -1
-  actionCount: -1
+  cardNum: 7
+  HP: 3
+  ATK: 3
+  actionCount: 3
   cardAbilityIDs:
-  - targetDecreaseATK2
+  - backEnemyAttackATK
+  - backEnemyIncreaseActionCount1
+  - selfDecreaseActionCount1
   nextPromotionIDs:
-  - None
-  nameString: Deprivation_Of_Rank
-  descString: DESC_Deprivation_Of_Rank
-  imgPath: 2_Merchant
+  - none
+  nameString: nameRogue_7
+  descString: descRogue_7
+  imgPath: rogue_7

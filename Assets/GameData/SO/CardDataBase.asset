@@ -13,25 +13,25 @@ MonoBehaviour:
   m_Name: CardDataBase
   m_EditorClassIdentifier: Assembly-CSharp::GameData.SO.Scripts.CardDataBase
   allCards:
-  - {fileID: 11400000, guid: abfa2f17ba11e6948a0f23600e08f299, type: 2}
-  - {fileID: 11400000, guid: da1179a5b8914e04692cd90edf3d445d, type: 2}
-  - {fileID: 11400000, guid: 80b653fb40f80f943b38d66d2c552d80, type: 2}
-  - {fileID: 11400000, guid: 56f3b8b395bc36f4c832e5a879e3f1f7, type: 2}
-  - {fileID: 11400000, guid: cb23a5c5afa3cee438af5fa44482975f, type: 2}
-  - {fileID: 11400000, guid: 017f3d78127278742b8a8b81fcc6bb52, type: 2}
-  - {fileID: 11400000, guid: 611eba298d239f9428a60ebe7d8f06eb, type: 2}
-  - {fileID: 11400000, guid: c2921a21950c3484b8f02613fdfe473d, type: 2}
-  - {fileID: 11400000, guid: 5df0f07e1aee0bf488a2b4463d548836, type: 2}
+  - {fileID: 11400000, guid: 3b8bc4fdd0d5a624abcbe0c02f6922f6, type: 2}
+  - {fileID: 11400000, guid: dcf23c0b0400281449462e4b5dbc9eca, type: 2}
+  - {fileID: 11400000, guid: 6907a11fb86f1d94ca6fcade5d33a225, type: 2}
+  - {fileID: 11400000, guid: e770a3b8410d0ba41b8de27dc5a042bd, type: 2}
+  - {fileID: 11400000, guid: 6fbdee3ac8f8ec949b971495c3206988, type: 2}
+  - {fileID: 11400000, guid: 3f8474fd90718fd4c985c9d7fc612987, type: 2}
+  - {fileID: 11400000, guid: ddf396b2c39522f44bdafe54fb3e3b7d, type: 2}
+  - {fileID: 11400000, guid: 709764c6687a64f40a4f78c8e41a3344, type: 2}
+  - {fileID: 11400000, guid: aff306126f3513e45bc42e88721c50bb, type: 2}
   - {fileID: 11400000, guid: 7110bcce16878c84086986c62029a852, type: 2}
   - {fileID: 11400000, guid: 54dafcc68e283e040b2369c8e5b26751, type: 2}
   - {fileID: 11400000, guid: c36d1f7fd2a2e3146b7ac01b1ccd8f00, type: 2}
-  - {fileID: 11400000, guid: 86cf541fffa4bb743babb8106608138b, type: 2}
-  - {fileID: 11400000, guid: a50d27526ccd523408f9a84f0d944c8b, type: 2}
-  - {fileID: 11400000, guid: 1bb2355a4108b474bb1f5b3930ce3a31, type: 2}
-  - {fileID: 11400000, guid: c728c49fb089ceb4787a6312c178693d, type: 2}
+  - {fileID: 11400000, guid: ff09b301df8ba664bbbb38fffbb540f2, type: 2}
+  - {fileID: 11400000, guid: f54751d2d8c7eeb4d9ae151f52615c33, type: 2}
+  - {fileID: 11400000, guid: 4632e95bb0e06c340925207e37c790b1, type: 2}
+  - {fileID: 11400000, guid: c31c1ff32d6b73c4e98f600d4203c71f, type: 2}
   - {fileID: 11400000, guid: 14437619e2dc7274aad37e09384b89cd, type: 2}
-  - {fileID: 11400000, guid: 3071e3893fbb40f4bb7a64d077432968, type: 2}
-  - {fileID: 11400000, guid: 5704308a776093648aac4320002878cc, type: 2}
+  - {fileID: 11400000, guid: 18f20487ff5f7b048a30c90696844e01, type: 2}
+  - {fileID: 11400000, guid: 94d7ce11c078881489762d76bc66408c, type: 2}
   allAbilities:
   - {fileID: 11400000, guid: a3e0d9856b4a7e046a2a2c076e172270, type: 2}
   - {fileID: 11400000, guid: 02465a4e684b49147a9ab9fe2e58bdad, type: 2}

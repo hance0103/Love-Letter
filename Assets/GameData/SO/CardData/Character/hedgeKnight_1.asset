@@ -10,22 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d95c0f0ca22fb641a9fe1714d03a1c0, type: 3}
-  m_Name: 7_Rogue
+  m_Name: hedgeKnight_1
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Card.CardBase
-  cardID: 7_Rogue
-  cardTier: 0
+  cardID: hedgeKnight_1
+  cardTier: 1
   cardType: 0
   keywords: 
-  cardNum: 7
-  HP: 3
-  ATK: 3
+  cardNum: 1
+  HP: 10
+  ATK: 2
   actionCount: 3
   cardAbilityIDs:
-  - backEnemyAttackATK
-  - backEnemyIncreaseActionCount1
-  - selfDecreaseActionCount1
+  - frontEnemyAttackATK
+  - selfIncreaseATK2
+  - frontEnemyAttackATK
+  - selfIncreaseATK2
   nextPromotionIDs:
-  - None
-  nameString: ROGUE
-  descString: DESC_ROGUE
-  imgPath: 2_Merchant
+  - promoted
+  nameString: nameHedgeknight_1
+  descString: descHedgeknight_1
+  imgPath: hedgeKnight_1
