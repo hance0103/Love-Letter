@@ -187,7 +187,6 @@ namespace GamePlay.Battle.Card
             transform.SetParent(dragLayer, true);
             transform.SetAsLastSibling();
             RectTransform.rotation = Quaternion.identity;
-            transform.localScale = _baseScale;
         }
 
         public void BeginSelectionForTargeting()
