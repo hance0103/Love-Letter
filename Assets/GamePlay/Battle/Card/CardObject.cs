@@ -362,11 +362,7 @@ namespace GamePlay.Battle.Card
                 var slotRect = slot.RectTransform;
                 if (slotRect == null) return;
                 
-                var cardWorldCenter = _rectTransform.TransformPoint(_rectTransform.rect.center);
                 var slotWorldCenter = slotRect.TransformPoint(slotRect.rect.center);
-                
-
-                
                 
                 _moveTween = _rectTransform.DOMove(slotWorldCenter, returnDuration).SetEase(returnEase);
                 _scaleTween = _rectTransform.DOScale(_baseScale, returnDuration).SetEase(returnEase);
@@ -375,7 +371,7 @@ namespace GamePlay.Battle.Card
                     _moveTween.AsyncWaitForCompletion().AsUniTask(),
                     _scaleTween.AsyncWaitForCompletion().AsUniTask()
                 );
-
+                
                 _currentSlot = slot;
             }
             finally

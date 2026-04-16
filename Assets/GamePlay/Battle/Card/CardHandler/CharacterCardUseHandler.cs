@@ -136,7 +136,7 @@ namespace GamePlay.Battle.Card.CardHandler
                 manager?.ForceReset();
                 return;
             }
-
+            manager.SetState(CardUseState.Using);
             try
             {
                 if (card.CurrentSlot != null)
@@ -158,6 +158,7 @@ namespace GamePlay.Battle.Card.CardHandler
             }
             finally
             {
+                manager.SetState(CardUseState.None);
                 manager.IsBusy = false;
             }
         }

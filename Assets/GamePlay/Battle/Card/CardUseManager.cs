@@ -154,6 +154,7 @@ namespace GamePlay.Battle.Card
 
         private void UpdateSelectedCard()
         {
+            if (IsBusy) return;
             if (SelectedCard == null || SelectedCard.CardInstance == null) return;
 
             var handler = GetHandler(SelectedCard.CardInstance.CardType);
@@ -220,6 +221,7 @@ namespace GamePlay.Battle.Card
             
             var slot = FindTopSlot();
             if (slot == null) return;
+            if (slot == SelectedCard.CurrentSlot) return;
             
             IsPointerHeld = false;
             HasReleasedSinceSelection = true;
