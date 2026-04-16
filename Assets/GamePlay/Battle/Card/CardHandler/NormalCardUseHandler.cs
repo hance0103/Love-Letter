@@ -1,5 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
+using GamePlay.Battle.Event;
+using GamePlay.Battle.Event.EventType;
 using GamePlay.Battle.Field;
 using GameSystem.Enums;
 using UnityEngine;
@@ -85,6 +87,7 @@ namespace GamePlay.Battle.Card.CardHandler
                 {
                     BattleManager.Instance.UseNormalCard(card, targetSlot);
                 }
+                EventBus.Publish(new CardUsedEvent(card, targetSlot));
             }
             catch (Exception e)
             {

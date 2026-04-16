@@ -103,8 +103,9 @@ namespace GamePlay.Battle.Card
 
             transform.localScale = _baseScale;
             _canvasGroup.blocksRaycasts = true;
-            
-            
+
+            cardName.text = instance.Data.nameString;
+            cardDesc.text = instance.Data.descString;
             var cardSprite = GameManager.Inst.Data.GetSprite(instance.Data.cardID);
             if (cardSprite != null) cardImage.sprite = cardSprite;
             
@@ -151,6 +152,11 @@ namespace GamePlay.Battle.Card
             _rectTransform.anchoredPosition = Vector2.zero;
 
             _canvasGroup.blocksRaycasts = true;
+        }
+
+        public void UpdateActionCount()
+        {
+            SetOptionalText(currentAC, cardInstance.CurrentActionCount);
         }
         
         public void SetCurrentSlot(FieldSlot slot)
@@ -379,54 +385,6 @@ namespace GamePlay.Battle.Card
                 _canvasGroup.blocksRaycasts = true;
             }
         }
-        // public async UniTask ReturnToSlotAsync(FieldSlot slot, RectTransform fieldCardLayer)
-        // {
-        //     if (slot == null || fieldCardLayer == null) return;
-        //
-        //     _isReturning = true;
-        //
-        //     try
-        //     {
-        //         KillTweens();
-        //
-        //         var currentWorldPos = _rectTransform.position;
-        //         var currentWorldRot = _rectTransform.rotation;
-        //
-        //         transform.SetParent(fieldCardLayer, true);
-        //         _rectTransform.position = currentWorldPos;
-        //         _rectTransform.rotation = currentWorldRot;
-        //         transform.SetAsLastSibling();
-        //
-        //         var slotRect = slot.RectTransform;
-        //         if (slotRect == null) return;
-        //
-        //         var screenPoint = RectTransformUtility.WorldToScreenPoint(null, slotRect.position);
-        //
-        //         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-        //             fieldCardLayer,
-        //             screenPoint,
-        //             null,
-        //             out var targetAnchoredPos
-        //         );
-        //
-        //         _moveTween = _rectTransform.DOAnchorPos(targetAnchoredPos, returnDuration).SetEase(returnEase);
-        //         //_rotateTween = _rectTransform.DOLocalRotate(Vector3.zero, returnDuration).SetEase(returnEase);
-        //         _scaleTween = transform.DOScale(_baseScale, returnDuration).SetEase(returnEase);
-        //
-        //         await UniTask.WhenAll(
-        //             _moveTween.AsyncWaitForCompletion().AsUniTask(),
-        //             //_rotateTween.AsyncWaitForCompletion().AsUniTask(),
-        //             _scaleTween.AsyncWaitForCompletion().AsUniTask()
-        //         );
-        //
-        //         _currentSlot = slot;
-        //     }
-        //     finally
-        //     {
-        //         _isReturning = false;
-        //         _canvasGroup.blocksRaycasts = true;
-        //     }
-        // }
 
         public async UniTask PlayUseAsync()
         {

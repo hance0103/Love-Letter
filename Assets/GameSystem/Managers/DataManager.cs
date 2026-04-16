@@ -57,6 +57,11 @@ namespace GameSystem.Managers
                 }
                 
                 var sprite = await GameManager.Inst.Resource.LoadAssetAsync<Sprite>(cardData.imgPath);
+                if (sprite == null)
+                {
+                    Debug.LogWarning($"Sprite not found: {cardData.imgPath}");
+                    continue;
+                }
                 _sprites.Add(cardData.cardID, sprite);
             }
         }

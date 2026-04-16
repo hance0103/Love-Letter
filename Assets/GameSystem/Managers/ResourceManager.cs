@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
@@ -67,6 +68,13 @@ namespace GameSystem.Managers
         {
             await InitAsync();
 
+            if (!KeyExists(key))
+            {
+                Debug.LogWarning($"ResourceManager : {key}가 존재하지 않음");
+                return null;
+            }
+            
+            
             Task<UnityEngine.Object> sharedTask;
 
             lock (_loadGate)
@@ -78,8 +86,8 @@ namespace GameSystem.Managers
                         if (loadedHandle.Result is T loadedAsset)
                             return loadedAsset;
 
-                        throw new InvalidOperationException(
-                            $"[ResourceManager] Asset '{key}' is already loaded as different type.");
+                        Debug.LogError($"[ResourceManager] Type mismatch for '{key}'.");
+                        return null;
                     }
 
                     _assetHandles.Remove(key);
@@ -93,29 +101,33 @@ namespace GameSystem.Managers
             }
 
             var result = await sharedTask.AsUniTask().AttachExternalCancellation(ct);
-
+            
+            // 결과가 null이면 예외를 던지지 않고 null 반환
+            if (result == null)
+                return null;
+            
             if (result is T typedResult)
                 return typedResult;
 
-            throw new InvalidOperationException(
-                $"[ResourceManager] Type mismatch for '{key}'. Requested: {typeof(T).Name}");
+            return null;
         }
 
         private async Task<UnityEngine.Object> ExecuteLoadAsync<T>(object key)
             where T : UnityEngine.Object
         {
-            var handle = Addressables.LoadAssetAsync<T>(key);
-
+            AsyncOperationHandle<T> handle = default;
             try
             {
+                handle = Addressables.LoadAssetAsync<T>(key);
                 T asset = await handle.Task;
 
                 if (handle.Status != AsyncOperationStatus.Succeeded || asset == null)
                 {
+                    Debug.LogWarning($"[ResourceManager] Load failed for key: {key}");
                     if (handle.IsValid())
                         Addressables.Release(handle);
 
-                    throw new Exception($"[Addressables] Load failed: {key}");
+                    return null; // 예외 대신 null 반환
                 }
 
                 lock (_loadGate)
@@ -126,8 +138,9 @@ namespace GameSystem.Managers
 
                 return asset;
             }
-            catch
+            catch (Exception e)
             {
+                Debug.LogWarning($"[ResourceManager] Exception while loading key '{key}': {e.Message}");
                 if (handle.IsValid())
                     Addressables.Release(handle);
 
@@ -136,7 +149,7 @@ namespace GameSystem.Managers
                     _loadingTasks.Remove(key);
                 }
 
-                throw;
+                return null;
             }
         }
 
@@ -260,6 +273,16 @@ namespace GameSystem.Managers
 
                 _loadingTasks.Clear();
             }
+        }
+        
+        public bool KeyExists(object key)
+        {
+            foreach (var locator in Addressables.ResourceLocators)
+            {
+                if (locator.Keys.Contains(key))
+                    return true;
+            }
+            return false;
         }
     }
 }

@@ -1,5 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
+using GamePlay.Battle.Event;
+using GamePlay.Battle.Event.EventType;
 using GamePlay.Battle.Field;
 using GameSystem.Enums;
 using UnityEngine;
@@ -99,6 +101,7 @@ namespace GamePlay.Battle.Card.CardHandler
                         await ReturnToOrigin(manager, card);
                         return;
                     }
+                    EventBus.Publish(new CardUsedEvent(card, targetSlot));
                 }
                 else if (currentSlot != targetSlot)
                 {   

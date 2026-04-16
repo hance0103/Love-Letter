@@ -1,10 +1,15 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GamePlay.Battle.Card;
+using GamePlay.Battle.Event.EventType;
 using GamePlay.Battle.Field;
 using GameSystem.Enums;
 using GameSystem.Managers;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
+using EventBus = GamePlay.Battle.Event.EventBus;
 
 namespace GamePlay.Battle
 {
@@ -16,7 +21,9 @@ namespace GamePlay.Battle
         [Header("References")]
         [SerializeField] private CardPool cardPool;
         [SerializeField] private HandSortingManager handSortingManager;
-
+        [SerializeField] private FieldActionSystem fieldActionSystem;
+        [SerializeField] private CharacterActionSystem characterActionSystem;
+        
         [Header("UI Parents")]
         [SerializeField] private RectTransform handCardRoot;
 
@@ -36,6 +43,8 @@ namespace GamePlay.Battle
         private readonly Dictionary<CardInstance, CardObject> _handCardObjects = new();
 
         public HandSortingManager HandSortingManager => handSortingManager;
+        public FieldActionSystem FieldActionSystem => fieldActionSystem;
+        public CharacterActionSystem CharacterActionSystem => characterActionSystem;
         public Deck Deck => deck;
         public Hand Hand => hand;
 
@@ -105,11 +114,10 @@ namespace GamePlay.Battle
             }
 
             _handCardObjects.Clear();
-
-            if (handSortingManager != null)
-            {
-                handSortingManager.Init();
-            }
+            
+            handSortingManager?.Init();
+            fieldActionSystem?.Init();
+            characterActionSystem?.Init();
         }
 
         public async UniTask DrawCardsAsync(int count)
@@ -249,7 +257,7 @@ namespace GamePlay.Battle
         public void UseNormalCard(CardObject cardObject, FieldSlot targetSlot)
         {
             if (cardObject == null || cardObject.CardInstance == null || targetSlot == null) return;
-
+            
             DiscardCard(cardObject.CardInstance);
         }
 
@@ -302,5 +310,73 @@ namespace GamePlay.Battle
                 handSortingManager.RequestRefresh();
             }
         }
+
+        public void OnClickDiscardButton()
+        {
+            _ = DiscardHandAndDrawAsync();
+        }
+        public async UniTask DiscardHandAndDrawAsync()
+        {
+            if (CardUseManager.HasInstance)
+            {
+                CardUseManager.Instance.ForceReset();
+            }
+
+            var cardsToDiscard = new List<CardInstance>(hand.Cards.Items);
+
+            foreach (var card in cardsToDiscard)
+            {
+                if (card == null) continue;
+
+                if (hand.Contains(card))
+                {
+                    hand.Remove(card);
+                }
+
+                deck.DiscardOne(card);
+
+                if (_handCardObjects.Remove(card, out var cardObject))
+                {
+                    if (cardPool != null)
+                    {
+                        cardPool.Release(cardObject);
+                    }
+                }
+            }
+
+            RequestHandLayoutRefresh();
+            await DrawCardsAsync(drawAmount);
+        }
+
+        public List<CardObject> GetAllFieldCards()
+        {
+            var result = new List<CardObject>();
+
+            foreach (var slot in playerSlots)
+            {
+                if (slot == null) continue;
+
+                var cardObject = GetFieldCardObject(CardOwner.Player, slot.SlotIndex);
+                if (cardObject != null)
+                {
+                    result.Add(cardObject);
+                }
+            }
+
+            foreach (var slot in enemySlots)
+            {
+                if (slot == null) continue;
+
+                var cardObject = GetFieldCardObject(CardOwner.Enemy, slot.SlotIndex);
+                if (cardObject != null)
+                {
+                    result.Add(cardObject);
+                }
+            }
+
+            return result;
+        }
     }
+    
+
 }

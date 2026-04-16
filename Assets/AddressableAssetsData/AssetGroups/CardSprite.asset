@@ -16,17 +16,27 @@ MonoBehaviour:
   m_GUID: d213e0231cd0e8941bea7343bc662ccb
   m_SerializeEntries:
   - m_GUID: 2664182374fcfde429d041adcd4e0bc0
-    m_Address: 8_Princess
+    m_Address: princess_8
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f6533ce0fdd7a841a2dad452a577db5
+    m_Address: guardMe
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5dd5629103c47574aa2b61beb76147f3
+    m_Address: attack
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 80d016905bf574c4bace5bffac182ecc
-    m_Address: 1_Knight
+    m_Address: knight_1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 80e8eb39edc48fc40b295aee69a7315c
-    m_Address: 2_Merchant
+    m_Address: merchant_2
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

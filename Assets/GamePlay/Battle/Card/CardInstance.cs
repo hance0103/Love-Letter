@@ -1,4 +1,6 @@
 using System;
+using GamePlay.Battle.Event;
+using GamePlay.Battle.Event.EventType;
 using GamePlay.Card;
 using GameSystem.Enums;
 using UnityEngine;
@@ -15,6 +17,7 @@ namespace GamePlay.Battle.Card
         [SerializeField] private int currentATK;
         [SerializeField] private int increasedAtk;
         [SerializeField] private int currentShield;
+        [SerializeField] private int baseActionCount;
         [SerializeField] private int currentActionCount;
         [SerializeField] private string cardDesc;
 
@@ -24,6 +27,7 @@ namespace GamePlay.Battle.Card
         public int CurrentATK => currentATK;
         public int InCreasedAtk => increasedAtk;
         public int CurrentShield => currentShield;
+        public int BaseActionCount => baseActionCount;
         public int CurrentActionCount => currentActionCount;
         public string CardDesc => cardDesc;
         public CardType CardType => data != null ? data.cardType : CardType.Normal;
@@ -39,7 +43,8 @@ namespace GamePlay.Battle.Card
             currentATK = data.ATK;
             increasedAtk = -1;
             currentShield = 0;
-            currentActionCount = data.actionCount;
+            baseActionCount = data.actionCount;
+            currentActionCount = baseActionCount;
             cardDesc = data.descString;
         }
             
@@ -68,6 +73,18 @@ namespace GamePlay.Battle.Card
                     break;
             }
         }
+
+        public void DecreaseActionCount(int amount)
+        {
+            currentActionCount -= amount;
+            
+            if (currentActionCount <= 0)
+            {
+                currentActionCount = 0;
+                // 캐릭터 카드 행동 이벤트 Publish
+                EventBus.Publish(new CharacterActionEvent(this));
+            }
+        }
     }
 
     public enum CardInstanceValueType
@@ -78,5 +95,4 @@ namespace GamePlay.Battle.Card
         C_SHD,
         C_AC
     }
-
 }

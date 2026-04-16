@@ -255,8 +255,6 @@ namespace GamePlay.Battle.Card
             var handler = GetHandler(card.CardInstance.CardType);
             handler?.BeginSelection(this, card);
             
-            // Canvas.ForceUpdateCanvases();
-            // RaycastUI();
         }
 
         private async UniTaskVoid ResolveSelectionAsync()
