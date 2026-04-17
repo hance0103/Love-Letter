@@ -1,6 +1,6 @@
 ﻿id,target,actionA[],actionAValue[],condition,conditionValue,actionB[],actionBValue[]
 frontEnemyAttackATK,FrontEnemy,Damage,-1,none,-1,none,-1
-createOddments,Self,CreateCardOddment,1,none,-1,none,-1
+createCardOddmentsToHand,Self,CreateCardToHand,oddments_0,none,-1,none,-1
 frontSingleAllyHealATK,FrontSingleAlly,Heal,-1,none,-1,none,-1
 frontEnemyDualBonusDamage,FrontEnemy,Damage,-1,DualWin,-1,AddDamage,5
 allEnemyAttackATK,AllEnemy,Damage,-1,none,-1,none,-1

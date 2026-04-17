@@ -1,6 +1,6 @@
 ﻿id,tier,type,keyword[],cardNum,HP,ATK,actionCount,cardAbilityID[],nextPromotionID[],nameString,descString,imagePath,tooltipID[]
 knight_1,Common,Character,none,1,5,2,3,frontEnemyAttackATK|frontEnemyAttackATK,dragonKnight_1|hedgeKnight_1,nameKnight_1,descKnight_1,knight_1,doubleAttack
-merchant_2,Common,Character,none,2,3,2,2,frontEnemyAttackATK|createOddments,none,nameMerchant_2,descMerchant_2,merchant_2,generateScavenge|scavenge|exhaust
+merchant_2,Common,Character,none,2,3,2,2,frontEnemyAttackATK|createCardOddmentsToHand,none,nameMerchant_2,descMerchant_2,merchant_2,generateScavenge|scavenge|exhaust
 priest_3,Common,Character,none,3,4,3,4,frontEnemyAttackATK|frontSingleAllyHealATK,none,namePriest_3,descPriest_3,priest_3,none
 warrior_4,Common,Character,none,4,6,3,5,frontEnemyDualBonusDamage,none,nameWarrior_4,descWarrior_4,warrior_4,dual
 wizard_5,Common,Character,none,5,3,4,4,allEnemyAttackATK,none,nameWizard_5,descWizard_5,wizard_5,aoe
@@ -16,5 +16,6 @@ bestowalOfTitle,Common,Normal,none,-1,-1,-1,-1,targetIncreaseNum1,none,nameBesto
 deprivationOfRank,Common,Normal,none,-1,-1,-1,-1,targetDecreaseATK2,none,nameDeprivationofrank,descDeprivationofrank,deprivationOfRank,none
 guardMe,Common,Normal,none,-1,-1,-1,-1,targetIncreaseShield2,none,nameGuardme,descGuardme,guardMe,none
 attack,Common,Normal,none,-1,-1,-1,-1,targetIncreaseATK2,none,nameAttack,descAttack,attack,none
+oddments_0,Common,Character,none,0,1,-1,-1,targetIncreaseShield2,none,nameOddments_0,descOddments_0,oddments_0,none
 dragonKnight_1,Rare,Character,none,1,7,3,3,frontEnemyAttackATK|frontEnemyBurnATK,promoted,nameDragonknight_1,descDragonknight_1,dragonKnight_1,none
 hedgeKnight_1,Rare,Character,none,1,10,2,3,frontEnemyAttackATK|selfIncreaseATK2|frontEnemyAttackATK|selfIncreaseATK2,promoted,nameHedgeknight_1,descHedgeknight_1,hedgeKnight_1,none
