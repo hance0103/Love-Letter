@@ -38,7 +38,6 @@ namespace GamePlay.Battle.Event
         private async void ExecuteCardAbilityAsync(CardAbilityRequestEvent evt)
         {
             var agent = evt.Card;
-            Debug.Log($"{agent.Data.nameString} 사용");
             var abilities = agent.Data.cardAbilityIDs;
             
             // 카드의 효과 리스트 처리

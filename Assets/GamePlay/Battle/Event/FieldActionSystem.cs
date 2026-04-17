@@ -36,10 +36,10 @@ namespace GamePlay.Battle.Event
         }
         private void ReduceAllFieldActionCounts(CardObject currentCard, int amount)
         {
-            Debug.Log("행카 깎기");
             var cards = BattleManager.Instance.GetAllFieldCards();
             foreach (var card in cards.Where(card => card != currentCard))
             {
+                if (card == null || card.CardInstance == null) continue;
                 card.CardInstance.DecreaseActionCount(amount);
                 card.RefreshCardInfo();
             }

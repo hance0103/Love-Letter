@@ -64,6 +64,11 @@ namespace GamePlay.Battle.Card
 
                 case CardInstanceValueType.C_HP:
                     currentHp += amount;
+                    if (currentHp <= 0)
+                    {
+                        BattleManager.Instance.RemoveCharacterCardFromField(this);
+                    }
+                    Debug.Log("체력 감소");
                     break;
 
                 case CardInstanceValueType.I_ATK:
@@ -86,6 +91,10 @@ namespace GamePlay.Battle.Card
                 currentActionCount = 0;
                 // 캐릭터 카드 행동 이벤트 Publish
                 EventBus.Publish(new CardAbilityRequestEvent(this, CardEffectTriggerType.CharacterAutoAction));
+
+
+                Debug.Log("행동 카운트 초기화");
+                currentActionCount = baseActionCount;
             }
         }
     }

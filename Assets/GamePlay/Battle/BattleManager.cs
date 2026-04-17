@@ -249,16 +249,17 @@ namespace GamePlay.Battle
             return true;
         }
 
-        public bool RemoveCharacterCardFromField(CardObject cardObject, CardOwner owner)
+        public bool RemoveCharacterCardFromField(CardInstance cardInstance)
         {
-            if (cardObject == null) return false;
+            if (cardInstance == null) return false;
 
-            if (!_fieldInstanceDict.TryGetValue(owner, out var fieldInstance))
+            if (!_fieldInstanceDict.TryGetValue(cardInstance.CardOwner, out var fieldInstance))
             {
                 return false;
             }
 
-            var removed = fieldInstance.RemoveCardFromField(cardObject);
+            var cardObject = fieldInstance.GetCardObject(cardInstance);
+            var removed = fieldInstance.RemoveCardFromField(cardInstance);
             if (!removed) return false;
 
             if (cardObject.CurrentSlot != null)
@@ -266,7 +267,11 @@ namespace GamePlay.Battle
                 cardObject.CurrentSlot.ClearSlot();
             }
 
+            var slot = cardObject.CurrentSlot;
+            slot.ClearSlot();
             cardObject.ClearCurrentSlot();
+            cardPool.Release(cardObject);
+            
             return true;
         }
 
