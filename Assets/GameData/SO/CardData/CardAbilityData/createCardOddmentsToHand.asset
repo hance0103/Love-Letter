@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa6874d49d40f6849826b85fde9e4c8d, type: 3}
-  m_Name: frontEnemyAttackATK
+  m_Name: createCardOddmentsToHand
   m_EditorClassIdentifier: Assembly-CSharp::GameData.SO.Scripts.CardAbilityBase
-  abilityID: frontEnemyAttackATK
-  actionTarget: 1
+  abilityID: createCardOddmentsToHand
+  actionTarget: 0
   actionListA:
-  - actionType: 0
-    actionValue: -1
+  - actionType: 8
+    actionValue: 1
   condition:
     conditionType: 0
     conditionValue: -1
   actionListB:
   - actionType: 9
     actionValue: -1
-  actionAString: none
+  actionAString: oddments_0
   actionBString: none

@@ -23,3 +23,5 @@ MonoBehaviour:
   actionListB:
   - actionType: 0
     actionValue: 5
+  actionAString: none
+  actionBString: none

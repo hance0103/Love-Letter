@@ -101,6 +101,7 @@ namespace GamePlay.Battle.Card.CardHandler
                         await ReturnToOrigin(manager, card);
                         return;
                     }
+                    // 여기서 이벤트 발생시켜주기
                     EventBus.Publish(new CardUsedEvent(card, targetSlot));
                 }
                 else if (currentSlot != targetSlot)
@@ -139,7 +140,7 @@ namespace GamePlay.Battle.Card.CardHandler
                 manager?.ForceReset();
                 return;
             }
-            manager.SetState(CardUseState.Using);
+            manager.SetState(CardUseState.Resolving);
             try
             {
                 if (card.CurrentSlot != null)

@@ -4,11 +4,11 @@ namespace GamePlay.Battle.Event.EventType
 {
     public readonly struct CharacterActionEvent
     {
-        public readonly CardInstance ActionObject;
+        public readonly CardInstance ActionOwner;
 
-        public CharacterActionEvent(CardInstance actionObject)
+        public CharacterActionEvent(CardInstance actionOwner)
         {
-            ActionObject = actionObject;
+            ActionOwner = actionOwner;
         }
         
     }

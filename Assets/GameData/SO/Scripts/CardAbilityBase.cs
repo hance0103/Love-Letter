@@ -13,6 +13,8 @@ namespace GameData.SO.Scripts
         public List<AbilityActionSet> actionListA = new();
         public ConditionSet condition;
         public List<AbilityActionSet> actionListB = new();
+        public string actionAString;
+        public string actionBString;
     }
 
     [Serializable]
@@ -21,7 +23,7 @@ namespace GameData.SO.Scripts
         public AbilityActionSet()
         {
             actionType = ActionType.None;
-            actionValue = 0;
+            actionValue = -1;
         }
         public AbilityActionSet(ActionType type, int value)
         {

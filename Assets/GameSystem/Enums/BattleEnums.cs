@@ -5,4 +5,13 @@ namespace GameSystem.Enums
         Player,
         Enemy,
     }
+    public enum CardEffectTriggerType
+    {
+        NormalCardUse,
+        CharacterAutoAction,
+        OnSummon,
+        OnDeath,
+        OnTurnStart,
+        OnTurnEnd
+    }
 }

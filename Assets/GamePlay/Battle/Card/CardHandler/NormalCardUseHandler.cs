@@ -68,7 +68,7 @@ namespace GamePlay.Battle.Card.CardHandler
                 return;
             }
             manager?.ClearArrow();
-            manager?.SetState(CardUseState.Using);
+            manager?.SetState(CardUseState.Resolving);
             if (targetSlot == null || !targetSlot.CanUseThisNormalCard(card.CardInstance))
             {
                 await ReturnToOrigin(manager, card);
@@ -82,11 +82,7 @@ namespace GamePlay.Battle.Card.CardHandler
                 if (selectionVersion != manager.SelectionVersion) return;
 
                 manager.ResetSelectionState();
-
-                if (BattleManager.HasInstance)
-                {
-                    BattleManager.Instance.UseNormalCard(card, targetSlot);
-                }
+                
                 EventBus.Publish(new CardUsedEvent(card, targetSlot));
             }
             catch (Exception e)

@@ -14,25 +14,28 @@ namespace GamePlay.Battle.Card
         [SerializeField] private CardBase data;
         [SerializeField] private int currentCardNum;
         [SerializeField] private int currentHp;
+        [SerializeField] private int baseATK;
+        [SerializeField] private int increasedATK;
         [SerializeField] private int currentATK;
-        [SerializeField] private int increasedAtk;
         [SerializeField] private int currentShield;
         [SerializeField] private int baseActionCount;
         [SerializeField] private int currentActionCount;
         [SerializeField] private string cardDesc;
-
+        [SerializeField] private CardOwner cardOwner;
         public CardBase Data => data;
         public int CurrentCardNum => currentCardNum;
         public int CurrentHp => currentHp;
+        public int BaseATK => baseATK;
+        public int InCreasedATK => increasedATK;
         public int CurrentATK => currentATK;
-        public int InCreasedAtk => increasedAtk;
         public int CurrentShield => currentShield;
         public int BaseActionCount => baseActionCount;
         public int CurrentActionCount => currentActionCount;
         public string CardDesc => cardDesc;
         public CardType CardType => data != null ? data.cardType : CardType.Normal;
+        public CardOwner CardOwner => cardOwner;
         
-        public CardInstance(CardBase data)
+        public CardInstance(CardBase data, CardOwner cardOwner = CardOwner.Player)
         {
             this.data = data;
 
@@ -40,12 +43,15 @@ namespace GamePlay.Battle.Card
 
             currentCardNum = data.cardNum;
             currentHp = data.HP;
-            currentATK = data.ATK;
-            increasedAtk = -1;
+            baseATK = data.ATK;
+            increasedATK = 0;
+            currentATK = baseATK + increasedATK;
             currentShield = 0;
             baseActionCount = data.actionCount;
             currentActionCount = baseActionCount;
             cardDesc = data.descString;
+            
+            this.cardOwner = cardOwner;
         }
             
         public void ChangeCardInstanceValue(CardInstanceValueType valueType, int amount)
@@ -60,16 +66,13 @@ namespace GamePlay.Battle.Card
                     currentHp += amount;
                     break;
 
-                case CardInstanceValueType.C_ATK:
+                case CardInstanceValueType.I_ATK:
                     currentATK += amount;
+                    increasedATK += amount;
                     break;
 
                 case CardInstanceValueType.C_SHD:
                     currentShield += amount;
-                    break;
-
-                case CardInstanceValueType.C_AC:
-                    currentActionCount += amount;
                     break;
             }
         }
@@ -82,7 +85,7 @@ namespace GamePlay.Battle.Card
             {
                 currentActionCount = 0;
                 // 캐릭터 카드 행동 이벤트 Publish
-                EventBus.Publish(new CharacterActionEvent(this));
+                EventBus.Publish(new CardAbilityRequestEvent(this, CardEffectTriggerType.CharacterAutoAction));
             }
         }
     }
@@ -91,8 +94,8 @@ namespace GamePlay.Battle.Card
     {
         C_NUM,
         C_HP,
-        C_ATK,
         C_SHD,
+        I_ATK,
         C_AC
     }
 }

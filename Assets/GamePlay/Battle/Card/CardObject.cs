@@ -93,7 +93,7 @@ namespace GamePlay.Battle.Card
                 return;
             }
             
-            this.cardInstance = instance;
+            cardInstance = instance;
             _isHovered = false;
             _isSelected = false;
             _isReturning = false;
@@ -106,16 +106,22 @@ namespace GamePlay.Battle.Card
 
             cardName.text = instance.Data.nameString;
             cardDesc.text = instance.Data.descString;
+            
             var cardSprite = GameManager.Inst.Data.GetSprite(instance.Data.cardID);
             if (cardSprite != null) cardImage.sprite = cardSprite;
             
-            SetOptionalText(cardNum, instance.Data.cardNum);
-            SetOptionalText(currentHp, instance.CurrentHp);
-            SetOptionalText(currentAtk, instance.CurrentATK);
-            SetOptionalText(increaseAtk, instance.InCreasedAtk);
-            SetOptionalText(currentShd, instance.CurrentShield);
-            SetOptionalText(currentAC, instance.CurrentActionCount);
+            RefreshCardInfo();
         }
+        public void RefreshCardInfo()
+        {
+            SetOptionalText(cardNum, cardInstance.CurrentCardNum);
+            SetOptionalText(currentHp, cardInstance.CurrentHp);
+            SetOptionalText(currentAtk, cardInstance.CurrentATK);
+            SetIncreasedAtk(cardInstance.InCreasedATK);
+            SetOptionalText(currentShd, cardInstance.CurrentShield);
+            SetOptionalText(currentAC, cardInstance.CurrentActionCount);
+        }
+        
         private void SetOptionalText(TMP_Text target, int value)
         {
             if (target == null) return;
@@ -123,7 +129,7 @@ namespace GamePlay.Battle.Card
             var root = target.transform.parent != null
                 ? target.transform.parent.gameObject
                 : target.gameObject;
-
+            
             if (value < 0)
             {
                 root.SetActive(false);
@@ -132,6 +138,23 @@ namespace GamePlay.Battle.Card
 
             root.SetActive(true);
             target.text = value.ToString();
+        }
+
+        private void SetIncreasedAtk(int value)
+        {
+            if (increaseAtk == null) return;
+            var root = increaseAtk.transform.parent != null
+                ? increaseAtk.transform.parent.gameObject
+                : increaseAtk.gameObject;
+
+            if (value == 0)
+            {
+                root.SetActive(false);
+                return;
+            }
+            
+            root.SetActive(true);
+            increaseAtk.text = value.ToString();
         }
 
 
@@ -152,11 +175,6 @@ namespace GamePlay.Battle.Card
             _rectTransform.anchoredPosition = Vector2.zero;
 
             _canvasGroup.blocksRaycasts = true;
-        }
-
-        public void UpdateActionCount()
-        {
-            SetOptionalText(currentAC, cardInstance.CurrentActionCount);
         }
         
         public void SetCurrentSlot(FieldSlot slot)

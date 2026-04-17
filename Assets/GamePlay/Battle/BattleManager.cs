@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using GamePlay.Battle.Card;
+using GamePlay.Battle.Event;
 using GamePlay.Battle.Event.EventType;
 using GamePlay.Battle.Field;
+using GamePlay.Card;
 using GameSystem.Enums;
 using GameSystem.Managers;
 using Unity.VisualScripting;
@@ -21,8 +24,6 @@ namespace GamePlay.Battle
         [Header("References")]
         [SerializeField] private CardPool cardPool;
         [SerializeField] private HandSortingManager handSortingManager;
-        [SerializeField] private FieldActionSystem fieldActionSystem;
-        [SerializeField] private CharacterActionSystem characterActionSystem;
         
         [Header("UI Parents")]
         [SerializeField] private RectTransform handCardRoot;
@@ -38,13 +39,14 @@ namespace GamePlay.Battle
         [Header("Battle Setting")]
         [SerializeField] private int drawAmount = 6;
         [SerializeField] private int maxHand = 10;
+        
+        [Header("Enemy")]
+        [SerializeField] private List<CardBase> enemies = new();
 
         private readonly Dictionary<CardOwner, FieldInstance> _fieldInstanceDict = new();
         private readonly Dictionary<CardInstance, CardObject> _handCardObjects = new();
 
         public HandSortingManager HandSortingManager => handSortingManager;
-        public FieldActionSystem FieldActionSystem => fieldActionSystem;
-        public CharacterActionSystem CharacterActionSystem => characterActionSystem;
         public Deck Deck => deck;
         public Hand Hand => hand;
 
@@ -63,7 +65,24 @@ namespace GamePlay.Battle
         {
             await UniTask.WaitUntil(() => GameManager.Inst.Initialized);
             Init(GameManager.Inst.Party.CreateDeck());
+            
             await DrawCardsAsync(drawAmount);
+            
+            
+            // 적 생성
+            // foreach (var enemy in enemies)
+            // {
+            //
+            // }
+            
+            // 일단 임시로
+            var cardObject = await cardPool.Get(new CardInstance(enemies[0], CardOwner.Enemy));
+            if (cardObject == null) return;
+                
+            var success = PlaceCharacterCardToField(cardObject, enemySlots[0]);
+            if (!success) return;
+
+            await cardObject.ReturnToSlotAsync(enemySlots[0], CardUseManager.Instance.FieldCardLayer);
         }
 
         private void OnDestroy()
@@ -114,10 +133,7 @@ namespace GamePlay.Battle
             }
 
             _handCardObjects.Clear();
-            
             handSortingManager?.Init();
-            fieldActionSystem?.Init();
-            characterActionSystem?.Init();
         }
 
         public async UniTask DrawCardsAsync(int count)
@@ -177,7 +193,7 @@ namespace GamePlay.Battle
         }
 
         public bool PlaceCharacterCardToField(CardObject cardObject, FieldSlot slot)
-        {
+        { 
             if (cardObject == null || slot == null) return false;
             if (!slot.CanDrop(cardObject.CardInstance)) return false;
             if (!_fieldInstanceDict.TryGetValue(slot.SlotOwner, out var fieldInstance))
@@ -257,7 +273,12 @@ namespace GamePlay.Battle
         public void UseNormalCard(CardObject cardObject, FieldSlot targetSlot)
         {
             if (cardObject == null || cardObject.CardInstance == null || targetSlot == null) return;
+
             
+            EventBus.Publish(new CardAbilityRequestEvent(
+                cardObject.CardInstance, 
+                CardEffectTriggerType.NormalCardUse, 
+                targetSlot));
             DiscardCard(cardObject.CardInstance);
         }
 
@@ -376,7 +397,178 @@ namespace GamePlay.Battle
 
             return result;
         }
+        
+        /// <summary>
+        /// owner는 효과의 대상이 되는 카드의 주인을 의미함
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="owner"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public List<CardInstance> GetFieldCard(ActualActionTarget target, CardOwner owner)
+        {
+            var result = new List<CardInstance>();
+            
+            _fieldInstanceDict.TryGetValue(owner, out var fieldInstance);
+            if (fieldInstance == null) return result;
+            
+            var actualField = fieldInstance.Cards.Where(card => card != null).ToList();
+            if (actualField.Count <= 0) return result;
+            
+            var count = actualField.Count;
+            
+            switch (target)
+            {
+                case ActualActionTarget.Front:
+                {
+                    result.Add(actualField[0]);
+                    break;
+                }
+                case ActualActionTarget.Back:
+                {
+                    result.Add(actualField[count - 1]);
+                    break;
+                }
+                case ActualActionTarget.All:
+                {
+                    result.AddRange(actualField);
+                    break;
+                }
+                case ActualActionTarget.Random:
+                {
+                    var index = UnityEngine.Random.Range(0, count);
+                    result.Add(actualField[index]);
+                    break;
+                }
+                case ActualActionTarget.Near:
+                {
+                    // 얜 나중에 처리하자
+                }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(target), target, null);
+            }
+
+            return result;
+        }
+        /// <summary>
+        /// 해당 카드 앞에 있는 모든 카드
+        /// </summary>
+        /// <param name="cardInstance"></param>
+        /// <returns></returns>
+        public List<CardInstance> GetFrontCards(CardInstance cardInstance)
+        {
+            var result = new List<CardInstance>();
+            if (cardInstance == null || !_fieldInstanceDict.TryGetValue(cardInstance.CardOwner, out var fieldInstance)) 
+                return result;
+
+            var myIndex = GetFieldSlotIndex(cardInstance);
+            if (myIndex <= 0) return result;
+
+            for (var i = 0; i < myIndex; i++)
+            {
+                var target = fieldInstance.Cards[i];
+                if (target != null && target != cardInstance && target.Data != null)
+                {
+                    result.Add(target);
+                }
+            }
+            return result;
+        }
+        /// <summary>
+        /// 해당 카드의 앞뒤 카드 반환
+        /// </summary>
+        /// <param name="cardInstance"></param>
+        /// <returns></returns>
+        public List<CardInstance> GetNearCards(CardInstance cardInstance)
+        {
+            var result = new List<CardInstance>();
+            if (cardInstance == null) return result;
+
+            var front = GetFrontCard(cardInstance);
+            if (front != null)
+                result.Add(front);
+
+            var back = GetBackCard(cardInstance);
+            if (back != null)
+                result.Add(back);
+
+            return result;
+        }
+        
+        /// <summary>
+        /// 바로 앞 카드
+        /// </summary>
+        /// <param name="cardInstance"></param>
+        /// <returns></returns>
+        public CardInstance GetFrontCard(CardInstance cardInstance)
+        {
+            if (cardInstance == null) return null;
+
+            if (!_fieldInstanceDict.TryGetValue(cardInstance.CardOwner, out var fieldInstance))
+            {
+                return null;
+            }
+            
+            // 해당 카드의 인덱스
+            var myIndex = GetFieldSlotIndex(cardInstance);
+            return myIndex <= 0 ? null : fieldInstance.Cards[myIndex - 1];
+        }
+        /// <summary>
+        /// 바로 뒤 카드
+        /// </summary>
+        /// <param name="cardInstance"></param>
+        /// <returns></returns>
+        public CardInstance GetBackCard(CardInstance cardInstance)
+        {
+            if (cardInstance == null) return null;
+
+            if (!_fieldInstanceDict.TryGetValue(cardInstance.CardOwner, out var fieldInstance))
+            {
+                return null;
+            }
+
+            var myIndex = GetFieldSlotIndex(cardInstance);
+            return myIndex < 0 ? null : fieldInstance.Cards[myIndex + 1];
+        }
+        public int GetFieldSlotIndex(CardInstance cardInstance)
+        {
+            if (cardInstance == null) return -1;
+
+            if (!_fieldInstanceDict.TryGetValue(cardInstance.CardOwner, out var fieldInstance))
+            {
+                return -1;
+            }
+
+            for (int i = 0; i < fieldInstance.Cards.Count; i++)
+            {
+                if (fieldInstance.Cards[i] == cardInstance)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+        
+        public FieldSlot GetFieldSlot(CardInstance cardInstance)
+        {
+            if (cardInstance == null) return null;
+
+            var slotIndex = GetFieldSlotIndex(cardInstance);
+            if (slotIndex < 0) return null;
+
+            return GetFieldSlot(cardInstance.CardOwner, slotIndex);
+        }
+
+        public void RefreshAllFieldCards()
+        {
+            var cards = GetAllFieldCards();
+            foreach (var card in cards)
+            {
+                card.RefreshCardInfo();
+            }
+        }
     }
-    
 
 }

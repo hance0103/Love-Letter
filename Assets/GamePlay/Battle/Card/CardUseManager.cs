@@ -14,7 +14,8 @@ namespace GamePlay.Battle.Card
     {
         None,
         Selected,
-        Using
+        Using,
+        Resolving
     }
     public class CardUseManager : MonoBehaviour
     {

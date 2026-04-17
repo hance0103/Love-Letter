@@ -30,7 +30,7 @@ namespace GamePlay.Battle.Field
         public bool CanDrop(CardInstance card)
         {
             if (card == null) return false;
-            if (slotOwner != CardOwner.Player) return false;
+            if (slotOwner != card.CardOwner) return false;
             if (isCardIn) return false;
 
             return true;

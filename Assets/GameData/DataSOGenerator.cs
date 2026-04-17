@@ -115,7 +115,7 @@ namespace GameData
                     var keywordStringArray = CsvParser.ParseArray(dataRow[3]);
                     foreach (var keyword in keywordStringArray)
                     {
-                        if (string.IsNullOrWhiteSpace(keyword) || keyword == "None")
+                        if (string.IsNullOrWhiteSpace(keyword) || keyword == "none")
                             break;
                         
                         if (Enum.TryParse<KeywordType>(keyword, true, out var keywordType))
@@ -251,6 +251,9 @@ namespace GameData
                         }
 
                     }
+                    
+                    data.actionAString = dataRow[8];
+                    data.actionBString = dataRow[9];
                     
                     var cardAbilitySOPath = $"Assets/GameData/SO/CardData/CardAbilityData/{dataRow[0]}.asset";
                     if (AssetDatabase.LoadAssetAtPath<CardAbilityBase>(cardAbilitySOPath) != null)

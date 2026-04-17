@@ -21,9 +21,14 @@ namespace GameSystem.Enums
     public enum ActionType
     {
         Damage,
-        Shield,
-        Freeze,
-        ReinforceATK,
+        Heal,
+        IncreaseShield,
+        IncreaseATK,
+        DecreaseATK,
+        DecreaseActionCount,
+        IncreaseActionCount,
+        Burn,
+        CreateCardToHand,
         
         
         None
@@ -46,5 +51,14 @@ namespace GameSystem.Enums
         FrontSingleAlly,
         AllEnemy,
         Target
+    }
+
+    public enum ActualActionTarget
+    {
+        Front,
+        Back,
+        All,
+        Near,
+        Random
     }
 }
