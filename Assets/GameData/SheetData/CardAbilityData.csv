@@ -19,3 +19,12 @@ targetIncreaseATK2,Target,IncreaseATK,2,none,-1,none,-1,none,none
 backEnemyAttackATK,BackEnemy,Damage,-1,none,-1,none,-1,none,none
 frontEnemyBurnATK,FrontEnemy,Burn,-1,none,-1,none,-1,none,none
 selfIncreaseATK2,Self,IncreaseATK,2,none,-1,none,-1,none,none
+frontEnemyBurnDMG,FrontEnemy,BurnDMG,-1,none,-1,none,-1,none,none
+createCardFireballToField,Self,CreateCardToField,-1,none,-1,none,-1,fireball_0,none
+frontSingleAllyIncreaseATK,FrontSingleAlly,IncreaseATK,-1,none,-1,none,-1,none,none
+frontSingleAllyBurn2,FrontSingleAlly,Burn,2,none,-1,none,-1,none,none
+selfBurn4,Self,Burn,4,none,-1,none,-1,none,none
+frontEnemyBurnBySelfBurn,frontEnemy,BurnBySelfBurn,-1,none,-1,none,-1,none,none
+randomEnemyBurnATK,randomEnemy,BurnATK,-1,none,-1,none,-1,none,none
+allEnemyAllyBurn3,allEnemyAlly,Burn,3,none,-1,none,-1,none,none
+bloodrage,Self,Bloodrage,-1,none,-1,none,-1,none,none

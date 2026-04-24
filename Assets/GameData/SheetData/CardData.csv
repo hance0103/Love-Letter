@@ -16,6 +16,13 @@ bestowalOfTitle,Common,Normal,none,-1,-1,-1,-1,targetIncreaseNum1,none,nameBesto
 deprivationOfRank,Common,Normal,none,-1,-1,-1,-1,targetDecreaseATK2,none,nameDeprivationofrank,descDeprivationofrank,deprivationOfRank,none
 guardMe,Common,Normal,none,-1,-1,-1,-1,targetIncreaseShield2,none,nameGuardme,descGuardme,guardMe,none
 attack,Common,Normal,none,-1,-1,-1,-1,targetIncreaseATK2,none,nameAttack,descAttack,attack,none
-oddments_0,Common,Character,none,0,1,-1,-1,targetIncreaseShield2,none,nameOddments_0,descOddments_0,oddments_0,none
-dragonKnight_1,Rare,Character,none,1,7,3,3,frontEnemyAttackATK|frontEnemyBurnATK,promoted,nameDragonknight_1,descDragonknight_1,dragonKnight_1,none
-hedgeKnight_1,Rare,Character,none,1,10,2,3,frontEnemyAttackATK|selfIncreaseATK2|frontEnemyAttackATK|selfIncreaseATK2,promoted,nameHedgeknight_1,descHedgeknight_1,hedgeKnight_1,none
+oddments_0,Common,Character,none,0,1,0,-1,targetIncreaseShield2,none,nameOddments_0,descOddments_0,oddments_0,none
+fireball_0,Common,Character,none,0,1,0,-1,attackerBurn4OnDeath,none,nameFireball_0,descFireball_0,fireball_0,burn
+dragon knight_1,Rare,Character,none,1,7,3,3,frontEnemyAttackATK|frontEnemyBurnDMG,promoted,nameDragon knight_1,descDragon knight_1,dragon knight_1,burn
+bomber merchant_2,Rare,Character,none,2,7,3,3,frontEnemyAttackATK|createCardFireballToField,promoted,nameBomber merchant_2,descBomber merchant_2,bomber merchant_2,generateFireball|burn
+inquisitor_3,Rare,Character,none,3,7,3,3,frontEnemyAttackATK|frontSingleAllyIncreaseATK|frontSingleAllyBurn2,promoted,nameInquisitor_3,descInquisitor_3,inquisitor_3,burn
+burning corpse_4,Rare,Character,none,4,7,3,3,selfBurn4|frontEnemyBurnBySelfBurn,promoted,nameBurning corpse_4,descBurning corpse_4,burning corpse_4,burn
+meteor mage_5,Rare,Character,none,5,7,3,3,randomEnemyBurnATK|randomEnemyBurnATK|randomEnemyBurnATK,promoted,nameMeteor mage_5,descMeteor mage_5,meteor mage_5,burn
+pyromaniac_6,Rare,Character,none,6,7,3,3,allEnemyAllyBurn3|bloodrage,promoted,namePyromaniac_6,descPyromaniac_6,pyromaniac_6,burn|bloodrage
+ember_7,Rare,Character,none,7,7,3,3,frontEnemyBurnATK|frontEnemyBurnDouble,promoted,nameEmber_7,descEmber_7,ember_7,burn
+enemyExample,Common,Character,none,1,1,3,3,frontEnemyAttackATK,none,nameEnemyexample,descEnemyexample,enemyExample,none
