@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: CardData
   m_GUID: f10015321dfc34744a62a50884a38a50
   m_SerializeEntries:
+  - m_GUID: 2338684da056be341ab99f4c275a14e3
+    m_Address: StringData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 26fe3ef48fa4f684aa45804bfe7db4bb
     m_Address: CardAbilityData
     m_ReadOnly: 0
@@ -22,6 +27,26 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 471c8ba3f51e4d242be6c6cf89703829
     m_Address: CardData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c5477adcb591b54cac1ab561bfc2513
+    m_Address: FateCardData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69c9d5eb36f834741b65ec06d4650cc2
+    m_Address: RoomData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f1f8af5d4219814f939bbf1ce72f4d0
+    m_Address: WaveData
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9fe037731f035fe4d98d37aebabda0cc
+    m_Address: TooltipData
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

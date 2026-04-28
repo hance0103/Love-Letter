@@ -20,5 +20,7 @@ namespace GameData.Scripts
         public string nameString;
         public string descString;
         public string imgPath;
+        public List<string> tooltipIDs;
+        public string backgroundPath;
     }
 }

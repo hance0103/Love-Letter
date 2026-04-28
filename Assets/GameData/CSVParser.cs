@@ -27,5 +27,18 @@ namespace GameData
         {
             return string.IsNullOrEmpty(field) ? Array.Empty<string>() : field.Split('|');
         }
+
+        public static int[] ParseIntArray(string field)
+        {
+            if (string.IsNullOrEmpty(field)) return Array.Empty<int>();
+            
+            var elements = field.Split('|');
+            var result = new int[elements.Length];
+            for (var i = 0; i < elements.Length; i++)
+            {
+                int.TryParse(elements[i], out result[i]);
+            }
+            return result;
+        }
     }
 }

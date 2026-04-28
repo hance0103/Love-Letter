@@ -2,7 +2,6 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using GamePlay.Battle.Field;
 using GameSystem.Managers;
-using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,7 +29,7 @@ namespace GamePlay.Battle.Card
         [SerializeField] private Ease returnEase = Ease.OutCubic;
 
         [Header("Hover")]
-        [SerializeField] private float hoverOffsetY = 30f;
+        //[SerializeField] private float hoverOffsetY = 30f;
         [SerializeField] private float hoverScaleMultiplier = 1.5f;
         [SerializeField] private float hoverDuration = 0.15f;
         
@@ -107,7 +106,7 @@ namespace GamePlay.Battle.Card
             cardName.text = instance.Data.nameString;
             cardDesc.text = instance.Data.descString;
             
-            var cardSprite = GameManager.Inst.Data.GetSprite(instance.Data.cardID);
+            var cardSprite = GameManager.Inst.Data.GetCardSprite(instance.Data.cardID);
             if (cardSprite != null) cardImage.sprite = cardSprite;
             
             RefreshCardInfo();

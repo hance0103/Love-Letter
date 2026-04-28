@@ -1,24 +1,21 @@
 using System.Collections.Generic;
-using System.Linq;
 using Cysharp.Threading.Tasks;
 using GameData.Scripts;
-using GamePlay.Card;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace GameSystem.Managers
 {
     public class DataManager
     {        
         // 여기서 데이터 받아오기
-        private CardDataBase _dataBase;
-        private readonly Dictionary<string, Sprite> _sprites = new();
+        private DataBase _dataBase;
+        private readonly Dictionary<string, CardSpriteSet> _sprites = new();
 
         private const string CardDataBasePath = "CardDataBase";
         public async UniTask InitAsync()
         {
             // 데이터베이스 가져와서 초기화 시키기
-            _dataBase = await GameManager.Inst.Resource.LoadAssetAsync<CardDataBase>(CardDataBasePath);
+            _dataBase = await GameManager.Inst.Resource.LoadAssetAsync<DataBase>(CardDataBasePath);
             _dataBase.Init();
             await CreateSpriteDictionary();
         }
@@ -31,14 +28,23 @@ namespace GameSystem.Managers
         {
             return _dataBase.GetAbility(id);
         }
-        public Sprite GetSprite(string cardID)
+        public Sprite GetCardSprite(string cardID)
         {
             if (_sprites.TryGetValue(cardID, out var sprite))
-                return sprite;
+                return sprite.CardImg;
 
             Debug.LogWarning($"[CardSpriteProvider] Sprite를 찾지 못했습니다. cardID: {cardID}");
             return null;
         }
+        public Sprite GetCardBackgroundSprite(string cardID)
+        {
+            if (_sprites.TryGetValue(cardID, out var sprite))
+                return sprite.BackgroundImg;
+
+            Debug.LogWarning($"[CardSpriteProvider] 배경 Sprite를 찾지 못했습니다. cardID: {cardID}");
+            return null;
+        }
+        
         private async UniTask CreateSpriteDictionary()
         {
             _sprites.Clear();
@@ -50,20 +56,76 @@ namespace GameSystem.Managers
                     continue;
                 }
                 
+                if (string.IsNullOrWhiteSpace(cardData.backgroundPath))
+                {
+                    Debug.LogWarning($"[CardSpriteProvider] backgroundPath가 비어있습니다. cardID: {cardData.cardID}");
+                    continue;
+                }
                 if (_sprites.ContainsKey(cardData.cardID))
                 {
                     Debug.LogWarning($"[CardSpriteProvider] 중복 cardID: {cardData.cardID}");
                     continue;
                 }
                 
-                var sprite = await GameManager.Inst.Resource.LoadAssetAsync<Sprite>(cardData.imgPath);
-                if (sprite == null)
+                var cardSprite = await GameManager.Inst.Resource.LoadAssetAsync<Sprite>(cardData.imgPath);
+                var backgroundSprite = await GameManager.Inst.Resource.LoadAssetAsync<Sprite>(cardData.backgroundPath);
+                if (cardSprite == null)
                 {
                     Debug.LogWarning($"Sprite not found: {cardData.imgPath}");
                     continue;
                 }
-                _sprites.Add(cardData.cardID, sprite);
+                if (backgroundSprite == null)
+                {
+                    Debug.LogWarning($"Sprite not found: {cardData.backgroundPath}");
+                    continue;
+                }
+
+                var spriteSet = new CardSpriteSet
+                {
+                    CardImg = cardSprite,
+                    BackgroundImg = backgroundSprite
+                };
+
+                _sprites.Add(cardData.cardID, spriteSet);
             }
+
+            foreach (var fateCard in _dataBase.fateCards)
+            {
+                if (string.IsNullOrWhiteSpace(fateCard.imgPath))
+                {
+                    Debug.LogWarning($"[CardSpriteProvider] imgPath가 비어있습니다. cardID: {fateCard.cardID}");
+                    continue;
+                }
+                
+                if (_sprites.ContainsKey(fateCard.cardID))
+                {
+                    Debug.LogWarning($"[CardSpriteProvider] 중복 cardID: {fateCard.cardID}");
+                    continue;
+                }
+                
+                var cardSprite = await GameManager.Inst.Resource.LoadAssetAsync<Sprite>(fateCard.imgPath);
+                var  backgroundSprite = await GameManager.Inst.Resource.LoadAssetAsync<Sprite>(fateCard.backgroundPath);
+                if (cardSprite == null)
+                {
+                    Debug.LogWarning($"Sprite not found: {fateCard.imgPath}");
+                    continue;
+                }
+
+                if (backgroundSprite == null)
+                {
+                    Debug.LogWarning($"Sprite not found: {fateCard.backgroundPath}");
+                    continue;
+                }
+                var spriteSet = new CardSpriteSet
+                {
+                    CardImg = cardSprite,
+                    BackgroundImg = backgroundSprite
+                };
+                
+                _sprites.Add(fateCard.cardID, spriteSet);
+            }
+            
+            
         }
         public void Release()
         {
@@ -83,5 +145,11 @@ namespace GameSystem.Managers
             _sprites.Clear();
         }
 
+    }
+
+    public class CardSpriteSet
+    {
+        public Sprite CardImg;
+        public Sprite BackgroundImg;
     }
 }

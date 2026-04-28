@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa6874d49d40f6849826b85fde9e4c8d, type: 3}
   m_Name: backEnemyIncreaseActionCount1
-  m_EditorClassIdentifier: Assembly-CSharp::GameData.SO.Scripts.CardAbilityBase
+  m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.CardAbilityBase
   abilityID: backEnemyIncreaseActionCount1
   actionTarget: 3
   actionListA:

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d95c0f0ca22fb641a9fe1714d03a1c0, type: 3}
   m_Name: merchant_2
-  m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Card.CardBase
+  m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.CardBase
   cardID: merchant_2
   cardTier: 0
   cardType: 0
@@ -28,3 +28,8 @@ MonoBehaviour:
   nameString: nameMerchant_2
   descString: descMerchant_2
   imgPath: merchant_2
+  tooltipIDs:
+  - generateScavenge
+  - scavenge
+  - exhaust
+  backgroundPath: cardBgMerchant_2

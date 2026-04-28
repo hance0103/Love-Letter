@@ -4,7 +4,8 @@ namespace GameSystem.Enums
     {
         Common,
         Rare,
-        Epic
+        Epic,
+        None
     }
     public enum CardType
     {

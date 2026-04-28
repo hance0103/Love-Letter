@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d95c0f0ca22fb641a9fe1714d03a1c0, type: 3}
   m_Name: knight_1
-  m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Card.CardBase
+  m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.CardBase
   cardID: knight_1
   cardTier: 0
   cardType: 0
@@ -29,3 +29,6 @@ MonoBehaviour:
   nameString: nameKnight_1
   descString: descKnight_1
   imgPath: knight_1
+  tooltipIDs:
+  - doubleAttack
+  backgroundPath: cardBgKnight_1
