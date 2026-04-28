@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using GameSystem.Enums;
 using UnityEngine;
 
-namespace GamePlay.Card
+namespace GameData.Scripts
 {
     [CreateAssetMenu(fileName = "Card", menuName = "Card/New Card")]
     public class CardBase : ScriptableObject

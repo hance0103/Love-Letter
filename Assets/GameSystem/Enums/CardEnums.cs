@@ -29,7 +29,11 @@ namespace GameSystem.Enums
         IncreaseActionCount,
         Burn,
         CreateCardToHand,
-        
+        BurnDMG,
+        CreateCardToField,
+        BurnATK,
+        BurnBySelfBurn,
+        Bloodrage,
         
         None
     }
@@ -50,7 +54,8 @@ namespace GameSystem.Enums
         NearAlly,
         FrontSingleAlly,
         AllEnemy,
-        Target
+        Target,
+        AllEnemyAlly
     }
 
     public enum ActualActionTarget

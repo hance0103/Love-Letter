@@ -21,7 +21,7 @@ MonoBehaviour:
     conditionType: 0
     conditionValue: -1
   actionListB:
-  - actionType: 9
+  - actionType: 14
     actionValue: -1
   actionAString: none
   actionBString: none

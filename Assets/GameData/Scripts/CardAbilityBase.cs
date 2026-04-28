@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GameSystem.Enums;
 using UnityEngine;
 
-namespace GameData.SO.Scripts
+namespace GameData.Scripts
 {
     [CreateAssetMenu(fileName = "CardAbilityBase", menuName = "Card/CardAbilityBase")]
     public class CardAbilityBase : ScriptableObject

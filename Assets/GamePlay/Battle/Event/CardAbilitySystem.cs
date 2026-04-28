@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using GameData.SO.Scripts;
+using GameData.Scripts;
 using GamePlay.Battle.Card;
 using GamePlay.Battle.Event.EventType;
 using GameSystem.Enums;
@@ -114,6 +114,9 @@ namespace GamePlay.Battle.Event
                     if (target != null)
                         result.Add(target);
                     break;
+                case ActionTarget.AllEnemyAlly:
+                    result.AddRange(BattleManager.Instance.GetAllFieldCards().Select(card => card.CardInstance));
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -179,7 +182,6 @@ namespace GamePlay.Battle.Event
                     }
                     break;
                 case ActionType.DecreaseActionCount:
-                    
                     break;
                 case ActionType.IncreaseActionCount:
                     break;
@@ -188,6 +190,16 @@ namespace GamePlay.Battle.Event
                 case ActionType.CreateCardToHand:
                     break;
                 case ActionType.None:
+                    break;
+                case ActionType.BurnDMG:
+                    break;
+                case ActionType.CreateCardToField:
+                    break;
+                case ActionType.BurnATK:
+                    break;
+                case ActionType.BurnBySelfBurn:
+                    break;
+                case ActionType.Bloodrage:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using GameData.SO.Scripts;
+using GameData.Scripts;
 using GamePlay.Card;
 using UnityEngine;
 using UnityEngine.AddressableAssets;

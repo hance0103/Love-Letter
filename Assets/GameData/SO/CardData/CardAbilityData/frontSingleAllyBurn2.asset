@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa6874d49d40f6849826b85fde9e4c8d, type: 3}
-  m_Name: targetBurn2
+  m_Name: frontSingleAllyBurn2
   m_EditorClassIdentifier: Assembly-CSharp::GameData.SO.Scripts.CardAbilityBase
-  abilityID: targetBurn2
-  actionTarget: 10
+  abilityID: frontSingleAllyBurn2
+  actionTarget: 8
   actionListA:
   - actionType: 7
     actionValue: 2

@@ -10,16 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d95c0f0ca22fb641a9fe1714d03a1c0, type: 3}
-  m_Name: Card 2
+  m_Name: fireball_0
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Card.CardBase
-  cardID: 
+  cardID: fireball_0
   cardTier: 0
   cardType: 0
-  cardNum: 0
   keywords: 
-  cost: 0
-  cardAbilityIDs: []
-  nextPromotionIDs: []
-  nameString: 
-  descString: 
-  imgPath: 
+  cardNum: 0
+  HP: 1
+  ATK: 0
+  actionCount: -1
+  cardAbilityIDs:
+  - attackerBurn4OnDeath
+  nextPromotionIDs:
+  - none
+  nameString: nameFireball_0
+  descString: descFireball_0
+  imgPath: fireball_0

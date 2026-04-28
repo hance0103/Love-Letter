@@ -10,16 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d95c0f0ca22fb641a9fe1714d03a1c0, type: 3}
-  m_Name: EnemyCard 2
+  m_Name: inquisitor_3
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Card.CardBase
-  cardID: 
-  cardTier: 0
+  cardID: inquisitor_3
+  cardTier: 1
   cardType: 0
-  cardNum: 0
   keywords: 
-  cost: 0
-  cardAbilityIDs: []
-  nextPromotionIDs: []
-  nameString: 
-  descString: 
-  imgPath: 
+  cardNum: 3
+  HP: 7
+  ATK: 3
+  actionCount: 3
+  cardAbilityIDs:
+  - frontEnemyAttackATK
+  - frontSingleAllyIncreaseATK
+  - frontSingleAllyBurn2
+  nextPromotionIDs:
+  - promoted
+  nameString: nameInquisitor_3
+  descString: descInquisitor_3
+  imgPath: inquisitor_3
