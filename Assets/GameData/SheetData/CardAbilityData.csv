@@ -2,7 +2,7 @@
 frontEnemyAttackATK,FrontEnemy,Damage,-1,none,-1,none,-1,none,none
 createCardOddmentsToHand,Self,CreateCardToHand,1,none,-1,none,-1,oddments_0,none
 frontSingleAllyHealATK,FrontSingleAlly,Heal,-1,none,-1,none,-1,none,none
-frontEnemyDualBonusDamage,FrontEnemy,Damage,-1,DualWin,-1,AddDamage,5,none,none
+frontEnemyDualBonusDamage,FrontEnemy,IncreaseATK|Damage|DecreaseATK,5|-1|5,DualWin,-1,Damage,-1,none,none
 allEnemyAttackATK,AllEnemy,Damage,-1,none,-1,none,-1,none,none
 allAllyDecreaseActionCount1,AllAlly,DecreaseActionCount,1,none,-1,none,-1,none,none
 selfDecreaseActionCount1,Self,DecreaseActionCount,1,none,-1,none,-1,none,none
