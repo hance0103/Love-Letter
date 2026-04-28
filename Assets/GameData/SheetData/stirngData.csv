@@ -1,0 +1,100 @@
+stringID,kr,en
+MGS_WARNING_PURCHASE_RELIC_MAX,유물 보유수가 최대치여서 구매할 수 없습니다.,none
+UI_STORE_SELL,판매,none
+UI_STORE_REROLL,리롤,none
+MSG_CHOOSE_CHARACTER_CARD,캐릭터 카드를 선택하세요.,none
+MSG_CHOOSE_NORMAL_CARD,반 카드를 선택하세요.,none
+MSG_CHOOSE_ADV_CLASS,전직할 캐릭터를 선택하세요.,none
+MSG_CHOOSE_CLASS_CHANGE,직업을 변경할 캐릭터를 선택하세요.,none
+nameKnight_1,기사,none
+nameMerchant_2,상인,none
+namePriest_3,사제,none
+nameWarrior_4,전사,none
+nameWizard_5,마법사,none
+nameBard_6,음유시인,none
+nameRogue_7,도적,none
+namePrincess_8,공주,none
+nameDullswordsmanship,무딘 검술,none
+nameForward,진격하라!,none
+nameBegone,물러나거라!,none
+nameIncinerate,불타거라!,none
+nameTheroyalbanquet,식사이니라!,none
+nameBestowaloftitle,작위수여,none
+nameDeprivationofrank,작위박탈,none
+nameGuardme,이몸을지키거라!,none
+nameAttack,공격하라!,none
+nameDragonknight_1,용기사,none
+nameHedgeknight_1,방랑기사,none
+descKnight_1,연격,none
+descMerchant_2,생성: 고철덩이,none
+descPriest_3,공격력만큼 아군 1명을 회복시킵니다.,none
+descWarrior_4,"대결 승리 시, {0}의 피해를 가합니다.",none
+descWizard_5,광역,none
+descBard_6,격양,none
+descRogue_7,적의 행동게이지를 1 훔칩니다\n저격,none
+descPrincess_8,주인공,none
+descDullswordsmanship,{0}의 피해를 가합니다,none
+descForward,대상의 행동게이지를 {0} 감소시킵니다,none
+descBegone,대상의 행동게이지를 {0} 증가시킵니다,none
+descIncinerate,대상에게 화상 {0}를 부여합니다,none
+descTheroyalbanquet,대상의 체력을 {0} 회복시킵니다,none
+descBestowaloftitle,대상의 번호를 {0} 감소시킵니다,none
+descDeprivationofrank,대상의 공격력을 {0} 감소시킵니다,none
+descGuardme,대상의 방어도를 {0} 증가시킵니다,none
+descAttack,대상의 공격력을 {0} 증가시킵니다,none
+nameExhaust,소멸,none
+nameDoubleattack,연격,none
+nameGeneratescavenge,생성: 잡동사니,none
+nameScavenge,잡동사니,none
+nameDual,대결,none
+nameAoe,광역,none
+nameFrenzy,격양,none
+nameSniping,저격,none
+nameHero,주인공,none
+nameBurn,화상,none
+nameSadism,가학,none
+nameWander,방랑,none
+nameGeneratesteel,생성: 강철,none
+nameSteel,강철,none
+nameArmor,방어도,none
+nameGeneratefireball,생성: 화염구,none
+nameFireball,화염구,none
+nameWarp,역변,none
+nameGuile,속임수,none
+descExhaust,none,none
+descDoubleattack,none,none
+descGeneratescavenge,none,none
+descScavenge,none,none
+descDual,none,none
+descAoe,none,none
+descFrenzy,none,none
+descSniping,none,none
+descHero,none,none
+descBurn,none,none
+descSadism,none,none
+descWander,none,none
+descGeneratesteel,none,none
+descSteel,none,none
+descArmor,none,none
+descGeneratefireball,none,none
+descFireball,none,none
+descWarp,none,none
+descGuile,none,none
+nameFireball_0,none,none
+nameDragon knight_1,none,none
+nameBomber merchant_2,none,none
+nameInquisitor_3,none,none
+nameBurning corpse_4,none,none
+nameMeteor mage_5,none,none
+namePyromaniac_6,none,none
+nameEmber_7,none,none
+nameEnemyexample,none,none
+descFireball_0,none,none
+descDragon knight_1,none,none
+descBomber merchant_2,none,none
+descInquisitor_3,none,none
+descBurning corpse_4,none,none
+descMeteor mage_5,none,none
+descPyromaniac_6,none,none
+descEmber_7,none,none
+descEnemyexample,none,none
