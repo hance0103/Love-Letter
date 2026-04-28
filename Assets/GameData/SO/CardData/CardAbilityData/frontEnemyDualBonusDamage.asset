@@ -19,9 +19,9 @@ MonoBehaviour:
     actionValue: -1
   condition:
     conditionType: 0
-    conditionValue: 0
+    conditionValue: -1
   actionListB:
-  - actionType: 0
-    actionValue: 5
+  - actionType: 17
+    actionValue: -1
   actionAString: none
   actionBString: none

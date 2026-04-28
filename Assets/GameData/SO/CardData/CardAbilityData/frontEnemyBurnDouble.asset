@@ -15,13 +15,13 @@ MonoBehaviour:
   abilityID: frontEnemyBurnDouble
   actionTarget: 1
   actionListA:
-  - actionType: 14
+  - actionType: 16
     actionValue: -1
   condition:
-    conditionType: 0
+    conditionType: 2
     conditionValue: -1
   actionListB:
-  - actionType: 14
+  - actionType: 17
     actionValue: -1
   actionAString: none
   actionBString: none

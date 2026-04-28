@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: attackerBurn4OnDeath
   m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.CardAbilityBase
   abilityID: attackerBurn4OnDeath
-  actionTarget: 0
+  actionTarget: 12
   actionListA:
-  - actionType: 14
+  - actionType: 17
     actionValue: -1
   condition:
-    conditionType: 0
-    conditionValue: 0
+    conditionType: 1
+    conditionValue: -1
   actionListB:
-  - actionType: 14
-    actionValue: -1
+  - actionType: 7
+    actionValue: 4
   actionAString: none
   actionBString: none

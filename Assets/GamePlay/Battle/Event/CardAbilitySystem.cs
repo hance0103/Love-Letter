@@ -63,9 +63,9 @@ namespace GamePlay.Battle.Event
             // 카드 효과 내부의 액션들 처리
             foreach (var action in actionA)
             {
-                var actionValue = action.actionValue == -1 ? abilityOwner.CurrentATK : action.actionValue;
+                var actionValue = action.ActionValue == -1 ? abilityOwner.CurrentATK : action.ActionValue;
                 
-                await ExecuteAction(action.actionType, actionValue, targets);
+                await ExecuteAction(action.ActionType, actionValue, targets);
             }
             
             

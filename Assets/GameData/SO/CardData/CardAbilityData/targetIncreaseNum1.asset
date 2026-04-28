@@ -16,12 +16,12 @@ MonoBehaviour:
   actionTarget: 10
   actionListA:
   - actionType: 14
-    actionValue: -1
+    actionValue: 1
   condition:
-    conditionType: 0
+    conditionType: 2
     conditionValue: -1
   actionListB:
-  - actionType: 14
+  - actionType: 17
     actionValue: -1
   actionAString: none
   actionBString: none

@@ -26,7 +26,7 @@ MonoBehaviour:
   nextPromotionIDs:
   - none
   nameString: none
-  descString: descFatecard6
+  descString: DESC_FATECARD6
   imgPath: none
   tooltipIDs:
   - none

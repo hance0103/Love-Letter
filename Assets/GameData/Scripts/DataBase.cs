@@ -23,6 +23,17 @@ namespace GameData.Scripts
         private Dictionary<string, CardBase> _fateDataDict;
         private Dictionary<string, StringBase> _stringDataDict;
         private Dictionary<string, TooltipBase> _tooltipDataDict;
+
+        public void ClearAll()
+        {
+            allCards.Clear();
+            allAbilities.Clear();
+            rooms.Clear();
+            waves.Clear();
+            fateCards.Clear();
+            strings.Clear();
+            tooltips.Clear();
+        }
         
         public void Init()
         {

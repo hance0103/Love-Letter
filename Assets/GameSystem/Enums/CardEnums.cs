@@ -10,13 +10,16 @@ namespace GameSystem.Enums
     public enum CardType
     {
         Character,
-        Normal
+        Normal,
+        None
     }
 
     public enum ConditionType
     {
+        DualWin,
+        Death,
+        
         None,
-        Join,
     }
 
     public enum ActionType
@@ -37,12 +40,15 @@ namespace GameSystem.Enums
         Bloodrage,
         IncreaseNum,
         DecreaseNum,
+        BurnDouble,
         
         None
     }
     public enum KeywordType
     {
         
+        
+        None
     }
 
     public enum ActionTarget
@@ -58,7 +64,10 @@ namespace GameSystem.Enums
         FrontSingleAlly,
         AllEnemy,
         Target,
-        AllEnemyAlly
+        AllEnemyAlly,
+        Attacker,
+        
+        None
     }
 
     public enum ActualActionTarget
