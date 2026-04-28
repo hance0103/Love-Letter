@@ -4,6 +4,7 @@ using GamePlay.Battle.Event;
 using GamePlay.Battle.Event.EventType;
 using GamePlay.Card;
 using GameSystem.Enums;
+using GameSystem.Managers;
 using UnityEngine;
 
 namespace GamePlay.Battle.Card
@@ -13,6 +14,10 @@ namespace GamePlay.Battle.Card
     public class CardInstance
     {
         [SerializeField] private CardBase data;
+
+        [SerializeField] private string cardName;
+        [SerializeField] private string cardDesc;
+        
         [SerializeField] private int currentCardNum;
         [SerializeField] private int currentHp;
         [SerializeField] private int baseATK;
@@ -21,7 +26,7 @@ namespace GamePlay.Battle.Card
         [SerializeField] private int currentShield;
         [SerializeField] private int baseActionCount;
         [SerializeField] private int currentActionCount;
-        [SerializeField] private string cardDesc;
+
         [SerializeField] private CardOwner cardOwner;
         public CardBase Data => data;
         public int CurrentCardNum => currentCardNum;
@@ -50,11 +55,32 @@ namespace GamePlay.Battle.Card
             currentShield = 0;
             baseActionCount = data.actionCount;
             currentActionCount = baseActionCount;
-            cardDesc = data.descString;
+
+            cardName = GameManager.Inst.Data.GetString(data.nameString);
+            cardDesc = GameManager.Inst.Data.GetString(data.descString);
             
             this.cardOwner = cardOwner;
         }
+
+        public void TakeDamage(int amount)
+        {
+            // 먼저 실드에 막히는지 체크
+            var afterShield = currentShield - amount;
             
+            // 데미지가 실드량을 넘어가면 체력 감소
+            if (afterShield <= 0)
+            {
+                currentShield = 0;
+                ChangeCardInstanceValue(CardInstanceValueType.C_HP, -afterShield);
+            }
+            else
+            {
+                // 실드 감소량만큼 적용
+                ChangeCardInstanceValue(CardInstanceValueType.C_SHD, -amount);
+            }
+            
+
+        }
         public void ChangeCardInstanceValue(CardInstanceValueType valueType, int amount)
         {
             switch (valueType)

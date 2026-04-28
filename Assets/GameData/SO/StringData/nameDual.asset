@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: nameDual
   m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.StringBase
   id: nameDual
-  kr: "\uFFFD\uFFFD\uFFFD"
+  kr: "\uB300\uACB0"
   en: none

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: nameSteel
   m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.StringBase
   id: nameSteel
-  kr: "\uFFFD\uFFFD\xF6"
+  kr: "\uAC15\uCCA0"
   en: none

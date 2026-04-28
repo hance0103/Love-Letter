@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: UI_STORE_SELL
   m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.StringBase
   id: UI_STORE_SELL
-  kr: "\uFFFD\u01F8\uFFFD"
+  kr: "\uD310\uB9E4"
   en: none

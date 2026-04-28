@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: MSG_CHOOSE_CLASS_CHANGE
   m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.StringBase
   id: MSG_CHOOSE_CLASS_CHANGE
-  kr: "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD \uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD
-    \u0133\uFFFD\uFFFD\uFFFD\u0378\uFFFD \uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u03FC\uFFFD\uFFFD\uFFFD."
+  kr: "\uC9C1\uC5C5\uC744 \uBCC0\uACBD\uD560 \uCE90\uB9AD\uD130\uB97C \uC120\uD0DD\uD558\uC138\uC694."
   en: none

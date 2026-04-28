@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: UI_STORE_REROLL
   m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.StringBase
   id: UI_STORE_REROLL
-  kr: "\uFFFD\uFFFD\uFFFD\uFFFD"
+  kr: "\uB9AC\uB864"
   en: none

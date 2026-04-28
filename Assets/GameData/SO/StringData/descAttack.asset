@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: descAttack
   m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.StringBase
   id: descAttack
-  kr: "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD \uFFFD\uFFFD\uFFFD\u0777\uFFFD\uFFFD\uFFFD
-    {0} \uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u0175\uFFFD\u03F4\uFFFD"
+  kr: "\uB300\uC0C1\uC758 \uACF5\uACA9\uB825\uC744 {0} \uC99D\uAC00\uC2DC\uD0B5\uB2C8\uB2E4"
   en: none

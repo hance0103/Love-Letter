@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GameData.Scripts;
+using GameSystem.Enums;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace GameSystem.Managers
@@ -44,7 +47,24 @@ namespace GameSystem.Managers
             Debug.LogWarning($"[CardSpriteProvider] 배경 Sprite를 찾지 못했습니다. cardID: {cardID}");
             return null;
         }
-        
+
+        public string GetString(string stringID, Language language = Language.Kr)
+        {
+            var str = _dataBase.GetString(stringID);
+            var result = "";
+            switch (language)
+            {
+                case Language.Kr:
+                    result += str.kr;
+                    break;
+                case Language.En:
+                    result += str.en;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(language), language, null);
+            }
+            return result;
+        }
         private async UniTask CreateSpriteDictionary()
         {
             _sprites.Clear();
@@ -127,6 +147,7 @@ namespace GameSystem.Managers
             
             
         }
+        
         public void Release()
         {
             var releasedPaths = new HashSet<string>();

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: nameSadism
   m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.StringBase
   id: nameSadism
-  kr: "\uFFFD\uFFFD\uFFFD\uFFFD"
+  kr: "\uAC00\uD559"
   en: none

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: nameSniping
   m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.StringBase
   id: nameSniping
-  kr: "\uFFFD\uFFFD\uFFFD\uFFFD"
+  kr: "\uC800\uACA9"
   en: none

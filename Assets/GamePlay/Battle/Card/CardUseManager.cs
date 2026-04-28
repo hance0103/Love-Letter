@@ -210,6 +210,7 @@ namespace GamePlay.Battle.Card
             {
                 var clickedCard = FindTopCard();
                 if (clickedCard == null) return;
+                if (clickedCard.CardInstance.CardOwner != CardOwner.Player) return;
 
                 SelectCard(clickedCard);
             }

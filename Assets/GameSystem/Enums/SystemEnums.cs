@@ -23,4 +23,10 @@ namespace GameSystem.Enums
         RandomChangeClassPack,
         DeleteCardPack,
     }
+
+    public enum Language
+    {
+        Kr,
+        En
+    }
 }

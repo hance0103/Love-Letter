@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: nameKnight_1
   m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.StringBase
   id: nameKnight_1
-  kr: "\uFFFD\uFFFD\uFFFD"
+  kr: "\uAE30\uC0AC"
   en: none

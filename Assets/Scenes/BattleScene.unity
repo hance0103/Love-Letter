@@ -655,6 +655,8 @@ MonoBehaviour:
   slotOwner: 0
   cardInstance:
     data: {fileID: 0}
+    cardName: 
+    cardDesc: 
     currentCardNum: 0
     currentHp: 0
     baseATK: 0
@@ -663,7 +665,6 @@ MonoBehaviour:
     currentShield: 0
     baseActionCount: 0
     currentActionCount: 0
-    cardDesc: 
     cardOwner: 0
   isCardIn: 0
 --- !u!114 &450291905
@@ -979,6 +980,8 @@ MonoBehaviour:
   slotOwner: 1
   cardInstance:
     data: {fileID: 0}
+    cardName: 
+    cardDesc: 
     currentCardNum: 0
     currentHp: 0
     baseATK: 0
@@ -987,7 +990,6 @@ MonoBehaviour:
     currentShield: 0
     baseActionCount: 0
     currentActionCount: 0
-    cardDesc: 
     cardOwner: 0
   isCardIn: 0
 --- !u!114 &793742522
@@ -1478,6 +1480,8 @@ MonoBehaviour:
   slotOwner: 0
   cardInstance:
     data: {fileID: 0}
+    cardName: 
+    cardDesc: 
     currentCardNum: 0
     currentHp: 0
     baseATK: 0
@@ -1486,7 +1490,6 @@ MonoBehaviour:
     currentShield: 0
     baseActionCount: 0
     currentActionCount: 0
-    cardDesc: 
     cardOwner: 0
   isCardIn: 0
 --- !u!114 &1163740195
@@ -1730,6 +1733,8 @@ MonoBehaviour:
   slotOwner: 0
   cardInstance:
     data: {fileID: 0}
+    cardName: 
+    cardDesc: 
     currentCardNum: 0
     currentHp: 0
     baseATK: 0
@@ -1738,7 +1743,6 @@ MonoBehaviour:
     currentShield: 0
     baseActionCount: 0
     currentActionCount: 0
-    cardDesc: 
     cardOwner: 0
   isCardIn: 0
 --- !u!1 &1498637745
@@ -1795,6 +1799,8 @@ MonoBehaviour:
   slotOwner: 1
   cardInstance:
     data: {fileID: 0}
+    cardName: 
+    cardDesc: 
     currentCardNum: 0
     currentHp: 0
     baseATK: 0
@@ -1803,7 +1809,6 @@ MonoBehaviour:
     currentShield: 0
     baseActionCount: 0
     currentActionCount: 0
-    cardDesc: 
     cardOwner: 0
   isCardIn: 0
 --- !u!114 &1498637748
@@ -2012,6 +2017,8 @@ MonoBehaviour:
   slotOwner: 1
   cardInstance:
     data: {fileID: 0}
+    cardName: 
+    cardDesc: 
     currentCardNum: 0
     currentHp: 0
     baseATK: 0
@@ -2020,7 +2027,6 @@ MonoBehaviour:
     currentShield: 0
     baseActionCount: 0
     currentActionCount: 0
-    cardDesc: 
     cardOwner: 0
   isCardIn: 0
 --- !u!114 &1758492088
@@ -2115,6 +2121,8 @@ MonoBehaviour:
   slotOwner: 1
   cardInstance:
     data: {fileID: 0}
+    cardName: 
+    cardDesc: 
     currentCardNum: 0
     currentHp: 0
     baseATK: 0
@@ -2123,7 +2131,6 @@ MonoBehaviour:
     currentShield: 0
     baseActionCount: 0
     currentActionCount: 0
-    cardDesc: 
     cardOwner: 0
   isCardIn: 0
 --- !u!114 &1800678558
@@ -2210,21 +2217,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Party.PartyManager
   partyMembers:
+  - data: {fileID: 11400000, guid: 709764c6687a64f40a4f78c8e41a3344, type: 2}
+    accList: []
+  - data: {fileID: 11400000, guid: 14437619e2dc7274aad37e09384b89cd, type: 2}
+    accList: []
+  - data: {fileID: 11400000, guid: 14437619e2dc7274aad37e09384b89cd, type: 2}
+    accList: []
+  - data: {fileID: 11400000, guid: c31c1ff32d6b73c4e98f600d4203c71f, type: 2}
+    accList: []
+  - data: {fileID: 11400000, guid: c31c1ff32d6b73c4e98f600d4203c71f, type: 2}
+    accList: []
   - data: {fileID: 11400000, guid: 3b8bc4fdd0d5a624abcbe0c02f6922f6, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: 3b8bc4fdd0d5a624abcbe0c02f6922f6, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: 14437619e2dc7274aad37e09384b89cd, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: 14437619e2dc7274aad37e09384b89cd, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: 14437619e2dc7274aad37e09384b89cd, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: c31c1ff32d6b73c4e98f600d4203c71f, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: c31c1ff32d6b73c4e98f600d4203c71f, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: c31c1ff32d6b73c4e98f600d4203c71f, type: 2}
     accList: []
 --- !u!114 &1935962552
 MonoBehaviour:
@@ -2292,6 +2295,8 @@ MonoBehaviour:
   slotOwner: 0
   cardInstance:
     data: {fileID: 0}
+    cardName: 
+    cardDesc: 
     currentCardNum: 0
     currentHp: 0
     baseATK: 0
@@ -2300,7 +2305,6 @@ MonoBehaviour:
     currentShield: 0
     baseActionCount: 0
     currentActionCount: 0
-    cardDesc: 
     cardOwner: 0
   isCardIn: 0
 --- !u!114 &1955757514

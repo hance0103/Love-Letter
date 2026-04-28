@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: MSG_CHOOSE_CHARACTER_CARD
   m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.StringBase
   id: MSG_CHOOSE_CHARACTER_CARD
-  kr: "\u0133\uFFFD\uFFFD\uFFFD\uFFFD \u012B\uFFFD\u5E26 \uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\u03FC\uFFFD\uFFFD\uFFFD."
+  kr: "\uCE90\uB9AD\uD130 \uCE74\uB4DC\uB97C \uC120\uD0DD\uD558\uC138\uC694."
   en: none

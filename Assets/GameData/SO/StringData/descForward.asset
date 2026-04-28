@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: descForward
   m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.StringBase
   id: descForward
-  kr: "\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD \uFFFD\u0D7F\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD
-    {0} \uFFFD\uFFFD\uFFFD\u04BD\uFFFD\u0175\uFFFD\u03F4\uFFFD"
+  kr: "\uB300\uC0C1\uC758 \uD589\uB3D9\uAC8C\uC774\uC9C0\uB97C {0} \uAC10\uC18C\uC2DC\uD0B5\uB2C8\uB2E4"
   en: none

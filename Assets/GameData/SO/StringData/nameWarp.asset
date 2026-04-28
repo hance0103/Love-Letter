@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: nameWarp
   m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.StringBase
   id: nameWarp
-  kr: "\uFFFD\uFFFD\uFFFD\uFFFD"
+  kr: "\uC5ED\uBCC0"
   en: none

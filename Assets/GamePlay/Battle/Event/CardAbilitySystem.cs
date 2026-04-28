@@ -154,7 +154,7 @@ namespace GamePlay.Battle.Event
                 case ActionType.Damage:
                     foreach (var target in targets)
                     {
-                        target.ChangeCardInstanceValue(CardInstanceValueType.C_HP, -actionValue);
+                        target.TakeDamage(actionValue);
                     }
                     break;
                 case ActionType.Heal:
@@ -182,14 +182,20 @@ namespace GamePlay.Battle.Event
                     }
                     break;
                 case ActionType.DecreaseActionCount:
+                    foreach (var target in targets)
+                    {
+                        target.ChangeCardInstanceValue(CardInstanceValueType.C_AC, -actionValue);
+                    }
                     break;
                 case ActionType.IncreaseActionCount:
+                    foreach (var target in targets)
+                    {
+                        target.ChangeCardInstanceValue(CardInstanceValueType.C_AC, actionValue);
+                    }
                     break;
                 case ActionType.Burn:
                     break;
                 case ActionType.CreateCardToHand:
-                    break;
-                case ActionType.None:
                     break;
                 case ActionType.BurnDMG:
                     break;
@@ -200,6 +206,8 @@ namespace GamePlay.Battle.Event
                 case ActionType.BurnBySelfBurn:
                     break;
                 case ActionType.Bloodrage:
+                    break;
+                case ActionType.None:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

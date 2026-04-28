@@ -35,6 +35,8 @@ namespace GameSystem.Enums
         BurnATK,
         BurnBySelfBurn,
         Bloodrage,
+        IncreaseNum,
+        DecreaseNum,
         
         None
     }

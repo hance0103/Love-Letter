@@ -1,6 +1,8 @@
+using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using GamePlay.Battle.Field;
+using GameSystem.Enums;
 using GameSystem.Managers;
 using TMPro;
 using UnityEngine;
@@ -17,7 +19,6 @@ namespace GamePlay.Battle.Card
         [SerializeField] private TMP_Text cardName;
         [SerializeField] private TMP_Text cardDesc;
         [SerializeField] private Image cardImage;
-        [SerializeField] private TMP_Text cardNum;
         [SerializeField] private TMP_Text currentHp;
         [SerializeField] private TMP_Text currentAtk;
         [SerializeField] private TMP_Text increaseAtk;
@@ -88,7 +89,13 @@ namespace GamePlay.Battle.Card
         {
             if (instance == null)
             {
-                Debug.LogWarning("CardInstance object is null.");
+                Debug.LogWarning("CardInstance is null.");
+                return;
+            }
+
+            if (instance.Data == null)
+            {
+                Debug.LogWarning("Card Data is null.");
                 return;
             }
             
@@ -113,11 +120,24 @@ namespace GamePlay.Battle.Card
         }
         public void RefreshCardInfo()
         {
-            SetOptionalText(cardNum, cardInstance.CurrentCardNum);
+            var nameText = "";
+            switch (cardInstance.CardType)
+            {
+                case CardType.Character:
+                    nameText += $"{cardInstance.CurrentCardNum}.  {cardInstance.Data.nameString}";
+                    break;
+                case CardType.Normal:
+                    nameText += $"{cardInstance.Data.nameString}";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            cardName.text = nameText;
+
             SetOptionalText(currentHp, cardInstance.CurrentHp);
             SetOptionalText(currentAtk, cardInstance.CurrentATK);
             SetIncreasedAtk(cardInstance.InCreasedATK);
-            SetOptionalText(currentShd, cardInstance.CurrentShield);
+            SetShield(cardInstance.CurrentShield);
             SetOptionalText(currentAC, cardInstance.CurrentActionCount);
         }
         
@@ -139,6 +159,22 @@ namespace GamePlay.Battle.Card
             target.text = value.ToString();
         }
 
+        private void SetShield(int value)
+        {
+            if (increaseAtk == null) return;
+            var root = currentShd.transform.parent != null
+                ? currentShd.transform.parent.gameObject
+                : currentShd.gameObject;
+
+            if (value <= 0)
+            {
+                root.SetActive(false);
+                return;
+            }
+            
+            root.SetActive(true);
+            currentShd.text = value.ToString();
+        }
         private void SetIncreasedAtk(int value)
         {
             if (increaseAtk == null) return;

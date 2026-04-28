@@ -29,6 +29,12 @@ namespace GameData.Scripts
             // 딕셔너리 구축
             _cardDataDict = new Dictionary<string, CardBase>();
             _abilityDataDict = new Dictionary<string, CardAbilityBase>();
+            _roomDataDict = new Dictionary<string, RoomBase>();
+            _waveDataDict = new Dictionary<string, WaveBase>();
+            _fateDataDict = new Dictionary<string, CardBase>();
+            _stringDataDict = new Dictionary<string, StringBase>();
+            _tooltipDataDict = new Dictionary<string, TooltipBase>();
+            
             
             foreach (var card in allCards)
             {
@@ -40,24 +46,24 @@ namespace GameData.Scripts
             }
             foreach (var room in rooms)
             {
-                _roomDataDict[room.name] = room;
+                _roomDataDict[room.id] = room;
             }
             foreach (var wave in waves)
             {
-                _waveDataDict[wave.name] = wave;
+                _waveDataDict[wave.id] = wave;
             }
             foreach (var fate in fateCards)
             {
-                _fateDataDict[fate.name] = fate;
+                _fateDataDict[fate.cardID] = fate;
             }
             foreach (var stringData in strings)
             {
-                _stringDataDict[stringData.name] = stringData;
+                _stringDataDict[stringData.id] = stringData;
             }
 
             foreach (var tooltipData in tooltips)
             {
-                _tooltipDataDict[tooltipData.name] = tooltipData;
+                _tooltipDataDict[tooltipData.id] = tooltipData;
             }
         }
 
