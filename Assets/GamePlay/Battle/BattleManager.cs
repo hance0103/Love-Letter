@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using GameData.Scripts;
 using GamePlay.Battle.Card;
 using GamePlay.Battle.Event;
 using GamePlay.Battle.Event.EventType;

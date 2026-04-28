@@ -1,6 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
-using GameData.SO.Scripts;
+using GameData.Scripts;
 using UnityEngine;
 
 namespace GamePlay.Battle.Card

@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using GamePlay.Card;
 using UnityEngine;
 
-namespace GameData.SO.Scripts
+namespace GameData.Scripts
 {
     [Serializable]
     [CreateAssetMenu(fileName = "CardDataBase", menuName = "Card/CardDataBase")]

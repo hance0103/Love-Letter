@@ -1,4 +1,5 @@
 using System;
+using GameData.Scripts;
 using GamePlay.Battle.Event;
 using GamePlay.Battle.Event.EventType;
 using GamePlay.Card;

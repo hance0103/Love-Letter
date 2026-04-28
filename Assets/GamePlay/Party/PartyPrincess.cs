@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GameData.Scripts;
 using GamePlay.Card;
 
 namespace GamePlay.Party
