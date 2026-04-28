@@ -24,8 +24,8 @@ MonoBehaviour:
   - targetHeal2
   nextPromotionIDs:
   - none
-  nameString: nameTheroyalbanquet
-  descString: descTheroyalbanquet
+  nameString: NAME_THEROYALBANQUET
+  descString: DESC_THEROYALBANQUET
   imgPath: theRoyalBanquet
   tooltipIDs:
   - none

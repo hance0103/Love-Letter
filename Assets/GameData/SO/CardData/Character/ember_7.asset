@@ -25,8 +25,8 @@ MonoBehaviour:
   - frontEnemyBurnDouble
   nextPromotionIDs:
   - promoted
-  nameString: nameEmber_7
-  descString: descEmber_7
+  nameString: NAME_EMBER_7
+  descString: DESC_EMBER_7
   imgPath: ember_7
   tooltipIDs:
   - burn

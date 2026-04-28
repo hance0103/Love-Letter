@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityID: backEnemyIncreaseActionCount1
   actionTarget: 3
   actionListA:
-  - actionType: 5
+  - actionType: 6
     actionValue: 1
   condition:
     conditionType: 0

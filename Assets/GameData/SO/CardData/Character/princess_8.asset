@@ -24,8 +24,8 @@ MonoBehaviour:
   - frontEnemyAttackATK
   nextPromotionIDs:
   - none
-  nameString: namePrincess_8
-  descString: descPrincess_8
+  nameString: NAME_PRINCESS_8
+  descString: DESC_PRINCESS_8
   imgPath: princess_8
   tooltipIDs:
   - hero

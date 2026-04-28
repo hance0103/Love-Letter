@@ -25,9 +25,8 @@ MonoBehaviour:
   - frontEnemyAttackATK
   nextPromotionIDs:
   - dragonKnight_1
-  - hedgeKnight_1
-  nameString: nameKnight_1
-  descString: descKnight_1
+  nameString: NAME_KNIGHT_1
+  descString: DESC_KNIGHT_1
   imgPath: knight_1
   tooltipIDs:
   - doubleAttack

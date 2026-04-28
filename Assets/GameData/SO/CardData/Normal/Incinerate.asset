@@ -24,8 +24,8 @@ MonoBehaviour:
   - targetBurn2
   nextPromotionIDs:
   - none
-  nameString: nameIncinerate
-  descString: descIncinerate
+  nameString: NAME_INCINERATE
+  descString: DESC_INCINERATE
   imgPath: incinerate
   tooltipIDs:
   - burn

@@ -25,8 +25,8 @@ MonoBehaviour:
   - createCardOddmentsToHand
   nextPromotionIDs:
   - none
-  nameString: nameMerchant_2
-  descString: descMerchant_2
+  nameString: NAME_MERCHANT_2
+  descString: DESC_MERCHANT_2
   imgPath: merchant_2
   tooltipIDs:
   - generateScavenge

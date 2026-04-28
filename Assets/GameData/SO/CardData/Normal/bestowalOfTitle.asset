@@ -24,8 +24,8 @@ MonoBehaviour:
   - targetIncreaseNum1
   nextPromotionIDs:
   - none
-  nameString: nameBestowaloftitle
-  descString: descBestowaloftitle
+  nameString: NAME_BESTOWALOFTITLE
+  descString: DESC_BESTOWALOFTITLE
   imgPath: bestowalOfTitle
   tooltipIDs:
   - none

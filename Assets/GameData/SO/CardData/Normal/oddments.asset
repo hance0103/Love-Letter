@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d95c0f0ca22fb641a9fe1714d03a1c0, type: 3}
-  m_Name: enemyExample
+  m_Name: oddments
   m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.CardBase
-  cardID: enemyExample
+  cardID: oddments
   cardTier: 0
-  cardType: 0
+  cardType: 1
   keywords: 
-  cardNum: 1
+  cardNum: 0
   HP: 1
-  ATK: 3
-  actionCount: 3
+  ATK: 0
+  actionCount: -1
   cardAbilityIDs:
-  - frontEnemyAttackATK
+  - targetIncreaseShield2
   nextPromotionIDs:
   - none
-  nameString: NAME_ENEMYEXAMPLE
-  descString: DESC_ENEMYEXAMPLE
-  imgPath: enemyExample
+  nameString: NAME_ODDMENTS
+  descString: DESC_ODDMENTS
+  imgPath: oddments
   tooltipIDs:
   - none
-  backgroundPath: cardBgEnemyexample
+  backgroundPath: cardBgOddments

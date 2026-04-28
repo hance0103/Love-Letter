@@ -24,8 +24,8 @@ MonoBehaviour:
   - attackerBurn4OnDeath
   nextPromotionIDs:
   - none
-  nameString: nameFireball_0
-  descString: descFireball_0
+  nameString: NAME_FIREBALL_0
+  descString: DESC_FIREBALL_0
   imgPath: fireball_0
   tooltipIDs:
   - burn

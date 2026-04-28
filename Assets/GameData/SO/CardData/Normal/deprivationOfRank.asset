@@ -24,8 +24,8 @@ MonoBehaviour:
   - targetDecreaseATK2
   nextPromotionIDs:
   - none
-  nameString: nameDeprivationofrank
-  descString: descDeprivationofrank
+  nameString: NAME_DEPRIVATIONOFRANK
+  descString: DESC_DEPRIVATIONOFRANK
   imgPath: deprivationOfRank
   tooltipIDs:
   - none

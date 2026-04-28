@@ -24,8 +24,8 @@ MonoBehaviour:
   - targetIncreaseActionCount1
   nextPromotionIDs:
   - none
-  nameString: nameBegone
-  descString: descBegone
+  nameString: NAME_BEGONE
+  descString: DESC_BEGONE
   imgPath: begone
   tooltipIDs:
   - none

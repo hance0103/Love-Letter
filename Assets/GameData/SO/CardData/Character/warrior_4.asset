@@ -24,8 +24,8 @@ MonoBehaviour:
   - frontEnemyDualBonusDamage
   nextPromotionIDs:
   - none
-  nameString: nameWarrior_4
-  descString: descWarrior_4
+  nameString: NAME_WARRIOR_4
+  descString: DESC_WARRIOR_4
   imgPath: warrior_4
   tooltipIDs:
   - dual

@@ -26,8 +26,8 @@ MonoBehaviour:
   - frontSingleAllyBurn2
   nextPromotionIDs:
   - promoted
-  nameString: nameInquisitor_3
-  descString: descInquisitor_3
+  nameString: NAME_INQUISITOR_3
+  descString: DESC_INQUISITOR_3
   imgPath: inquisitor_3
   tooltipIDs:
   - burn

@@ -24,8 +24,8 @@ MonoBehaviour:
   - allEnemyAttackATK
   nextPromotionIDs:
   - none
-  nameString: nameWizard_5
-  descString: descWizard_5
+  nameString: NAME_WIZARD_5
+  descString: DESC_WIZARD_5
   imgPath: wizard_5
   tooltipIDs:
   - aoe

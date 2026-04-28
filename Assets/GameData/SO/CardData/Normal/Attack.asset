@@ -24,8 +24,8 @@ MonoBehaviour:
   - targetIncreaseATK2
   nextPromotionIDs:
   - none
-  nameString: nameAttack
-  descString: descAttack
+  nameString: NAME_ATTACK
+  descString: DESC_ATTACK
   imgPath: attack
   tooltipIDs:
   - none

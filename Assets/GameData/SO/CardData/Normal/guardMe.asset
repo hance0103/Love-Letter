@@ -24,8 +24,8 @@ MonoBehaviour:
   - targetIncreaseShield2
   nextPromotionIDs:
   - none
-  nameString: nameGuardme
-  descString: descGuardme
+  nameString: NAME_GUARDME
+  descString: DESC_GUARDME
   imgPath: guardMe
   tooltipIDs:
   - none

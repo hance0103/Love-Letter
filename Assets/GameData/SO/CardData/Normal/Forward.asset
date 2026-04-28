@@ -24,8 +24,8 @@ MonoBehaviour:
   - targetDecreaseActionCount1
   nextPromotionIDs:
   - none
-  nameString: nameForward
-  descString: descForward
+  nameString: NAME_FORWARD
+  descString: DESC_FORWARD
   imgPath: forward
   tooltipIDs:
   - none

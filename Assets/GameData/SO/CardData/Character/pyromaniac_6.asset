@@ -25,8 +25,8 @@ MonoBehaviour:
   - bloodrage
   nextPromotionIDs:
   - promoted
-  nameString: namePyromaniac_6
-  descString: descPyromaniac_6
+  nameString: NAME_PYROMANIAC_6
+  descString: DESC_PYROMANIAC_6
   imgPath: pyromaniac_6
   tooltipIDs:
   - burn

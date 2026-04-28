@@ -25,8 +25,8 @@ MonoBehaviour:
   - frontSingleAllyHealATK
   nextPromotionIDs:
   - none
-  nameString: namePriest_3
-  descString: descPriest_3
+  nameString: NAME_PRIEST_3
+  descString: DESC_PRIEST_3
   imgPath: priest_3
   tooltipIDs:
   - none

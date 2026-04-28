@@ -10,23 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d95c0f0ca22fb641a9fe1714d03a1c0, type: 3}
-  m_Name: enemyExample
+  m_Name: burningCorpse_4
   m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.CardBase
-  cardID: enemyExample
-  cardTier: 0
+  cardID: burningCorpse_4
+  cardTier: 1
   cardType: 0
   keywords: 
-  cardNum: 1
-  HP: 1
+  cardNum: 4
+  HP: 7
   ATK: 3
   actionCount: 3
   cardAbilityIDs:
-  - frontEnemyAttackATK
+  - selfBurn4
+  - frontEnemyBurnBySelfBurn
   nextPromotionIDs:
-  - none
-  nameString: NAME_ENEMYEXAMPLE
-  descString: DESC_ENEMYEXAMPLE
-  imgPath: enemyExample
+  - promoted
+  nameString: NAME_BURNINGCORPSE_4
+  descString: DESC_BURNINGCORPSE_4
+  imgPath: burningCorpse_4
   tooltipIDs:
-  - none
-  backgroundPath: cardBgEnemyexample
+  - burn
+  backgroundPath: cardBgBurningcorpse_4

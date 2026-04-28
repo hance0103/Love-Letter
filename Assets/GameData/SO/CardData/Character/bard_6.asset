@@ -22,11 +22,11 @@ MonoBehaviour:
   actionCount: 3
   cardAbilityIDs:
   - frontEnemyAttackATK
-  - allAllyActionCount-1
+  - allAllyDecreaseActionCount1
   nextPromotionIDs:
   - none
-  nameString: nameBard_6
-  descString: descBard_6
+  nameString: NAME_BARD_6
+  descString: DESC_BARD_6
   imgPath: bard_6
   tooltipIDs:
   - frenzy

@@ -26,8 +26,8 @@ MonoBehaviour:
   - selfDecreaseActionCount1
   nextPromotionIDs:
   - none
-  nameString: nameRogue_7
-  descString: descRogue_7
+  nameString: NAME_ROGUE_7
+  descString: DESC_ROGUE_7
   imgPath: rogue_7
   tooltipIDs:
   - sniping

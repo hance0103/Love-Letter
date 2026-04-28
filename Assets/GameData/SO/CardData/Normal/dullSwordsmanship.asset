@@ -24,8 +24,8 @@ MonoBehaviour:
   - targetAttackATK
   nextPromotionIDs:
   - none
-  nameString: nameDullswordsmanship
-  descString: descDullswordsmanship
+  nameString: NAME_DULLSWORDSMANSHIP
+  descString: DESC_DULLSWORDSMANSHIP
   imgPath: dullSwordsmanship
   tooltipIDs:
   - none

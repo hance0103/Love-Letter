@@ -5,8 +5,8 @@ frontSingleAllyHealATK,FrontSingleAlly,Heal,-1,none,-1,none,-1,none,none
 frontEnemyDualBonusDamage,FrontEnemy,Damage,-1,DualWin,-1,AddDamage,5,none,none
 allEnemyAttackATK,AllEnemy,Damage,-1,none,-1,none,-1,none,none
 allAllyDecreaseActionCount1,AllAlly,DecreaseActionCount,1,none,-1,none,-1,none,none
-selfDecreaseActionCount1,Self,IncreaseActionCount,1,none,-1,none,-1,none,none
-backEnemyIncreaseActionCount1,BackEnemy,DecreaseActionCount,1,none,-1,none,-1,none,none
+selfDecreaseActionCount1,Self,DecreaseActionCount,1,none,-1,none,-1,none,none
+backEnemyIncreaseActionCount1,BackEnemy,IncreaseActionCount,1,none,-1,none,-1,none,none
 targetAttackATK,Target,Damage,-1,none,-1,none,-1,none,none
 targetDecreaseActionCount1,Target,DecreaseActionCount,1,none,-1,none,-1,none,none
 targetIncreaseActionCount1,Target,IncreaseActionCount,1,none,-1,none,-1,none,none
@@ -28,3 +28,5 @@ frontEnemyBurnBySelfBurn,frontEnemy,BurnBySelfBurn,-1,none,-1,none,-1,none,none
 randomEnemyBurnATK,randomEnemy,BurnATK,-1,none,-1,none,-1,none,none
 allEnemyAllyBurn3,allEnemyAlly,Burn,3,none,-1,none,-1,none,none
 bloodrage,Self,Bloodrage,-1,none,-1,none,-1,none,none
+attackerBurn4OnDeath,Attacker,None,-1,Death,-1,Burn,4,none,none
+frontEnemyBurnDouble,FrontEnemy,BurnDouble,-1,none,-1,none,-1,none,none
