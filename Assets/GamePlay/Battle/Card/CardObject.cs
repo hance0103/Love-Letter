@@ -109,14 +109,15 @@ namespace GamePlay.Battle.Card
 
             transform.localScale = _baseScale;
             _canvasGroup.blocksRaycasts = true;
-
-            cardName.text = instance.Data.nameString;
-            cardDesc.text = instance.Data.descString;
+            
+            
+            RefreshCardInfo();
+            cardDesc.text = instance.CardDesc;
             
             var cardSprite = GameManager.Inst.Data.GetCardSprite(instance.Data.cardID);
             if (cardSprite != null) cardImage.sprite = cardSprite;
             
-            RefreshCardInfo();
+
         }
         public void RefreshCardInfo()
         {
@@ -124,10 +125,10 @@ namespace GamePlay.Battle.Card
             switch (cardInstance.CardType)
             {
                 case CardType.Character:
-                    nameText += $"{cardInstance.CurrentCardNum}.  {cardInstance.Data.nameString}";
+                    nameText += $"{cardInstance.CurrentCardNum}.  {cardInstance.CardName}";
                     break;
                 case CardType.Normal:
-                    nameText += $"{cardInstance.Data.nameString}";
+                    nameText += $"{cardInstance.CardName}";
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

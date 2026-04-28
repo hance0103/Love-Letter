@@ -37,6 +37,8 @@ namespace GamePlay.Battle.Card
         public int CurrentShield => currentShield;
         public int BaseActionCount => baseActionCount;
         public int CurrentActionCount => currentActionCount;
+        
+        public string CardName => cardName;
         public string CardDesc => cardDesc;
         public CardType CardType => data != null ? data.cardType : CardType.Normal;
         public CardOwner CardOwner => cardOwner;
