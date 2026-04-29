@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GameSystem.Enums;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 namespace GameData.Scripts
@@ -15,6 +16,8 @@ namespace GameData.Scripts
         public List<AbilityActionSet> actionListB = new();
         public string actionAString;
         public string actionBString;
+        public ActionValueType actionAValueType;
+        public ActionValueType actionBValueType;
     }
 
     [Serializable]

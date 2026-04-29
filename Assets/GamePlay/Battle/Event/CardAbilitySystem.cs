@@ -58,14 +58,15 @@ namespace GamePlay.Battle.Event
         {
             var targets = FindTarget(ability, abilityOwner, target);
             var actionA = ability.actionListA;
-
             
             // 카드 효과 내부의 액션들 처리
             foreach (var action in actionA)
             {
-                var actionValue = action.ActionValue == -1 ? abilityOwner.CurrentATK : action.ActionValue;
+                var actionValue = action.ActionValue == -1 ? 
+                    GetActionValue(abilityOwner, target, ability.actionAValueType)
+                    : action.ActionValue;
                 
-                await ExecuteAction(action.ActionType, actionValue, targets);
+                await ExecuteAction(action.ActionType, actionValue, targets, ability.actionAString);
             }
             
             
@@ -73,6 +74,53 @@ namespace GamePlay.Battle.Event
             var condition = ability.condition;
         }
 
+        private int GetActionValue(CardInstance abilityOwner, CardInstance target, ActionValueType actionValueType)
+        {
+            var result = -1;
+            if (abilityOwner == null) return result;
+            
+            switch (actionValueType)
+            {
+                case ActionValueType.ATK:
+                    result = abilityOwner.CurrentATK;
+                    break;
+                case ActionValueType.TargetATK:
+                    if (target == null) return result;
+                    result = target.CurrentATK;
+                    break;
+                case ActionValueType.BeforeDamage:
+                    result = BattleManager.Instance.BeforeDamage;
+                    break;
+
+                case ActionValueType.SelfHP:
+                    result = abilityOwner.CurrentHp;
+                    break;
+                case ActionValueType.TargetHP:
+                    result = target.CurrentHp;
+                    break;
+                case ActionValueType.SelfShield:
+                    result = abilityOwner.CurrentShield;
+                    break;
+                case ActionValueType.TargetShield:
+                    result = target.CurrentShield;
+                    break;
+                
+                case ActionValueType.SelfBurn:
+                    break;
+                case ActionValueType.TargetBurn:
+                    break;
+                
+                case ActionValueType.None:
+                case ActionValueType.ActionString:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(actionValueType), actionValueType, null);
+            }
+                
+
+            return result;
+        }
+        
         #region Target
 
         private List<CardInstance> FindTarget(CardAbilityBase ability, CardInstance agent, CardInstance target = null)
@@ -141,71 +189,80 @@ namespace GamePlay.Battle.Event
         /// <param name="targets"></param>
         /// <param name="actionType"></param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        private async UniTask ExecuteAction(ActionType actionType, int actionValue, List<CardInstance> targets)
+        private async UniTask ExecuteAction(ActionType actionType, int actionValue, List<CardInstance> targets, string actionString)
         {
             if (targets.Count <= 0)
             {
                 Debug.Log("타겟이 없음");
                 return;
             }
-            
+            Debug.Log(targets.Count);
             switch (actionType)
             {
                 case ActionType.Damage:
                     foreach (var target in targets)
                     {
-                        target.TakeDamage(actionValue);
+                        target?.TakeDamage(actionValue);
                     }
                     break;
                 case ActionType.Heal:
                     foreach (var target in targets)
                     {
-                        target.ChangeCardInstanceValue(CardInstanceValueType.C_HP, actionValue);
+                        target?.ChangeCardInstanceValue(CardInstanceValueType.C_HP, actionValue);
                     }
                     break;
                 case ActionType.IncreaseShield:
                     foreach (var target in targets)
                     {
-                        target.ChangeCardInstanceValue(CardInstanceValueType.C_SHD, actionValue);
+                        target?.ChangeCardInstanceValue(CardInstanceValueType.C_SHD, actionValue);
                     }
                     break;
                 case ActionType.IncreaseATK:
                     foreach (var target in targets)
                     {
-                        target.ChangeCardInstanceValue(CardInstanceValueType.I_ATK, actionValue);
+                        target?.ChangeCardInstanceValue(CardInstanceValueType.I_ATK, actionValue);
                     }
                     break;
                 case ActionType.DecreaseATK:
                     foreach (var target in targets)
                     {
-                        target.ChangeCardInstanceValue(CardInstanceValueType.I_ATK, -actionValue);
+                        target?.ChangeCardInstanceValue(CardInstanceValueType.I_ATK, -actionValue);
                     }
                     break;
                 case ActionType.DecreaseActionCount:
                     foreach (var target in targets)
                     {
-                        target.ChangeCardInstanceValue(CardInstanceValueType.C_AC, -actionValue);
+                        target?.ChangeCardInstanceValue(CardInstanceValueType.C_AC, -actionValue);
                     }
                     break;
                 case ActionType.IncreaseActionCount:
                     foreach (var target in targets)
                     {
-                        target.ChangeCardInstanceValue(CardInstanceValueType.C_AC, actionValue);
+                        target?.ChangeCardInstanceValue(CardInstanceValueType.C_AC, actionValue);
                     }
                     break;
-                case ActionType.Burn:
-                    break;
                 case ActionType.CreateCardToHand:
-                    break;
-                case ActionType.BurnDMG:
+                    var creationToHand = GameManager.Inst.Data.GetCard(actionString);
+                    if (creationToHand == null) return;
+                    await BattleManager.Instance.CreateToHandCard(creationToHand);
                     break;
                 case ActionType.CreateCardToField:
+                    var creationToField = GameManager.Inst.Data.GetCard(actionString);
+                    if (creationToField == null) return;
+                    
                     break;
                 case ActionType.BurnATK:
                     break;
                 case ActionType.BurnBySelfBurn:
                     break;
                 case ActionType.Bloodrage:
+                    break;
+                case ActionType.IncreaseNum:
+                case ActionType.DecreaseNum:
+                case ActionType.Burn:
+                    break;
+                case ActionType.BurnDouble:
+                case ActionType.BurnDMG:
                     break;
                 case ActionType.None:
                     break;

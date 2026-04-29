@@ -16,7 +16,7 @@ MonoBehaviour:
   actionTarget: 0
   actionListA:
   - actionType: 10
-    actionValue: -1
+    actionValue: 1
   condition:
     conditionType: 2
     conditionValue: -1
@@ -25,3 +25,5 @@ MonoBehaviour:
     actionValue: -1
   actionAString: fireball_0
   actionBString: none
+  actionAValueType: 4
+  actionBValueType: 0

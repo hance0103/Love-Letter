@@ -47,6 +47,11 @@ namespace GamePlay.Battle
         private readonly Dictionary<CardOwner, FieldInstance> _fieldInstanceDict = new();
         private readonly Dictionary<CardInstance, CardObject> _handCardObjects = new();
 
+        /// 카드 사용시 사용될수 있는 정보
+        /// ex) 현재 턴 수, 총 드로우 장수 등등
+        [Header("BattleInfo")] 
+        public int BeforeDamage { get; set; }
+
         public HandSortingManager HandSortingManager => handSortingManager;
         public Deck Deck => deck;
         public Hand Hand => hand;
@@ -77,13 +82,13 @@ namespace GamePlay.Battle
             // }
             
             // 일단 임시로
-            var cardObject = await cardPool.Get(new CardInstance(enemies[0], CardOwner.Enemy));
-            if (cardObject == null) return;
-                
-            var success = PlaceCharacterCardToField(cardObject, enemySlots[0]);
-            if (!success) return;
-
-            await cardObject.ReturnToSlotAsync(enemySlots[0], CardUseManager.Instance.FieldCardLayer);
+            // var cardObject = await cardPool.Get(new CardInstance(enemies[0], CardOwner.Enemy));
+            // if (cardObject == null) return;
+            //     
+            // var success = PlaceCharacterCardToField(cardObject, enemySlots[0]);
+            // if (!success) return;
+            //
+            // await cardObject.ReturnToSlotAsync(enemySlots[0], CardUseManager.Instance.FieldCardLayer);
         }
 
         private void OnDestroy()
@@ -144,13 +149,13 @@ namespace GamePlay.Battle
 
             var cards = deck.DrawCards(canDrawCount);
 
-            foreach (var card in cards)
+            foreach (var cardInstance in cards)
             {
-                if (card == null) continue;
+                if (cardInstance == null) continue;
 
-                hand.Add(card);
+                hand.Add(cardInstance);
 
-                var cardObject = await cardPool.Get(card);
+                var cardObject = await cardPool.Get(cardInstance);
                 if (cardObject == null) continue;
 
                 if (handCardRoot != null)
@@ -159,7 +164,7 @@ namespace GamePlay.Battle
                 }
 
                 cardObject.SetCurrentSlot(null);
-                _handCardObjects[card] = cardObject;
+                _handCardObjects[cardInstance] = cardObject;
             }
 
             RequestHandLayoutRefresh();
@@ -574,6 +579,28 @@ namespace GamePlay.Battle
             {
                 card.RefreshCardInfo();
             }
+        }
+
+        public async UniTask CreateToHandCard(CardBase cardBase)
+        {
+            if (cardBase == null) return;
+            
+            var cardInstance = new CardInstance(cardBase);
+            
+            hand.Add(cardInstance);
+
+            var cardObject = await cardPool.Get(cardInstance);
+            if (cardObject == null) return;
+
+            if (handCardRoot != null)
+            {
+                cardObject.transform.SetParent(handCardRoot, false);
+            }
+
+            cardObject.SetCurrentSlot(null);
+            _handCardObjects[cardInstance] = cardObject;
+            
+            RequestHandLayoutRefresh();
         }
     }
 

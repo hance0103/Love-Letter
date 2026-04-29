@@ -11,6 +11,8 @@ namespace GameSystem.Enums
     {
         Character,
         Normal,
+        
+        
         None
     }
 
@@ -43,6 +45,21 @@ namespace GameSystem.Enums
         BurnDouble,
         
         None
+    }
+    public enum ActionValueType
+    {        
+        None,
+        
+        ATK,
+        TargetATK,
+        BeforeDamage,
+        ActionString,
+        SelfBurn,
+        TargetBurn,
+        SelfHP,
+        TargetHP,
+        SelfShield,
+        TargetShield,
     }
     public enum KeywordType
     {
@@ -78,4 +95,6 @@ namespace GameSystem.Enums
         Near,
         Random
     }
+
+
 }

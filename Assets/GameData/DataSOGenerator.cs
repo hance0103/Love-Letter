@@ -462,10 +462,32 @@ namespace GameData
                             }).ToList();
                         isDirty |= SetEquatableListIfChanged(ref data.actionListB, newActionListB);
                         
-                        // 6. A 연출 경로
+                        // 6. Action A String
                         isDirty |= SetIfChanged(ref data.actionAString, dataRow[8]);
-                        // 7. B 연출 경로
+                        // 7. Action B String
                         isDirty |= SetIfChanged(ref data.actionBString, dataRow[9]);
+                        
+                        // 8. ActionA Value Type
+                        if (Enum.TryParse<ActionValueType>(dataRow[10], true, out var actionAValueType))
+                        {
+                            isDirty |= SetIfChanged(ref data.actionAValueType, actionAValueType);
+                        }
+                        else
+                        {
+                            Debug.Log($"Data Generator : 카드 {dataRow[0]} 행동 값 타입 파싱 실패 : {dataRow[10]} 존재하지 않음");
+                            isDirty |= SetIfChanged(ref data.actionAValueType, ActionValueType.None);
+                        }
+                        
+                        // 9. ActionB Value Type
+                        if (Enum.TryParse<ActionValueType>(dataRow[11], true, out var actionBValueType))
+                        {
+                            isDirty |= SetIfChanged(ref data.actionBValueType, actionBValueType);
+                        }
+                        else
+                        {
+                            Debug.Log($"Data Generator : 카드 {dataRow[0]} 행동 값 타입 파싱 실패 : {dataRow[11]} 존재하지 않음");
+                            isDirty |= SetIfChanged(ref data.actionBValueType, ActionValueType.None);
+                        }
                         
                         if (isDirty)
                         {
@@ -540,6 +562,28 @@ namespace GameData
                         }
                         data.actionAString = dataRow[8];
                         data.actionBString = dataRow[9];
+                        
+                        // 6. ActionA Value Type
+                        if (Enum.TryParse<ActionValueType>(dataRow[10], true, out var actionAValueType))
+                        {
+                            data.actionAValueType = actionAValueType;
+                        }
+                        else
+                        {
+                            Debug.Log($"Data Generator : 카드 {dataRow[0]} 행동A 값 타입 설정 오류 : {dataRow[10]} 존재하지 않음");
+                            data.actionAValueType = 0;
+                        }
+                        
+                        // 7. ActionB Value Type
+                        if (Enum.TryParse<ActionValueType>(dataRow[10], true, out var actionBValueType))
+                        {
+                            data.actionBValueType = actionBValueType;
+                        }
+                        else
+                        {
+                            Debug.Log($"Data Generator : 카드 {dataRow[0]} 행동B 값 타입 설정 오류 : {dataRow[11]} 존재하지 않음");
+                            data.actionBValueType = 0;
+                        }
                         
                         AssetDatabase.CreateAsset(data, cardAbilitySOPath);
                         EditorUtility.SetDirty(data);

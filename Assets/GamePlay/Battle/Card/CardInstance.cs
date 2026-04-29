@@ -73,7 +73,7 @@ namespace GamePlay.Battle.Card
             if (afterShield <= 0)
             {
                 currentShield = 0;
-                ChangeCardInstanceValue(CardInstanceValueType.C_HP, -afterShield);
+                ChangeCardInstanceValue(CardInstanceValueType.C_HP, afterShield);
             }
             else
             {

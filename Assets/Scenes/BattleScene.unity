@@ -542,8 +542,7 @@ MonoBehaviour:
       list: []
   drawAmount: 6
   maxHand: 10
-  enemies:
-  - {fileID: 11400000, guid: 3b8bc4fdd0d5a624abcbe0c02f6922f6, type: 2}
+  enemies: []
 --- !u!4 &410426186
 Transform:
   m_ObjectHideFlags: 0
@@ -2217,17 +2216,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GamePlay.Party.PartyManager
   partyMembers:
-  - data: {fileID: 11400000, guid: 709764c6687a64f40a4f78c8e41a3344, type: 2}
+  - data: {fileID: 11400000, guid: dcf23c0b0400281449462e4b5dbc9eca, type: 2}
     accList: []
   - data: {fileID: 11400000, guid: 14437619e2dc7274aad37e09384b89cd, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: 14437619e2dc7274aad37e09384b89cd, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: c31c1ff32d6b73c4e98f600d4203c71f, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: c31c1ff32d6b73c4e98f600d4203c71f, type: 2}
-    accList: []
-  - data: {fileID: 11400000, guid: 3b8bc4fdd0d5a624abcbe0c02f6922f6, type: 2}
     accList: []
 --- !u!114 &1935962552
 MonoBehaviour:

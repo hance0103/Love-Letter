@@ -25,3 +25,5 @@ MonoBehaviour:
     actionValue: -1
   actionAString: none
   actionBString: none
+  actionAValueType: 3
+  actionBValueType: 0
