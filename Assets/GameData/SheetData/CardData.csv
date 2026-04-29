@@ -1,7 +1,7 @@
 ﻿id,tier,type,keyword[],cardNum,HP,ATK,actionCount,cardAbilityID[],nextPromotionID[],nameString,descString,imagePath,tooltipID[],cardBgImagePath
 knight_1,Common,Character,none,1,5,2,3,frontEnemyAttackATK|frontEnemyAttackATK,dragonKnight_1,NAME_KNIGHT_1,DESC_KNIGHT_1,knight_1,doubleAttack,cardBgKnight_1
 merchant_2,Common,Character,none,2,3,2,2,frontEnemyAttackATK|createCardOddmentsToHand,none,NAME_MERCHANT_2,DESC_MERCHANT_2,merchant_2,generateScavenge|scavenge|exhaust,cardBgMerchant_2
-priest_3,Common,Character,none,3,4,3,4,frontEnemyAttackATK|frontSingleAllyHealATK,none,NAME_PRIEST_3,DESC_PRIEST_3,priest_3,none,cardBgPriest_3
+priest_3,Common,Character,none,3,4,3,4,frontSingleAllyHealATK,none,NAME_PRIEST_3,DESC_PRIEST_3,priest_3,none,cardBgPriest_3
 warrior_4,Common,Character,none,4,6,3,5,frontEnemyDualBonusDamage,none,NAME_WARRIOR_4,DESC_WARRIOR_4,warrior_4,dual,cardBgWarrior_4
 wizard_5,Common,Character,none,5,3,4,4,allEnemyAttackATK,none,NAME_WIZARD_5,DESC_WIZARD_5,wizard_5,aoe,cardBgWizard_5
 bard_6,Common,Character,none,6,3,3,3,frontEnemyAttackATK|allAllyDecreaseActionCount1,none,NAME_BARD_6,DESC_BARD_6,bard_6,frenzy,cardBgBard_6
@@ -16,13 +16,13 @@ bestowalOfTitle,Common,Normal,none,-1,-1,-1,-1,targetIncreaseNum1,none,NAME_BEST
 deprivationOfRank,Common,Normal,none,-1,-1,-1,-1,targetDecreaseATK2,none,NAME_DEPRIVATIONOFRANK,DESC_DEPRIVATIONOFRANK,deprivationOfRank,none,cardBgDeprivationofrank
 guardMe,Common,Normal,none,-1,-1,-1,-1,targetIncreaseShield2,none,NAME_GUARDME,DESC_GUARDME,guardMe,none,cardBgGuardme
 attack,Common,Normal,none,-1,-1,-1,-1,targetIncreaseATK2,none,NAME_ATTACK,DESC_ATTACK,attack,none,cardBgAttack
-oddments,Common,Normal,none,0,1,0,-1,targetIncreaseShield2,none,NAME_ODDMENTS,DESC_ODDMENTS,oddments,none,cardBgOddments
+oddments,Common,Normal,none,-1,-1,-1,-1,targetIncreaseShield2,none,NAME_ODDMENTS,DESC_ODDMENTS,oddments,none,cardBgOddments
 fireball_0,Common,Character,none,0,1,0,-1,attackerBurn4OnDeath,none,NAME_FIREBALL_0,DESC_FIREBALL_0,fireball_0,burn,cardBgFireball_0
 dragonKnight_1,Rare,Character,none,1,7,3,3,frontEnemyAttackATK|frontEnemyBurnDMG,promoted,NAME_DRAGONKNIGHT_1,DESC_DRAGONKNIGHT_1,dragonKnight_1,burn,cardBgDragonknight_1
 bomberMerchant_2,Rare,Character,none,2,7,3,3,frontEnemyAttackATK|createCardFireballToField,promoted,NAME_BOMBERMERCHANT_2,DESC_BOMBERMERCHANT_2,bomberMerchant_2,generateFireball|burn,cardBgBombermerchant_2
 inquisitor_3,Rare,Character,none,3,7,3,3,frontEnemyAttackATK|frontSingleAllyIncreaseATK|frontSingleAllyBurn2,promoted,NAME_INQUISITOR_3,DESC_INQUISITOR_3,inquisitor_3,burn,cardBgInquisitor_3
 burningCorpse_4,Rare,Character,none,4,7,3,3,selfBurn4|frontEnemyBurnBySelfBurn,promoted,NAME_BURNINGCORPSE_4,DESC_BURNINGCORPSE_4,burningCorpse_4,burn,cardBgBurningcorpse_4
 meteorMage_5,Rare,Character,none,5,7,3,3,randomEnemyBurnATK|randomEnemyBurnATK|randomEnemyBurnATK,promoted,NAME_METEORMAGE_5,DESC_METEORMAGE_5,meteorMage_5,burn,cardBgMeteormage_5
-pyromaniac_6,Rare,Character,none,6,7,3,3,allEnemyAllyBurn3|bloodrage,promoted,NAME_PYROMANIAC_6,DESC_PYROMANIAC_6,pyromaniac_6,burn|bloodrage,cardBgPyromaniac_6
+pyromaniac_6,Rare,Character,Bloodrage,6,7,3,3,allEnemyAllyBurn3,promoted,NAME_PYROMANIAC_6,DESC_PYROMANIAC_6,pyromaniac_6,burn|bloodrage,cardBgPyromaniac_6
 ember_7,Rare,Character,none,7,7,3,3,frontEnemyBurnATK|frontEnemyBurnDouble,promoted,NAME_EMBER_7,DESC_EMBER_7,ember_7,burn,cardBgEmber_7
 enemyExample,Common,Character,none,1,1,3,3,frontEnemyAttackATK,none,NAME_ENEMYEXAMPLE,DESC_ENEMYEXAMPLE,enemyExample,none,cardBgEnemyexample
