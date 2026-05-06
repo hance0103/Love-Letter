@@ -542,7 +542,8 @@ MonoBehaviour:
       list: []
   drawAmount: 6
   maxHand: 10
-  enemies: []
+  enemies:
+  - {fileID: 11400000, guid: 71c77bc669c2bd448a460c343747aa3c, type: 2}
 --- !u!4 &410426186
 Transform:
   m_ObjectHideFlags: 0
