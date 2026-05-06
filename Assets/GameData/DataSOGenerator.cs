@@ -1093,8 +1093,6 @@ namespace GameData
             }
         }
 
-        #endregion
-        
         private static async UniTask CreateTooltipData(DataBase dataBase)
         {
             // csv파일 로드
@@ -1164,6 +1162,9 @@ namespace GameData
                 }
             }
         }
+        #endregion
+        
+        
         
         #endif
     }

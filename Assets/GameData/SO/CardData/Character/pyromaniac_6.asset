@@ -15,7 +15,7 @@ MonoBehaviour:
   cardID: pyromaniac_6
   cardTier: 1
   cardType: 0
-  keywords: 00000000
+  keywords: 01000000
   cardNum: 6
   HP: 7
   ATK: 3

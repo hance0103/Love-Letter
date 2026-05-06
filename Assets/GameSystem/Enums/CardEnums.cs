@@ -63,6 +63,7 @@ namespace GameSystem.Enums
     }
     public enum KeywordType
     {
+        Exhaust,
         Bloodrage,
         
         None

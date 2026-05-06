@@ -43,7 +43,13 @@ namespace GamePlay.Battle.Event
             // 카드의 효과 리스트 처리
             foreach (var ability in abilities.Select(abilityString => GameManager.Inst.Data.GetAbility(abilityString)))
             {
-                    await UseAbility(ability, agent, evt.TargetSlot?.CardInstance);
+                await UseAbility(ability, agent, evt.TargetSlot?.CardInstance);
+            }
+            
+            // 카드 사용 완료
+            if (agent.Data.keywords.Contains(KeywordType.Exhaust))
+            {
+                
             }
         }
         
@@ -66,12 +72,13 @@ namespace GamePlay.Battle.Event
                     GetActionValue(abilityOwner, target, ability.actionAValueType)
                     : action.ActionValue;
                 
-                await ExecuteAction(action.ActionType, actionValue, targets, ability.actionAString);
+                await ExecuteAction(action.ActionType, actionValue, targets, ability.actionAString); 
             }
             
             
             // TODO : condition이랑 actionB는 나중에 만들거임
             var condition = ability.condition;
+            
         }
 
         private int GetActionValue(CardInstance abilityOwner, CardInstance target, ActionValueType actionValueType)
@@ -196,7 +203,7 @@ namespace GamePlay.Battle.Event
                 Debug.Log("타겟이 없음");
                 return;
             }
-            Debug.Log(targets.Count);
+
             switch (actionType)
             {
                 case ActionType.Damage:

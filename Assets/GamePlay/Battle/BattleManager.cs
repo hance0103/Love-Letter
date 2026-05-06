@@ -290,7 +290,20 @@ namespace GamePlay.Battle
                 cardObject.CardInstance, 
                 CardEffectTriggerType.NormalCardUse, 
                 targetSlot));
-            DiscardCard(cardObject.CardInstance);
+            
+            var cardInstance = cardObject.CardInstance;
+            if (cardInstance.Data.keywords.Contains(KeywordType.Exhaust))
+            {
+                if (hand.Contains(cardInstance))
+                {
+                    hand.Remove(cardInstance);
+                }
+                cardPool.Release(cardObject);
+            }
+            else
+            {
+                DiscardCard(cardObject.CardInstance);
+            }
         }
 
         public void DiscardCard(CardInstance card)

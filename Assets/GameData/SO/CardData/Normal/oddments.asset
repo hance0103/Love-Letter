@@ -15,7 +15,7 @@ MonoBehaviour:
   cardID: oddments
   cardTier: 0
   cardType: 1
-  keywords: 
+  keywords: 00000000
   cardNum: -1
   HP: -1
   ATK: -1
