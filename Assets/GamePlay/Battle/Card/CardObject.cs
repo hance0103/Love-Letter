@@ -14,16 +14,25 @@ namespace GamePlay.Battle.Card
     {
         [SerializeField] private CardInstance cardInstance;
         public CardInstance CardInstance => cardInstance;
+
+        [Header("UI")] 
+        [SerializeField] private GameObject infoPrefab;
+
+        [SerializeField] private Transform attackInfoParent;
+        [SerializeField] private Transform hpInfoParent;
         
-        [Header("UI")]
+        
         [SerializeField] private TMP_Text cardName;
         [SerializeField] private TMP_Text cardDesc;
         [SerializeField] private Image cardImage;
+        [SerializeField] private TMP_Text currentAC;
+        
         [SerializeField] private TMP_Text currentHp;
         [SerializeField] private TMP_Text currentAtk;
+        
         [SerializeField] private TMP_Text increaseAtk;
         [SerializeField] private TMP_Text currentShd;
-        [SerializeField] private TMP_Text currentAC;
+
         
         [Header("Move")]
         [SerializeField] private float returnDuration = 0.2f;

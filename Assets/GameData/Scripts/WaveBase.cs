@@ -11,5 +11,6 @@ namespace GameData.Scripts
         public List<string> enemyID;
         public List<int> waveEnemyCount;
         public List<int> turnsToNextWave;
+        public int waveBonusMultiplier;
     }
 }

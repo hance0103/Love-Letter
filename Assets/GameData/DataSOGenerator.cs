@@ -84,8 +84,8 @@ namespace GameData
             Debug.Log("Data Generator : 운명 카드 데이터 파싱 완료");
             await CreateStringData(dataBase);
             Debug.Log("Data Generator : 스트링 데이터 파싱 완료");
-            // await CreateTooltipData(dataBase);
-            // Debug.Log("Data Generator : 툴팁 데이터 파싱 완료");
+            await CreateTooltipData(dataBase);
+            Debug.Log("Data Generator : 툴팁 데이터 파싱 완료");
             
             EditorUtility.SetDirty(dataBase);
             AssetDatabase.SaveAssets();
@@ -654,6 +654,28 @@ namespace GameData
                         int.TryParse(dataRow[6], out var clearGoldMax);
                         isDirty |= SetIfChanged(ref data.clearGoldMax, clearGoldMax);
                         
+                        // 7. Prob
+                        var prob = data.rewardProbability;
+                        
+                        int.TryParse(dataRow[7], out var probMimicBattle);
+                        isDirty |= SetIfChanged(ref prob.probMimicBattle, probMimicBattle);
+                        int.TryParse(dataRow[8], out var probCommonRelic);
+                        isDirty |= SetIfChanged(ref prob.probCommonRelic, probCommonRelic);
+                        int.TryParse(dataRow[9], out var probRareRelic);
+                        isDirty |= SetIfChanged(ref prob.probRareRelic, probRareRelic);
+                        int.TryParse(dataRow[10], out var probEpicRelic);
+                        isDirty |= SetIfChanged(ref prob.probEpicRelic, probEpicRelic);
+                        int.TryParse(dataRow[11], out var probCharacterCard);
+                        isDirty |= SetIfChanged(ref prob.probCharacterCard, probCharacterCard);
+                        int.TryParse(dataRow[12], out var probNormalCard);
+                        isDirty |= SetIfChanged(ref prob.probNormalCard, probNormalCard);
+                        int.TryParse(dataRow[13], out var probCommonAcc);
+                        isDirty |= SetIfChanged(ref prob.probCommonAcc, probCommonAcc);
+                        int.TryParse(dataRow[14], out var probRareAcc);
+                        isDirty |= SetIfChanged(ref prob.probRareAcc, probRareAcc);
+                        int.TryParse(dataRow[15], out var probEpicAcc);
+                        isDirty |= SetIfChanged(ref prob.probEpicAcc, probEpicAcc);
+                        
                         if (isDirty)
                         {
                             Debug.Log($"{data.id} SO 변경");
@@ -686,7 +708,22 @@ namespace GameData
                         int.TryParse(dataRow[5], out data.clearGoldMin);
                         int.TryParse(dataRow[6], out data.clearGoldMax);
                     
-                    
+                        // 7. Prob
+                        var prob = new RewardProbability();
+                        
+                        int.TryParse(dataRow[7], out prob.probMimicBattle);
+                        int.TryParse(dataRow[8], out prob.probCommonRelic);
+                        int.TryParse(dataRow[9], out prob.probRareRelic);
+                        int.TryParse(dataRow[10], out prob.probEpicRelic);
+                        int.TryParse(dataRow[11], out prob.probCharacterCard);
+                        int.TryParse(dataRow[12], out prob.probNormalCard);
+                        int.TryParse(dataRow[13], out prob.probCommonAcc);
+                        int.TryParse(dataRow[14], out prob.probRareAcc);
+                        int.TryParse(dataRow[15], out prob.probEpicAcc);
+                        
+                        data.rewardProbability = prob;
+                        
+                        
                         AssetDatabase.CreateAsset(data, roomSOPath);
                         EditorUtility.SetDirty(data);
                     }
@@ -752,6 +789,10 @@ namespace GameData
                         var turnsToNextWave = CsvParser.ParseIntArray(dataRow[4]);
                         var newTurnsToNextWaveList = new List<int>(turnsToNextWave);
                         isDirty |= SetListIfChanged(data.turnsToNextWave, newTurnsToNextWaveList);
+                        
+                        // 6. waveBonusMultiplier
+                        int.TryParse(dataRow[5], out var waveBonusMultiplier);
+                        isDirty |= SetIfChanged(ref data.waveBonusMultiplier, waveBonusMultiplier);
 
                         if (isDirty)
                         {
@@ -776,6 +817,8 @@ namespace GameData
                         // 5. turnsToNextWave
                         var turnsToNextWave = CsvParser.ParseIntArray(dataRow[4]);
                         data.turnsToNextWave = new List<int>(turnsToNextWave);
+                        //6. waveBonusMultiplier
+                        int.TryParse(dataRow[5], out data.waveBonusMultiplier);
                         
                         AssetDatabase.CreateAsset(data, waveSOPath);
                         EditorUtility.SetDirty(data);
@@ -1051,8 +1094,6 @@ namespace GameData
         }
 
         #endregion
-
-
         
         private static async UniTask CreateTooltipData(DataBase dataBase)
         {

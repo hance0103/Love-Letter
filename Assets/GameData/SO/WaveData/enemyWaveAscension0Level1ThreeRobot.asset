@@ -24,3 +24,4 @@ MonoBehaviour:
   - enemyExample
   waveEnemyCount: 030000000300000001000000
   turnsToNextWave: 0300000001000000
+  waveBonusMultiplier: 5

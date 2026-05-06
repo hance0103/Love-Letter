@@ -13,6 +13,8 @@ namespace GamePlay.Battle.Card
     [Serializable]
     public class CardInstance
     {
+        
+        [Header("Card Info & Data")]
         [SerializeField] private CardBase data;
 
         [SerializeField] private string cardName;
@@ -42,6 +44,12 @@ namespace GamePlay.Battle.Card
         public string CardDesc => cardDesc;
         public CardType CardType => data != null ? data.cardType : CardType.Normal;
         public CardOwner CardOwner => cardOwner;
+
+
+        [Header("Card State")] 
+        [SerializeField] private int currentBurn = 0;
+        
+        public int CurrentBurn => currentBurn;
         
         public CardInstance(CardBase data, CardOwner cardOwner = CardOwner.Player)
         {

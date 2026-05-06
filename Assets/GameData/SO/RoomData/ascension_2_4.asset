@@ -19,3 +19,13 @@ MonoBehaviour:
   tier: 1
   clearGoldMin: 6
   clearGoldMax: 10
+  rewardProbability:
+    probMimicBattle: 300
+    probCommonRelic: 100
+    probRareRelic: 50
+    probEpicRelic: 10
+    probCharacterCard: 100
+    probNormalCard: 100
+    probCommonAcc: 100
+    probRareAcc: 50
+    probEpicAcc: 10

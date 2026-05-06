@@ -15,14 +15,13 @@ MonoBehaviour:
   cardID: pyromaniac_6
   cardTier: 1
   cardType: 0
-  keywords: 
+  keywords: 00000000
   cardNum: 6
   HP: 7
   ATK: 3
   actionCount: 3
   cardAbilityIDs:
   - allEnemyAllyBurn3
-  - bloodrage
   nextPromotionIDs:
   - promoted
   nameString: NAME_PYROMANIAC_6

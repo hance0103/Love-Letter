@@ -16,9 +16,9 @@ MonoBehaviour:
   cardTier: 0
   cardType: 1
   keywords: 
-  cardNum: 0
-  HP: 1
-  ATK: 0
+  cardNum: -1
+  HP: -1
+  ATK: -1
   actionCount: -1
   cardAbilityIDs:
   - targetIncreaseShield2

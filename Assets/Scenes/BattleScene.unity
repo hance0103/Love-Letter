@@ -665,6 +665,7 @@ MonoBehaviour:
     baseActionCount: 0
     currentActionCount: 0
     cardOwner: 0
+    currentBurn: 0
   isCardIn: 0
 --- !u!114 &450291905
 MonoBehaviour:
@@ -990,6 +991,7 @@ MonoBehaviour:
     baseActionCount: 0
     currentActionCount: 0
     cardOwner: 0
+    currentBurn: 0
   isCardIn: 0
 --- !u!114 &793742522
 MonoBehaviour:
@@ -1490,6 +1492,7 @@ MonoBehaviour:
     baseActionCount: 0
     currentActionCount: 0
     cardOwner: 0
+    currentBurn: 0
   isCardIn: 0
 --- !u!114 &1163740195
 MonoBehaviour:
@@ -1743,6 +1746,7 @@ MonoBehaviour:
     baseActionCount: 0
     currentActionCount: 0
     cardOwner: 0
+    currentBurn: 0
   isCardIn: 0
 --- !u!1 &1498637745
 GameObject:
@@ -1809,6 +1813,7 @@ MonoBehaviour:
     baseActionCount: 0
     currentActionCount: 0
     cardOwner: 0
+    currentBurn: 0
   isCardIn: 0
 --- !u!114 &1498637748
 MonoBehaviour:
@@ -2027,6 +2032,7 @@ MonoBehaviour:
     baseActionCount: 0
     currentActionCount: 0
     cardOwner: 0
+    currentBurn: 0
   isCardIn: 0
 --- !u!114 &1758492088
 MonoBehaviour:
@@ -2131,6 +2137,7 @@ MonoBehaviour:
     baseActionCount: 0
     currentActionCount: 0
     cardOwner: 0
+    currentBurn: 0
   isCardIn: 0
 --- !u!114 &1800678558
 MonoBehaviour:
@@ -2220,6 +2227,8 @@ MonoBehaviour:
     accList: []
   - data: {fileID: 11400000, guid: 14437619e2dc7274aad37e09384b89cd, type: 2}
     accList: []
+  - data: {fileID: 11400000, guid: 709764c6687a64f40a4f78c8e41a3344, type: 2}
+    accList: []
 --- !u!114 &1935962552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2297,6 +2306,7 @@ MonoBehaviour:
     baseActionCount: 0
     currentActionCount: 0
     cardOwner: 0
+    currentBurn: 0
   isCardIn: 0
 --- !u!114 &1955757514
 MonoBehaviour:

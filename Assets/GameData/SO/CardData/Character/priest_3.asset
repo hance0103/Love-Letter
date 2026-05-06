@@ -21,7 +21,6 @@ MonoBehaviour:
   ATK: 3
   actionCount: 4
   cardAbilityIDs:
-  - frontEnemyAttackATK
   - frontSingleAllyHealATK
   nextPromotionIDs:
   - none

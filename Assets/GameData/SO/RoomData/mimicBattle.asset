@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 159a7ff476980174eb527e1a5ec6e1c2, type: 3}
+  m_Name: mimicBattle
+  m_EditorClassIdentifier: Assembly-CSharp::GameData.Scripts.RoomBase
+  id: mimicBattle
+  floor: 99
+  room: 99
+  level: 11
+  tier: 0
+  clearGoldMin: 10
+  clearGoldMax: 20
+  rewardProbability:
+    probMimicBattle: 0
+    probCommonRelic: 0
+    probRareRelic: 0
+    probEpicRelic: 0
+    probCharacterCard: 0
+    probNormalCard: 0
+    probCommonAcc: 100
+    probRareAcc: 50
+    probEpicAcc: 10
