@@ -16,7 +16,7 @@ bestowalOfTitle,Common,Normal,none,-1,-1,-1,-1,targetIncreaseNum1,none,NAME_BEST
 deprivationOfRank,Common,Normal,none,-1,-1,-1,-1,targetDecreaseATK2,none,NAME_DEPRIVATIONOFRANK,DESC_DEPRIVATIONOFRANK,deprivationOfRank,none,cardBgDeprivationofrank
 guardMe,Common,Normal,none,-1,-1,-1,-1,targetIncreaseShield2,none,NAME_GUARDME,DESC_GUARDME,guardMe,none,cardBgGuardme
 attack,Common,Normal,none,-1,-1,-1,-1,targetIncreaseATK2,none,NAME_ATTACK,DESC_ATTACK,attack,none,cardBgAttack
-oddments,Common,Normal,none,-1,-1,-1,-1,targetIncreaseShield2,none,NAME_ODDMENTS,DESC_ODDMENTS,oddments,none,cardBgOddments
+oddments,Common,Normal,Exhaust,-1,-1,-1,-1,targetIncreaseShield2,none,NAME_ODDMENTS,DESC_ODDMENTS,oddments,none,cardBgOddments
 fireball_0,Common,Character,none,0,1,0,-1,attackerBurn4OnDeath,none,NAME_FIREBALL_0,DESC_FIREBALL_0,fireball_0,burn,cardBgFireball_0
 dragonKnight_1,Rare,Character,none,1,7,3,3,frontEnemyAttackATK|frontEnemyBurnDMG,promoted,NAME_DRAGONKNIGHT_1,DESC_DRAGONKNIGHT_1,dragonKnight_1,burn,cardBgDragonknight_1
 bomberMerchant_2,Rare,Character,none,2,7,3,3,frontEnemyAttackATK|createCardFireballToField,promoted,NAME_BOMBERMERCHANT_2,DESC_BOMBERMERCHANT_2,bomberMerchant_2,generateFireball|burn,cardBgBombermerchant_2
