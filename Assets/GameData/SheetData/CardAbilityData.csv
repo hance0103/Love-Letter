@@ -30,3 +30,4 @@ allEnemyAllyBurn3,allEnemyAlly,Burn,3,none,-1,none,-1,none,none,None,None
 attackerBurn4OnDeath,Attacker,None,-1,Death,-1,Burn,4,none,none,None,None
 frontEnemyBurnDouble,FrontEnemy,BurnDouble,-1,none,-1,none,-1,none,none,TargetBurn,None
 frontEnemyBurnDouble,FrontEnemy,BurnDouble,-1,none,-1,none,-1,none,none,TargetBurn,None
+targetDecreaseNum1,Target,DecreaseNum,1,none,-1,none,-1,none,none,None,None

@@ -13,9 +13,10 @@ begone,Common,Normal,none,-1,-1,-1,-1,targetIncreaseActionCount1,none,NAME_BEGON
 incinerate,Common,Normal,none,-1,-1,-1,-1,targetBurn2,none,NAME_INCINERATE,DESC_INCINERATE,incinerate,burn,cardBgIncinerate
 theRoyalBanquet,Common,Normal,none,-1,-1,-1,-1,targetHeal2,none,NAME_THEROYALBANQUET,DESC_THEROYALBANQUET,theRoyalBanquet,none,cardBgTheroyalbanquet
 bestowalOfTitle,Common,Normal,none,-1,-1,-1,-1,targetIncreaseNum1,none,NAME_BESTOWALOFTITLE,DESC_BESTOWALOFTITLE,bestowalOfTitle,none,cardBgBestowaloftitle
-deprivationOfRank,Common,Normal,none,-1,-1,-1,-1,targetDecreaseATK2,none,NAME_DEPRIVATIONOFRANK,DESC_DEPRIVATIONOFRANK,deprivationOfRank,none,cardBgDeprivationofrank
+deprivationOfRank,Common,Normal,none,-1,-1,-1,-1,targetDecreaseNum1,none,NAME_DEPRIVATIONOFRANK,DESC_DEPRIVATIONOFRANK,deprivationOfRank,none,cardBgDeprivationofrank
 guardMe,Common,Normal,none,-1,-1,-1,-1,targetIncreaseShield2,none,NAME_GUARDME,DESC_GUARDME,guardMe,none,cardBgGuardme
 attack,Common,Normal,none,-1,-1,-1,-1,targetIncreaseATK2,none,NAME_ATTACK,DESC_ATTACK,attack,none,cardBgAttack
+bendTheKnee,Common,Normal,none,-1,-1,-1,-1,targetDecreaseATK2,none,NAME_BENDTHEKNEE,DESC_BENDTHEKNEE,bendTheKnee,none,cardBgBendtheknee
 oddments,Common,Normal,Exhaust,-1,-1,-1,-1,targetIncreaseShield2,none,NAME_ODDMENTS,DESC_ODDMENTS,oddments,none,cardBgOddments
 fireball_0,Common,Character,none,0,1,0,-1,attackerBurn4OnDeath,none,NAME_FIREBALL_0,DESC_FIREBALL_0,fireball_0,burn,cardBgFireball_0
 dragonKnight_1,Rare,Character,none,1,7,3,3,frontEnemyAttackATK|frontEnemyBurnDMG,promoted,NAME_DRAGONKNIGHT_1,DESC_DRAGONKNIGHT_1,dragonKnight_1,burn,cardBgDragonknight_1

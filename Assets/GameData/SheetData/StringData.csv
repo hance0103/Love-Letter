@@ -34,25 +34,25 @@ NAME_PYROMANIAC_6,방화광,none
 NAME_EMBER_7,엠버,none
 NAME_ENEMYEXAMPLE,적예시,none
 DESC_KNIGHT_1,연격,none
-DESC_MERCHANT_2,생성: 고철덩이,none
-DESC_PRIEST_3,공격력만큼 아군 1명을 회복시킵니다.,none
-DESC_WARRIOR_4,"대결 승리 시, {0}의 피해를 가합니다.",none
+DESC_MERCHANT_2,생성: 잡동사니,none
+DESC_PRIEST_3,공격력만큼 자신의 아군 1명을 회복시킵니다.,none
+DESC_WARRIOR_4,"<color=486aff>대결</color> 승리 시, {0}의 추가 피해를 가합니다.",none
 DESC_WIZARD_5,광역,none
 DESC_BARD_6,격양,none
-DESC_ROGUE_7,적의 행동게이지를 1 훔칩니다\n저격,none
+DESC_ROGUE_7,적의 행동게이지를 1 훔칩니다\n<color=486aff>저격</color>,none
 DESC_PRINCESS_8,주인공,none
 DESC_DULLSWORDSMANSHIP,{0}의 피해를 가합니다,none
 DESC_FORWARD,행동카운트를 {0} 감소시킵니다,none
 DESC_BEGONE,행동카운트를 {0} 증가시킵니다,none
-DESC_INCINERATE,화상 {0}를 부여합니다,none
+DESC_INCINERATE,<color=486aff>화상</color> {0}를 부여합니다,none
 DESC_THEROYALBANQUET,체력을 {0} 회복시킵니다,none
 DESC_BESTOWALOFTITLE,번호를 {0} 감소시킵니다,none
 DESC_DEPRIVATIONOFRANK,공격력을 {0} 감소시킵니다,none
-DESC_GUARDME,방어도를 {0} 증가시킵니다,none
+DESC_GUARDME,방어도를 {0} 얻습니다,none
 DESC_ATTACK,공격력을 {0} 증가시킵니다,none
-DESC_ODDMENTS,방어도를 2 줍니다.,none
-DESC_FIREBALL_0,"사망 시, 타격자에게 화상 {0}",none
-DESC_DRAGON KNIGHT_1,None,none
+DESC_ODDMENTS,대상에게 방어도를 {0} 부여합니다,none
+DESC_FIREBALL_0,"사망 시, 타격자에게 화상 {0}을 부여합니다.",none
+DESC_DRAGON KNIGHT_1,화상 {0},none
 DESC_BOMBER MERCHANT_2,None,none
 DESC_INQUISITOR_3,None,none
 DESC_BURNING CORPSE_4,None,none
@@ -81,7 +81,7 @@ NAME_WARP,역변,none
 NAME_GUILE,속임수,none
 NAME_BLOODRAGE,피의 광기,none
 DESC_EXHAUST,none,none
-DESC_DOUBLEATTACK,none,none
+DESC_DOUBLEATTACK,두 번 공격합니다.,none
 DESC_GENERATESCAVENGE,none,none
 DESC_SCAVENGE,none,none
 DESC_DUAL,none,none
@@ -123,3 +123,8 @@ UI_BATTLE_NEXTWAVE,남은 웨이브까지,none
 UI_BATTLE_NEXTWAVE_TURN,{0}턴,none
 UI_BATTLE_DESC_NEXTWAVE,"{0}기의 적이 {1}턴 뒤 도착함.\n\n빨리 부를 경우, {2}X{1}G를 획득합니다.\n\n충분한 공간이 없다면 빨리 부를 수 없습니다.",
 UI_BATTLE_TITLE_NEXTWAVE,다음 웨이브 부르기,none
+MSG_WORNING_ACC_CANNOT_EQUIPPED,악세서리는 캐릭터당 4개까지 붙일 수 있습니다.,none
+MSG_WORNING_ACC_LIMIT,장착 가능한 캐릭터가 없습니다.,none
+MSG_WARNING_NOT_ENOUGH_SPACE,남는 공간이 없습니다.,none
+NAME_BENDTHEKNEE,무릎 꿇어라!,none
+DESC_BENDTHEKNEE,대상의 공격력을 {0} 감소시킵니다.,none
